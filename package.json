@@ -24,6 +24,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.54",
+    "@babel/preset-react": "^7.0.0-beta.54",
     "babel-loader": "^8.0.0-beta.4",
     "coffee-loader": "^0.9.0",
     "coffeescript": "^2.3.1",

@@ -9,12 +9,13 @@ module.exports = {
         test: /\.coffee$/,
         use: [
           {
-            loader: 'coffee-loader',
+            loader: 'babel-loader',
+            options: {
+              presets: [ "@babel/preset-react", ],
+            },
           },
-          // TODO
-          //{
-          //  loader: 'TODO',
-          //},
+          // compile coffee first
+          { loader: 'coffee-loader', },
         ],
       },
     ],
@@ -40,7 +41,7 @@ module.exports = {
 
       '@material-ui/core',
       '@material-ui/icons',
-      //'typeface-roboto',
+      //'typeface-roboto',  // FIXME
     ],
     options: './src/options.coffee',
     popup: './src/popup.coffee',
@@ -57,6 +58,6 @@ module.exports = {
     path: path.resolve(__dirname, 'xpi/js'),
   },
 
-  devtool: 'source_map',
+  //devtool: 'source_map',
   mode: 'development',
 };
