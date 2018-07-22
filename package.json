@@ -6,6 +6,7 @@
   "homepage": "https://bitbucket.org/eisf/pdso/",
   "repository": "https://bitbucket.org/eisf/pdso/",
   "scripts": {
+    "build-lib": "webpack --config build/webpack-lib.config.js",
     "build": "webpack --config webpack.config.js"
   },
   "dependencies": {

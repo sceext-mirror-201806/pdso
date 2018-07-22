@@ -1,6 +1,8 @@
 // webpack.config.js, pdso/
 const path = require('path');
 
+const webpack = require('webpack');
+
 
 module.exports = {
   module: {
@@ -21,7 +23,14 @@ module.exports = {
     ],
   },
   plugins: [
-    // TODO
+    new webpack.DllReferencePlugin({
+      //context: 'TODO',  // FIXME
+      manifest: require('./build/manifest-ui_lib.json'),
+    }),
+    new webpack.DllReferencePlugin({
+      scope: 'main_lib',
+      manifest: require('./build/manifest-main_lib.json'),
+    }),
   ],
   resolve: {
     extensions: [
@@ -31,27 +40,13 @@ module.exports = {
   },
 
   entry: {
-    ui_lib: [
-      'react',
-      'react-dom',
-      'react-redux',
-      'redux',
-      'redux-thunk',
-      'immutable',
-
-      '@material-ui/core',
-      '@material-ui/icons',
-      //'typeface-roboto',  // FIXME
-    ],
+    // use ui_lib
     options: './src/options.coffee',
     popup: './src/popup.coffee',
-    contents: './src/contents.coffee',
-
-    main_lib: [
-      'fast-sha256',
-      'jszip',
-    ],
+    // use main_lib
     main: './src/main.coffee',
+    // no lib
+    contents: './src/contents.coffee',
   },
   output: {
     filename: '[name].js',
