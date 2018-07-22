@@ -1,0 +1,13 @@
+{
+  "extensionName": {
+    "message": "(pdso) Page DOM Snapshot for Offline",
+    "description": "Name of the extension. "
+  },
+
+  "extensionDescription": {
+    "message": "Take a snapshot of the page DOM, modify and save it for offline viewing, including CSS styles and images, no script.  (An extension for Desktop and Android Firefox)",
+    "description": "Description of the extension. "
+  },
+
+  "TODO": "TODO"
+}
