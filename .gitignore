@@ -4,3 +4,4 @@ node_modules/
 /tmp
 
 /xpi/js
+/xpi/material_ui/*.ttf

@@ -44,18 +44,11 @@
     "default_popup": "page/popup.html"
   },
 
-  "content_scripts": [
-    {
-      "matches": [ "<all_urls>" ],
-      "js": [ "js/contents.js" ]
-    }
-  ],
-
   "options_ui": {
     "page": "page/options.html"
   },
 
   "web_accessible_resources": [
-    "img/logo.svg"
+    "img/pdso-logo.svg"
   ]
 }
