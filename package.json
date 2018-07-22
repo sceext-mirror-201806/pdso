@@ -6,7 +6,7 @@
   "homepage": "https://bitbucket.org/eisf/pdso/",
   "repository": "https://bitbucket.org/eisf/pdso/",
   "scripts": {
-    "build": "TODO"
+    "build": "webpack --config webpack.config.js"
   },
   "dependencies": {
     "@material-ui/core": "^1.4.0",
@@ -23,9 +23,13 @@
     "typeface-roboto": "^0.0.54"
   },
   "devDependencies": {
+    "@babel/core": "^7.0.0-beta.54",
+    "babel-loader": "^8.0.0-beta.4",
+    "coffee-loader": "^0.9.0",
     "coffeescript": "^2.3.1",
     "web-ext": "^2.7.0",
-    "webpack": "^4.16.1"
+    "webpack": "^4.16.1",
+    "webpack-command": "^0.4.1"
   },
   "engines": {
     "firefox-desktop": ">=61.0.1",

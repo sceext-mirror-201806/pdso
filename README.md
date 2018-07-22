@@ -37,12 +37,29 @@ TODO
 
 + *(TODO)* 支持 `<frame>` 和 `<iframe>`.
 
-+ *(TODO)* 支持由 CSS 加载的资源, 比如背景图片, 网络字体, 等.
++ *(TODO)* 支持由 CSS 加载的资源, 比如背景图片, 网络字体, 等.  (解析 CSS)
+
++ *(TODO)* 捕获 `<canvas>` 并将其保存为图片.
+
++ *(TODO)* 保存其它资源, 比如视频和音频.
 
 
 ## 更新日志
 
 [CHANGELOG.md](doc/zh_CN/CHANGELOG.md)
+
+
+## 从源代码编译
+
+1. 安装 [`node.js`](https://nodejs.org/en/) 和
+  [`yarn`](https://yarnpkg.com/en/).
+
+2. 在项目根目录运行下列命令:
+
+  ```
+  > yarn install
+  > yarn run build
+  ```
 
 
 ## LICENSE

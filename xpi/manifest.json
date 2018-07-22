@@ -34,7 +34,10 @@
   ],
 
   "background": {
-    "scripts": [ "js/main.js" ]
+    "scripts": [
+      "js/main_lib.js",
+      "js/main.js"
+    ]
   },
 
   "browser_action": {

@@ -5,7 +5,10 @@
   },
 
   "extensionDescription": {
-    "message": "对页面的 DOM 做一个快照, 修改并保存起来, 以供离线查看, 包含 CSS 样式和图片, 不含脚本 (JavaScript).  (pdso: Page DOM Snapshot for Offline, 用于桌面和 Android 版 Firefox 的浏览器扩展. )",
+    "message": "对页面的 DOM 做一个静态快照, (修改并) 保存起来, 以供离线查看,
+ 包含 CSS 样式和图片, 不含脚本程序代码 (JavaScript).
+ (pdso: Page DOM Snapshot for Offline,
+ 用于桌面和 Android 版 Firefox 的浏览器扩展. )",
     "description": "Description of the extension. "
   },
 

@@ -37,12 +37,29 @@ TODO
 + *(TODO)* Add support for `<frame>` and `<iframe>`.
 
 + *(TODO)* Add support for resources loaded by CSS, such as background image,
-  web font, etc.
+  web font, etc.  (parse CSS)
+
++ *(TODO)* Capture `<canvas>` and save it as picture.
+
++ *(TODO)* Save other resources such as video and audio.
 
 
 ## CHANGELOG
 
 [CHANGELOG.md](CHANGELOG.md)
+
+
+## Build from source
+
+1. Install [`node.js`](https://nodejs.org/en/) and
+  [`yarn`](https://yarnpkg.com/en/).
+
+2. Run the following commands in the project root directory:
+
+  ```
+  > yarn install
+  > yarn run build
+  ```
 
 
 ## LICENSE
