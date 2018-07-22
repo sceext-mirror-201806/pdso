@@ -1,15 +1,48 @@
 <!-- README.md, pdso/doc/en/ -->
 
 # pdso: Page DOM Snapshot for Offline
-<https://bitbucket.org/eisf/pdso/src>
+<https://bitbucket.org/eisf/pdso/>
 
 (An extension for **Desktop** and **Android** `Firefox`)
 
-Take a snapshot of the page DOM, modify and save it for offline viewing,
+Take a static snapshot of the page DOM,
+ (modify and) save it for offline viewing,
  including CSS styles and images, no script.
 
 
+## Features
+
++ *(TODO)* Save the page as HTML, not picture.
+
++ *(TODO)* Keep all the styles and images, what you see is what you get.
+
++ *(TODO)* Remove all the scripts in saved HTML.
+
++ *(TODO)* Pack all the files (the HTML file, images, CSS files)
+  in a zip archive.
+
+
+## Installation and usage
+
 TODO
+
+
+## How it works
+
+TODO
+
+
+## Roadmap
+
++ *(TODO)* Add support for `<frame>` and `<iframe>`.
+
++ *(TODO)* Add support for resources loaded by CSS, such as background image,
+  web font, etc.
+
+
+## CHANGELOG
+
+[CHANGELOG.md](CHANGELOG.md)
 
 
 ## LICENSE
