@@ -4,7 +4,7 @@
   "short_name": "pdso",
   "version": "0.1.0a1",
 
-  "description": "__MSG_extensionDescription_",
+  "description": "__MSG_extensionDescription__",
   "homepage_url": "https://bitbucket.org/eisf/pdso/",
 
   "default_locale": "en",
@@ -23,7 +23,6 @@
   },
 
   "permissions": [
-    "background",
     "downloads",
     "tabs",
     "webNavigation",

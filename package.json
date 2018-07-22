@@ -1,13 +1,17 @@
 {
   "name": "pdso",
   "version": "0.1.0-a1",
-  "description": "Page DOM Snapshot for Offline (an extension for Desktop and Android Firefox)",
+  "description": "Page DOM Snapshot for Offline  (an extension for Desktop and Android Firefox)",
   "license": "GPL-3.0+",
   "homepage": "https://bitbucket.org/eisf/pdso/",
   "repository": "https://bitbucket.org/eisf/pdso/",
   "scripts": {
     "build-lib": "webpack --config build/webpack-lib.config.js",
-    "build": "webpack --config webpack.config.js"
+    "build": "webpack --config webpack.config.js",
+
+    "lint": "web-ext --source-dir=xpi lint",
+
+    "build-release": "webpack --config build/webpack-lib.config.js --mode production &&  webpack --config webpack.config.js --mode production"
   },
   "dependencies": {
     "@material-ui/core": "^1.4.0",

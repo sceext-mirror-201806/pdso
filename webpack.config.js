@@ -53,6 +53,7 @@ module.exports = {
     path: path.resolve(__dirname, 'xpi/js'),
   },
 
-  //devtool: 'source_map',
+  // add this to avoid `eval()`
+  devtool: 'source_map',
   mode: 'development',
 };

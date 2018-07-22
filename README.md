@@ -58,8 +58,11 @@ TODO
 
   ```
   > yarn install
+
   > yarn run build-lib
+
   > yarn run build
+
   ```
 
 
