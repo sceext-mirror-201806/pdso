@@ -28,6 +28,21 @@
     "description": "for PageMain.AppBar, when theme is light"
   },
 
+  "po_tab_list": {
+    "message": "Tab list",
+    "description": "title of tab (PageTabList)"
+  },
+
+  "po_tab_log": {
+    "message": "Log",
+    "description": "title of tab (PageLog)"
+  },
+
+  "po_tab_about": {
+    "message": "About",
+    "description": "title of tab (PageAbout)"
+  },
+
   "# end": {
     "message": "TODO"
   }

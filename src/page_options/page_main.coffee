@@ -96,6 +96,7 @@ PageMain = cC {
   _render_one_tab: (label, icon) ->
     tab_style = {
       minHeight: '54px'
+      minWidth: '144px'
     }
 
     (
@@ -110,8 +111,6 @@ PageMain = cC {
     )
 
   _render_contents: ->
-    # TODO i18n: tab labels
-    # TODO tab icons
     (
       <React.Fragment>
         <Tabs
@@ -121,9 +120,9 @@ PageMain = cC {
           textColor="primary"
           centered
         >
-          { @_render_one_tab 'Tab list', (<Icons.List />) }
-          { @_render_one_tab 'Log', (<Icons.Assessment />) }
-          { @_render_one_tab 'About', (<Icons.Info />) }
+          { @_render_one_tab gM('po_tab_list'), (<Icons.List />) }
+          { @_render_one_tab gM('po_tab_log'), (<Icons.Assessment />) }
+          { @_render_one_tab gM('po_tab_about'), (<Icons.Info />) }
         </Tabs>
         <SwipeableViews
           axis="x"
