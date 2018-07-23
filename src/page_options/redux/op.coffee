@@ -1,6 +1,7 @@
 # op.coffee, pdso/src/page_options/redux/
 
 config = require '../../config'
+action = require './action'
 
 
 # main init after page load
@@ -14,9 +15,15 @@ load_init = ->
 
 toggle_theme = ->
   (dispatch, getState) ->
-    # TODO save theme ?
+    theme = getState().get 'theme'
+    if theme is config.UI_THEME_DARK
+      new_theme = config.UI_THEME_LIGHT
+    else
+      new_theme = config.UI_THEME_DARK
+    # TODO save new theme to local storage
 
-    await return
+    # set new theme
+    dispatch action.set_theme(new_theme)
 
 
 module.exports = {

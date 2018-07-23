@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@material-ui/core": "^1.4.0",
+    "@material-ui/docs": "^1.0.0-alpha.3",
     "@material-ui/icons": "^1.1.0",
     "create-react-class": "^15.6.3",
     "fast-sha256": "^1.1.0",
@@ -33,8 +34,10 @@
     "babel-loader": "^8.0.0-beta.4",
     "coffee-loader": "^0.9.0",
     "coffeescript": "^2.3.1",
+    "css-loader": "^1.0.0",
     "https-proxy-cli": "^1.1.0",
     "react-devtools": "^3.2.3",
+    "style-loader": "^0.21.0",
     "web-ext": "^2.7.0",
     "webpack": "^4.16.1",
     "webpack-command": "^0.4.1"

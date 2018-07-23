@@ -5,6 +5,15 @@ const webpack = require('webpack');
 
 
 module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        loader: 'style-loader!css-loader',
+      }
+    ],
+  },
+
   plugins: [
     new webpack.DllPlugin({
       name: '[name]_[hash]',
@@ -16,6 +25,7 @@ module.exports = {
     ui_lib: [
       'react',
       'create-react-class',
+      'recompose',
       'react-dom',
       'react-redux',
       'redux',
@@ -24,6 +34,11 @@ module.exports = {
 
       '@material-ui/core',
       '@material-ui/icons',
+      '@material-ui/docs',
+
+      'change-emitter',
+      'core-js',
+
       //'typeface-roboto',  // FIXME
     ],
 
