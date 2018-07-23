@@ -7,11 +7,21 @@ action = require './action'
 # main init after page load
 load_init = ->
   (dispatch, getState) ->
-    # TODO load theme key ?
+    # load configs
+    {
+      UI_THEME_LIGHT
+      UI_THEME_DARK
+      LCK_UI_THEME
+    } = config
+    # ui.theme
+    o = await browser.storage.local.get LCK_UI_THEME
+    if o[LCK_UI_THEME] is UI_THEME_DARK
+      theme = UI_THEME_DARK
+    else
+      theme = UI_THEME_LIGHT
+    dispatch action.set_theme(theme)
 
     console.log "DEBUG: page_options init done. "
-    # TODO
-    await return
 
 toggle_theme = ->
   (dispatch, getState) ->
@@ -20,7 +30,10 @@ toggle_theme = ->
       new_theme = config.UI_THEME_LIGHT
     else
       new_theme = config.UI_THEME_DARK
-    # TODO save new theme to local storage
+    # save new theme to local storage
+    o = {}
+    o[config.LCK_UI_THEME] = new_theme
+    await browser.storage.local.set o
 
     # set new theme
     dispatch action.set_theme(new_theme)
