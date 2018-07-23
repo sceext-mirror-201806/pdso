@@ -1,12 +1,34 @@
 {
   "extensionName": {
-    "message": "(pdso) Page DOM Snapshot for Offline",
+    "message": "pdso: Page DOM Snapshot for Offline",
     "description": "Name of the extension. "
   },
 
   "extensionDescription": {
     "message": "Take a static snapshot of the page DOM, (modify and) save it for offline viewing, including CSS styles and images, no script.  (An extension for Desktop and Android Firefox)",
     "description": "Description of the extension. "
-  }
+  },
 
+  "# po": {
+    "message": "(ui options page)"
+  },
+
+  "po_title": {
+    "message": "Options of pdso: Page DOM Snapshot for Offline",
+    "description": "title of options page"
+  },
+
+  "po_theme_is_dark": {
+    "message": "Current is dark theme",
+    "description": "for PageMain.AppBar, when theme is dark"
+  },
+
+  "po_enable_dark_theme": {
+    "message": "Click to enable dark theme",
+    "description": "for PageMain.AppBar, when theme is light"
+  },
+
+  "# end": {
+    "message": "TODO"
+  }
 }

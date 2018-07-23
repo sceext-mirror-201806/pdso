@@ -23,6 +23,9 @@ cC = require 'create-react-class'
   UI_THEME_LIGHT
   UI_THEME_DARK
 } = require '../config'
+{
+  gM
+} = require '../lib/util'
 
 Theme = require '../ui/theme'
 
@@ -51,18 +54,17 @@ PageMain = cC {
       )
 
   _get_toggle_theme_tooltip: ->
-    # TODO i18n
     if @props.theme is UI_THEME_DARK
-      'Current is dark theme'
+      gM 'po_theme_is_dark'
     else
-      'Click to enable dark theme'
+      gM 'po_enable_dark_theme'
 
   _render_appbar: ->
     (
       <AppBar position="sticky">
         <Toolbar>
           <Typography variant="title" color="inherit">
-            pdso (TODO i18n)
+            { gM 'po_title' }
           </Typography>
           <div className={ @props.classes.grow } />
 

@@ -1,8 +1,11 @@
 # util.coffee, pdso/src/lib/
 
 
-# TODO
+# i18n.getMessage
+gM = (messageName, substitutions) ->
+  browser.i18n.getMessage messageName, substitutions
+
 
 module.exports = {
-  FIXME: 'util test'
+  gM
 }
