@@ -12,10 +12,15 @@ cC = require 'create-react-class'
   Typography
   IconButton
   Tooltip
+
+  Tabs
+  Tab
 } = require '@material-ui/core'
 {
   withStyles
 } = require '@material-ui/core/styles'
+Icons = require '@material-ui/icons'
+{ default: SwipeableViews } = require 'react-swipeable-views'
 { default: LightbulbOutlineIcon } = require '@material-ui/icons/LightbulbOutline'
 { default: LightbulbFullIcon } = require '@material-ui/docs/svgIcons/LightbublFull'
 
@@ -28,15 +33,20 @@ cC = require 'create-react-class'
 } = require '../lib/util'
 
 Theme = require '../ui/theme'
+PageTabList = require './page_tab_list'
+PageLog = require './page_log'
+PageAbout = require './page_about'
 
 
 PageMain = cC {
   displayName: 'PageMain'
   propTypes: {
     classes: PropTypes.object.isRequired
+    page_value: PropTypes.number.isRequired
     theme: PropTypes.string
 
     on_toggle_theme: PropTypes.func.isRequired
+    on_change_page: PropTypes.func.isRequired
     on_init: PropTypes.func.isRequired  # page load init
   }
 
@@ -77,9 +87,54 @@ PageMain = cC {
       </AppBar>
     )
 
-  _render_contents: ->
+  _on_page_change: (event, value) ->
+    @props.on_change_page value
+
+  _on_page_index_change: (index) ->
+    @props.on_change_page index
+
+  _render_one_tab: (label, icon) ->
+    tab_style = {
+      minHeight: '54px'
+    }
+
     (
-      <p>TODO contents part</p>
+      <Tab
+        style={ tab_style }
+        classes={{
+          wrapper: @props.classes.tab_item_wrapper
+        }}
+        label={ label }
+        icon={ icon }
+      />
+    )
+
+  _render_contents: ->
+    # TODO i18n: tab labels
+    # TODO tab icons
+    (
+      <React.Fragment>
+        <Tabs
+          value={ @props.page_value }
+          onChange={ @_on_page_change }
+          indicatorColor="primary"
+          textColor="primary"
+          centered
+        >
+          { @_render_one_tab 'Tab list', (<Icons.List />) }
+          { @_render_one_tab 'Log', (<Icons.Assessment />) }
+          { @_render_one_tab 'About', (<Icons.Info />) }
+        </Tabs>
+        <SwipeableViews
+          axis="x"
+          index={ @props.page_value }
+          onChangeIndex={ @_on_page_index_change }
+        >
+          <PageTabList />
+          <PageLog />
+          <PageAbout />
+        </SwipeableViews>
+      </React.Fragment>
     )
 
   render: ->
@@ -99,6 +154,10 @@ styles = (theme) ->
     grow: {
       flex: '1 1 auto'
     }
+
+    tab_item_wrapper: {
+      flexDirection: 'row'
+    }
   }
 
 # for redux
@@ -110,6 +169,7 @@ op = require './redux/op'
 mapStateToProps = ($$state, props) ->
   {
     theme: $$state.get 'theme'
+    page_value: $$state.get 'page_value'
   }
 
 mapDispatchToProps = (dispatch, props) ->
@@ -119,6 +179,8 @@ mapDispatchToProps = (dispatch, props) ->
     dispatch op.load_init()
   o.on_toggle_theme = ->
     dispatch op.toggle_theme()
+  o.on_change_page = (value) ->
+    dispatch action.set_page(value)
   o
 
 module.exports = compose(

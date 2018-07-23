@@ -3,7 +3,8 @@
 init_state = {
   theme: 'light'  # [ 'light', 'dark' ]
 
-  # TODO
+  page_value: 0
+
 }
 
 module.exports = init_state

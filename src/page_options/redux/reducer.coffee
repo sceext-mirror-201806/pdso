@@ -15,6 +15,8 @@ reducer = ($$state, action) ->
   switch action.type
     when ac.A_SET_THEME
       $$o = $$o.set 'theme', action.payload
+    when ac.A_SET_PAGE
+      $$o = $$o.set 'page_value', action.payload
 
   $$o
 
