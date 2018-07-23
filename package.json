@@ -9,6 +9,7 @@
     "build-lib": "webpack --config build/webpack-lib.config.js",
     "build": "webpack --config webpack.config.js",
     "lint": "web-ext --source-dir=xpi lint",
+    "react-debug-proxy": "yarn run https-proxy -t \"http://localhost:8097\" -p 8100",
     "build-release": "webpack --config build/webpack-lib.config.js --mode production &&  webpack --config webpack.config.js --mode production"
   },
   "dependencies": {
@@ -32,6 +33,8 @@
     "babel-loader": "^8.0.0-beta.4",
     "coffee-loader": "^0.9.0",
     "coffeescript": "^2.3.1",
+    "https-proxy-cli": "^1.1.0",
+    "react-devtools": "^3.2.3",
     "web-ext": "^2.7.0",
     "webpack": "^4.16.1",
     "webpack-command": "^0.4.1"

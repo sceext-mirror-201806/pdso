@@ -7,3 +7,4 @@ node_modules/
 /xpi/material_ui/*.ttf
 
 /build/*.json
+*.pem
