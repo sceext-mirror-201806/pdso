@@ -24,11 +24,11 @@ module.exports = {
   },
   plugins: [
     new webpack.DllReferencePlugin({
-      //context: 'TODO',  // FIXME
+      context: __dirname,
       manifest: require('./build/manifest-ui_lib.json'),
     }),
     new webpack.DllReferencePlugin({
-      scope: 'main_lib',
+      context: __dirname,
       manifest: require('./build/manifest-main_lib.json'),
     }),
   ],

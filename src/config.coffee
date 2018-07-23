@@ -1,8 +1,13 @@
 # config.coffee, pdso/src/
 
 
-# TODO
+# const
+UI_THEME_LIGHT = 'light'
+UI_THEME_DARK = 'dark'
+
 
 module.exports = {
-  FIXME: 'config test'
+  UI_THEME_LIGHT
+  UI_THEME_DARK
+
 }

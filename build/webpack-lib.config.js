@@ -7,7 +7,6 @@ const webpack = require('webpack');
 module.exports = {
   plugins: [
     new webpack.DllPlugin({
-      context: __dirname,
       name: '[name]_[hash]',
       path: path.resolve(__dirname, 'manifest-[name].json'),
     }),
@@ -16,6 +15,7 @@ module.exports = {
   entry: {
     ui_lib: [
       'react',
+      'create-react-class',
       'react-dom',
       'react-redux',
       'redux',

@@ -8,14 +8,13 @@
   "scripts": {
     "build-lib": "webpack --config build/webpack-lib.config.js",
     "build": "webpack --config webpack.config.js",
-
     "lint": "web-ext --source-dir=xpi lint",
-
     "build-release": "webpack --config build/webpack-lib.config.js --mode production &&  webpack --config webpack.config.js --mode production"
   },
   "dependencies": {
     "@material-ui/core": "^1.4.0",
     "@material-ui/icons": "^1.1.0",
+    "create-react-class": "^15.6.3",
     "fast-sha256": "^1.1.0",
     "immutable": "^3.8.2",
     "jquery": "^3.3.1",
