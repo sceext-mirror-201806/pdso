@@ -19,12 +19,19 @@ PageMain = require './page_options/page_main'
 store = createStore reducer, applyMiddleware(thunk)
 # TODO
 
+App = ->
+  (
+    <Provider store={ store }>
+      <PageMain />
+    </Provider>
+  )
+
 _mount_root = ->
   console.log "DEBUG: page_options mount root"
 
-  ReactDOM.render (<PageMain />), document.querySelector('#react_root')
+  ReactDOM.render (<App />), document.querySelector('#react_root')
 
 # mount root after page load
-window.addEventLintener 'load', _mount_root
+window.addEventListener 'load', _mount_root
 
 console.log "DEBUG: end of options.js "
