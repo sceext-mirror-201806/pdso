@@ -47,6 +47,10 @@ module.exports = {
       'fast-sha256',
       'jszip',
     ],
+
+    content_lib: [
+      'jquery',
+    ],
   },
   output: {
     path: path.resolve(__dirname, '../xpi/js'),

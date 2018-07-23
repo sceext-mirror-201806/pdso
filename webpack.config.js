@@ -31,6 +31,10 @@ module.exports = {
       context: __dirname,
       manifest: require('./build/manifest-main_lib.json'),
     }),
+    new webpack.DllReferencePlugin({
+      context: __dirname,
+      manifest: require('./build/manifest-content_lib.json'),
+    }),
   ],
   resolve: {
     extensions: [
@@ -45,7 +49,7 @@ module.exports = {
     popup: './src/popup.coffee',
     // use main_lib
     main: './src/main.coffee',
-    // no lib
+    // use content_lib
     contents: './src/contents.coffee',
   },
   output: {
