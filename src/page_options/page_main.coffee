@@ -89,7 +89,11 @@ PageMain = cC {
           </Typography>
           <div className={ @props.classes.grow } />
 
-          <Tooltip title={ @_get_toggle_theme_tooltip() } enterDelay={ 300 }>
+          <Tooltip
+            title={ @_get_toggle_theme_tooltip() }
+            enterDelay={ 1000 }
+            disableFocusListener
+          >
             <IconButton color="inherit" onClick={ @props.on_toggle_theme }>
               { @_render_bulb() }
             </IconButton>

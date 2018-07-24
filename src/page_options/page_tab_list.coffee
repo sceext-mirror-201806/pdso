@@ -87,7 +87,12 @@ OneItem = cC {
         </Avatar>
         <ListItemText primary={ @_gen_title() } secondary={ @_render_second() } />
         <ListItemSecondaryAction>
-          <Tooltip title={ @_get_switch_tooltip() } enterDelay={ 300 }>
+          <Tooltip
+            title={ @_get_switch_tooltip() }
+            enterDelay={ 1000 }
+            disableFocusListener
+            placement="left"
+          >
             <Switch checked={ @_get_enable() } onChange={ @_on_toggle } color="primary" />
           </Tooltip>
         </ListItemSecondaryAction>
