@@ -30,6 +30,9 @@ Icons = require '@material-ui/icons'
 } = require '../config'
 {
   gM
+
+  m_set_on
+  m_remove_listener
 } = require '../lib/util'
 
 Theme = require '../ui/theme'
@@ -47,11 +50,19 @@ PageMain = cC {
 
     on_toggle_theme: PropTypes.func.isRequired
     on_change_page: PropTypes.func.isRequired
+
     on_init: PropTypes.func.isRequired  # page load init
+    on_recv: PropTypes.func.isRequired
   }
 
   componentDidMount: ->
-    @props.on_init()
+    # listen messages first
+    m_set_on @props.on_recv
+    # and then emit init
+    await @props.on_init()
+
+  componentWillUnmount: ->
+    m_remove_listener @props.on_recv
 
   _render_bulb: ->
     if @props.theme is UI_THEME_DARK
@@ -173,9 +184,11 @@ mapStateToProps = ($$state, props) ->
 
 mapDispatchToProps = (dispatch, props) ->
   o = Object.assign {}, props
-
   o.on_init = ->
     dispatch op.load_init()
+  o.on_recv = (m, sender, sendResponse) ->
+    await dispatch op.on_recv(m, sender, sendResponse)
+
   o.on_toggle_theme = ->
     dispatch op.toggle_theme()
   o.on_change_page = (value) ->

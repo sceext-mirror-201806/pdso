@@ -40,6 +40,9 @@ module.exports = {
       'change-emitter',
       'core-js',
 
+      // for DEBUG
+      'remote-redux-devtools',
+
       //'typeface-roboto',  // FIXME
     ],
 

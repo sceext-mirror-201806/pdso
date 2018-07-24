@@ -1,6 +1,12 @@
 # op.coffee, pdso/src/page_options/redux/
 
 config = require '../../config'
+{
+  gM
+  m_send
+} = require '../../lib/util'
+m_ac = require '../../lib/m_action'
+
 action = require './action'
 
 
@@ -20,6 +26,8 @@ load_init = ->
     else
       theme = UI_THEME_LIGHT
     dispatch action.set_theme(theme)
+    # fetch tab_list
+    await m_send m_ac.fetch_tab_list()
 
     console.log "DEBUG: page_options init done. "
 
@@ -39,7 +47,38 @@ toggle_theme = ->
     dispatch action.set_theme(new_theme)
 
 
+# on recv messages (options page)
+on_recv = (m, sender, sendResponse) ->
+  (dispatch, getState) ->
+    {
+      EVENT
+    } = config
+    switch m.type
+      when EVENT.TAB_LIST
+        dispatch action.set_tab_list_data(m.payload)
+      else
+        console.log "DEBUG: (options) recv unknow [ #{m.type} ]  #{JSON.stringify m}"
+
+set_tab_enable = (tab_id, enable) ->
+  (dispatch, getState) ->
+    await m_send m_ac.set_tab_enable(tab_id, enable)
+
+set_enable_all = (enable) ->
+  (dispatch, getState) ->
+    {
+      LCK_PDSO_TAB_LIST_ENABLE_ALL
+    } = config
+    o = {}
+    o[LCK_PDSO_TAB_LIST_ENABLE_ALL] = enable
+    await browser.storage.local.set o
+
+# TODO snapshot_one_tab
+
 module.exports = {
   load_init  # thunk
   toggle_theme  # thunk
+
+  on_recv  # thunk
+  set_tab_enable  # thunk
+  set_enable_all  # thunk
 }

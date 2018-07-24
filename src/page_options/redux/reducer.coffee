@@ -17,6 +17,8 @@ reducer = ($$state, action) ->
       $$o = $$o.set 'theme', action.payload
     when ac.A_SET_PAGE
       $$o = $$o.set 'page_value', action.payload
+    when ac.A_SET_TAB_LIST_DATA
+      $$o = $$o.set 'g', Immutable.fromJS(action.payload)
 
   $$o
 

@@ -5,6 +5,13 @@ init_state = {
 
   page_value: 0
 
+  # global tab_list data (in background main)
+  g: {
+    enable: {}
+    list: []
+    enable_all: false
+  }
+
 }
 
 module.exports = init_state

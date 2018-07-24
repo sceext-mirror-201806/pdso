@@ -7,7 +7,12 @@ ReactDOM = require 'react-dom'
   applyMiddleware
 } = require 'redux'
 { default: thunk } = require 'redux-thunk'
-# TODO devtools for redux ?
+# FIXME devtools for redux
+{ composeWithDevTools } = require 'remote-redux-devtools'
+composeEnhancers = composeWithDevTools {
+  realtime: true
+  port: 8000
+}
 
 { Provider } = require 'react-redux'
 
@@ -16,8 +21,10 @@ PageMain = require './page_options/page_main'
 
 
 # redux store
-store = createStore reducer, applyMiddleware(thunk)
-# TODO
+store = createStore reducer, composeEnhancers(
+  applyMiddleware(thunk)
+)
+
 
 App = ->
   (
@@ -34,4 +41,4 @@ _mount_root = ->
 # mount root after page load
 window.addEventListener 'load', _mount_root
 
-console.log "DEBUG: end of options.js "
+console.log "DEBUG: end of options.js"
