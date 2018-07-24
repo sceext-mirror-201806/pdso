@@ -56,6 +56,7 @@ _init = ->
   await _init_tab_list()
 
   await _load_config()
+  g.tl.first_init_enable_all()
   # set auto load config
   browser.storage.onChanged.addListener _load_config
 
