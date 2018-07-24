@@ -19,7 +19,7 @@ tab_list = ->
       #'TAB_ID': false
     }
     # the tab_list data
-    list: [
+    list: {
       #'TAB_ID': {
       #  id: 1  # tab_id
       #
@@ -30,7 +30,7 @@ tab_list = ->
       #  # TODO r_cache resources count ?
       #  # TODO page snapshot status ?
       #}
-    ]
+    }
     # enable all tabs
     enable_all: false
   }

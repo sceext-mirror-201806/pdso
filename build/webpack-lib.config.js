@@ -2,6 +2,7 @@
 const path = require('path');
 
 const webpack = require('webpack');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 
 module.exports = {
@@ -18,6 +19,12 @@ module.exports = {
     new webpack.DllPlugin({
       name: '[name]_[hash]',
       path: path.resolve(__dirname, 'manifest-[name].json'),
+    }),
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'disabled',
+      generateStatsFile: true,
+      // xpi/js/profile_lib.json
+      statsFilename: 'profile_lib.json',
     }),
   ],
 

@@ -8,7 +8,7 @@ init_state = {
   # global tab_list data (in background main)
   g: {
     enable: {}
-    list: []
+    list: {}  # sort list by tab_id
     enable_all: false
   }
 
