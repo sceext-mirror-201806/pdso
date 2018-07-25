@@ -121,11 +121,11 @@ tab_list = ->
     fetch()  # update data
 
   _on_tab_remove = (tab_id) ->
-    # delete tab info
-    g.list[tab_id] = null
-    # remove rc, if exist
+    # remove rc first, if exist
     if rc[tab_id]?
       _rc_remove tab_id
+    # delete tab info
+    g.list[tab_id] = null
     fetch()  # update data
 
   _on_tab_update = (tab_id, changeInfo, tab) ->
@@ -234,7 +234,7 @@ tab_list = ->
   first_init_enable_all = ->
     if g.enable_all
       for i of g.list
-        await _rc_create tab_id
+        await _rc_create i
         g.enable[i] = true
       fetch()  # update data
 
