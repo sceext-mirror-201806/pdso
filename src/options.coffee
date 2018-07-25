@@ -16,8 +16,8 @@ composeEnhancers = composeWithDevTools {
 
 { Provider } = require 'react-redux'
 
-reducer = require './page_options/redux/reducer'
-PageMain = require './page_options/page_main'
+reducer = require './lib/page_options/redux/reducer'
+PageMain = require './lib/page_options/page_main'
 
 
 # redux store

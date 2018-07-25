@@ -6,16 +6,18 @@
   "homepage": "https://bitbucket.org/eisf/pdso/",
   "repository": "https://bitbucket.org/eisf/pdso/",
   "scripts": {
-    "build-lib": "webpack --config build/webpack-lib.config.js",
+    "build-lib": "webpack --config build/webpack-lib.config.js --config-name lib",
+    "build-icon-lib": "webpack --config build/webpack-lib.config.js --config-name ui_icon_lib",
     "build": "webpack --config webpack.config.js",
     "lint": "web-ext --source-dir=xpi lint",
     "react-debug-proxy": "yarn run https-proxy -t \"http://localhost:8097\" -p 8100",
     "redux-debug-server": "remotedev --hostname=localhost --port=8000",
-    "analyze-bundle-lib": "webpack-bundle-analyzer  xpi/js/profile_lib.json",
-    "analyze-bundle-ui": "webpack-bundle-analyzer xpi/js/profile_ui.json",
-    "analyze-bundle-main": "webpack-bundle-analyzer xpi/js/profile_main.json",
-    "analyze-bundle-content": "webpack-bundle-analyzer xpi/js/profile_content.json",
-    "build-release": "webpack --config build/webpack-lib.config.js --mode production &&  webpack --config webpack.config.js --mode production"
+    "analyze-bundle-lib": "webpack-bundle-analyzer -p 8888 xpi/js/profile_lib.json",
+    "analyze-bundle-icon-lib": "webpack-bundle-analyzer -p 8898 xpi/js/profile_icon_lib.json",
+    "analyze-bundle-ui": "webpack-bundle-analyzer -p 8908 xpi/js/profile_ui.json",
+    "analyze-bundle-main": "webpack-bundle-analyzer -p 8918 xpi/js/profile_main.json",
+    "analyze-bundle-content": "webpack-bundle-analyzer -p 8928 xpi/js/profile_content.json",
+    "build-release": "webpack --config build/webpack-lib.config.js --config-name lib --mode production &&  webpack --config build/webpack-lib.config.js --config-name ui_icon_lib --mode production &&  webpack --config webpack.config.js --mode production"
   },
   "dependencies": {
     "@material-ui/core": "^1.4.0",

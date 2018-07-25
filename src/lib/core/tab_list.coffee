@@ -2,7 +2,7 @@
 
 {
   EVENT
-} = require '../../config'
+} = require '../config'
 {
   m_send
 } = require '../util'

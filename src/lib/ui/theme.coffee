@@ -1,4 +1,4 @@
-# theme.coffee, pdso/src/ui/
+# theme.coffee, pdso/src/lib/ui/
 React = require 'react'
 PropTypes = require 'prop-types'
 cC = require 'create-react-class'

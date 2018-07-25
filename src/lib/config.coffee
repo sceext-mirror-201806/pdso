@@ -1,4 +1,4 @@
-# config.coffee, pdso/src/
+# config.coffee, pdso/src/lib/
 
 
 # const

@@ -1,11 +1,11 @@
-# op.coffee, pdso/src/page_options/redux/
+# op.coffee, pdso/src/lib/page_options/redux/
 
 config = require '../../config'
 {
   gM
   m_send
-} = require '../../lib/util'
-m_ac = require '../../lib/m_action'
+} = require '../../util'
+m_ac = require '../../m_action'
 
 action = require './action'
 

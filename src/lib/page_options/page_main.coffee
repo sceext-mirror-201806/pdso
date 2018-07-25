@@ -1,4 +1,4 @@
-# page_main.coffee, pdso/src/page_options/
+# page_main.coffee, pdso/src/lib/page_options/
 React = require 'react'
 PropTypes = require 'prop-types'
 cC = require 'create-react-class'
@@ -33,7 +33,7 @@ Icons = require '@material-ui/icons'
 
   m_set_on
   m_remove_listener
-} = require '../lib/util'
+} = require '../util'
 
 Theme = require '../ui/theme'
 PageTabList = require './page_tab_list'

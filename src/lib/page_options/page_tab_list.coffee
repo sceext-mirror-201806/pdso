@@ -1,4 +1,4 @@
-# page_tab_list.coffee, pdso/src/page_options/
+# page_tab_list.coffee, pdso/src/lib/page_options/
 React = require 'react'
 PropTypes = require 'prop-types'
 cC = require 'create-react-class'
@@ -24,7 +24,7 @@ IconM = require 'mdi-material-ui'
 
 {
   gM
-} = require '../lib/util'
+} = require '../util'
 
 
 OneItem = cC {

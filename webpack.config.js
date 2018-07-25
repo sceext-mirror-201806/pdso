@@ -43,29 +43,42 @@ function _common() {
   };
 }
 
-function _plugins(name) {
+function _plugin_dllref(name) {
+  return new webpack.DllReferencePlugin({
+    context: __dirname,
+    // build/manifest-[name]_lib.json
+    manifest: require('./build/manifest-' + name + '_lib.json'),
+  });
+}
+
+function _plugin_bundle_analyzer(name) {
+  return new BundleAnalyzerPlugin({
+    analyzerMode: 'disabled',
+    generateStatsFile: true,
+    // FIXME remove these files in production
+    // xpi/js/profile_[name].json
+    statsFilename: 'profile_' + name + '.json',
+  });
+}
+
+function _plugin2(name) {
   return [
-    new webpack.DllReferencePlugin({
-      context: __dirname,
-      // build/manifest-[name]_lib.json
-      manifest: require('./build/manifest-' + name + '_lib.json'),
-    }),
-    new BundleAnalyzerPlugin({
-      analyzerMode: 'disabled',
-      generateStatsFile: true,
-      // FIXME remove these files in production
-      // xpi/js/profile_[name].json
-      statsFilename: 'profile_' + name + '.json',
-    }),
+    _plugin_dllref(name),
+    _plugin_bundle_analyzer(name),
   ];
 }
 
 
 // targets for use different dll libs
 const targets = [
-  // use ui_lib
+  // use ui_lib and ui-icon_lib
   {
-    plugins: _plugins('ui'),
+    name: 'ui',
+    plugins: [
+      _plugin_dllref('ui_icon'),
+      _plugin_dllref('ui'),  // `ui` after `ui_icon`: order is important !
+      _plugin_bundle_analyzer('ui'),
+    ],
     entry: {
       options: './src/options.coffee',
       popup: './src/popup.coffee',
@@ -73,14 +86,16 @@ const targets = [
   },
   // use main_lib
   {
-    plugins: _plugins('main'),
+    name: 'main',
+    plugins: _plugin2('main'),
     entry: {
       main: './src/main.coffee',
     },
   },
   // use content_lib
   {
-    plugins: _plugins('content'),
+    name: 'contents',
+    plugins: _plugin2('content'),
     entry: {
       contents: './src/contents.coffee',
     },

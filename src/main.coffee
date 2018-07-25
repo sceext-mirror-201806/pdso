@@ -3,7 +3,7 @@
 {
   EVENT
   LCK_PDSO_TAB_LIST_ENABLE_ALL
-} = require './config'
+} = require './lib/config'
 {
   gM
 

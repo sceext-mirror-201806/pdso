@@ -2,7 +2,7 @@
 
 {
   EVENT
-} = require '../config'
+} = require './config'
 
 
 tab_list = (payload) ->

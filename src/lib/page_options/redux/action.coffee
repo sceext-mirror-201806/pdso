@@ -1,4 +1,4 @@
-# action.coffee, pdso/src/page_options/redux/
+# action.coffee, pdso/src/lib/page_options/redux/
 
 A_SET_THEME = 'a_set_theme'
 A_SET_PAGE = 'a_set_page'

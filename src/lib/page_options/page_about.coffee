@@ -1,4 +1,4 @@
-# page_log.coffee, pdso/src/page_options/
+# page_about.coffee, pdso/src/lib/page_options/
 React = require 'react'
 PropTypes = require 'prop-types'
 cC = require 'create-react-class'
@@ -13,11 +13,11 @@ cC = require 'create-react-class'
 
 {
   gM
-} = require '../lib/util'
+} = require '../util'
 
 
-PageLog = cC {
-  displayName: 'PageLog'
+PageAbout = cC {
+  displayName: 'PageAbout'
   propTypes: {
     classes: PropTypes.object.isRequired
 
@@ -28,7 +28,7 @@ PageLog = cC {
     (
       <div className={ @props.classes.root }>
         <Typography color="inherit">
-          TODO log
+          TODO about
         </Typography>
       </div>
     )
@@ -58,7 +58,7 @@ mapDispatchToProps = (dispatch, props) ->
 
 module.exports = compose(
   withStyles(styles, {
-    name: 'PageLog'
+    name: 'PageAbout'
   })
   connect(mapStateToProps, mapDispatchToProps)
-)(PageLog)
+)(PageAbout)
