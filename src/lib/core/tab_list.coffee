@@ -30,7 +30,17 @@ tab_list = ->
       #  favicon_url: ''  # WARNING not support on Firefox Android
       #  loading_status: ''  # [ 'loading', 'complete' ]
       #
-      #  # TODO r_cache resources count ?
+      #  # loading status from browser.webNavigation API, possible values:
+      #  # + '': no status (initial status)
+      #  # + 'before': onCreatedNavigationTarget
+      #  # + 'committed': onCommitted
+      #  # + 'dom_loaded': onDOMContentLoaded
+      #  # + 'completed': onCompleted
+      #  # + 'error': onErrorOccurred
+      #  navigation_status: ''
+      #
+      #  rc: {}  # (or `null`) r_cache report data
+      #
       #  # TODO page snapshot status ?
       #}
     }
@@ -64,6 +74,8 @@ tab_list = ->
     }
     # check tab data exist
     if ! g.list[tab_id]?
+      one.rc = null  # no rc now
+      one.navigation_status = ''  # no status
       g.list[tab_id] = one
     else  # already exist, just update info
       old = g.list[tab_id]
@@ -71,32 +83,120 @@ tab_list = ->
     # return tab_id
     tab_id
 
+  # rc operate
+  _on_rc_report = (tab_id, rc) ->
+    g.list[tab_id].rc = rc
+    fetch()  # update data
+
+  _rc_create = (tab_id) ->
+    # check rc already exists (for debug)
+    if rc[tab_id]?
+      console.log "WARNING: r_cache for tab [ #{tab_id} ] already exist !  ignore rc create"
+      return
+    # create rc and init
+    c = r_cache(tab_id)
+    rc[tab_id] = c
+    c.set_rc_callback _on_rc_report
+    await c.init()
+
+  _rc_reset = (tab_id) ->
+    # if rc not exist, will just throw
+    rc[tab_id].reset()
+
+  _rc_remove = (tab_id) ->
+    # clean first
+    rc[tab_id].clean_up()
+    # remove rc
+    rc[tab_id] = null
+    # remove rc data
+    g.list[tab_id].rc = null
 
   # event listeners
-
   _on_tab_create = (tab) ->
     tab_id = _update_tab_info tab
     # check enable_all
     if g.enable_all and tab_id?
+      await _rc_create tab_id
       g.enable[tab_id] = true
-      # TODO create rc ?
     fetch()  # update data
 
   _on_tab_remove = (tab_id) ->
     # delete tab info
     g.list[tab_id] = null
-    # TODO remove rc ?
+    # remove rc, if exist
+    if rc[tab_id]?
+      _rc_remove tab_id
     fetch()  # update data
 
   _on_tab_update = (tab_id, changeInfo, tab) ->
     _update_tab_info tab
     fetch()  # update data
 
+  # webNavigation event listeners
+  _on_nav_common = (details) ->
+    {
+      tabId: tab_id
+      frameId: frame_id
+    } = details
+    # check tab_id
+    if (! tab_id?) or (tab_id is browser.tabs.TAB_ID_NONE)
+      return  # bad tab_id, ignore this
+    # check frame_id
+    if frame_id != 0
+      return  # ignore not top frame
+    # return tab_id
+    tab_id
+
+  _on_nav_before = (details) ->
+    tab_id = _on_nav_common details
+    if ! tab_id?
+      return
+    # update navigation_status
+    g.list[tab_id].navigation_status = 'before'
+    # check tab enabled
+    if g.enable[tab_id]
+      # reset rc here
+      _rc_reset tab_id
+    else
+      fetch()  # update data
+
+  # just update navigation_status, nothing else
+  _on_nav_update_status = (details, status) ->
+    tab_id = _on_nav_common details
+    if ! tab_id?
+      return
+    # update navigation_status
+    g.list[tab_id].navigation_status = status
+    fetch()  # update data
+
+  _on_nav_committed = (details) ->
+    _on_nav_update_status details, 'committed'
+
+  _on_nav_dom_loaded = (details) ->
+    _on_nav_update_status details, 'dom_loaded'
+
+  _on_nav_completed = (details) ->
+    _on_nav_update_status details, 'completed'
+
+  _on_nav_error = (details) ->
+    tab_id = _on_nav_common details
+    if ! tab_id?
+      return
+    # log error
+    console.log "DEBUG: tab_list._on_nav_error: tab [ #{tab_id} ]"
+    # update navigation_status
+    g.list[tab_id].navigation_status = 'error'
+    fetch()  # update data
+
   _add_listeners = ->
     browser.tabs.onCreated.addListener _on_tab_create
     browser.tabs.onRemoved.addListener _on_tab_remove
     browser.tabs.onUpdated.addListener _on_tab_update
-    # TODO event listeners about webNavigation ?
+    browser.webNavigation.onBeforeNavigate.addListener _on_nav_before
+    browser.webNavigation.onCommitted.addListener _on_nav_committed
+    browser.webNavigation.onDOMContentLoaded.addListener _on_nav_dom_loaded
+    browser.webNavigation.onCompleted.addListener _on_nav_completed
+    browser.webNavigation.onErrorOccurred.addListener _on_nav_error
 
   # init fetch all tabs
   _init_fetch_list = ->
@@ -111,8 +211,20 @@ tab_list = ->
     fetch()  # update data (first time)
 
   set_tab_enable = (tab_id, enable) ->
-    g.enable[tab_id] = enable
-    # TODO operate on r_cache ?
+    if enable
+      # check already enabled
+      if g.enable[tab_id]
+        console.log "WARNING: tab [ #{tab_id} ] already enabled !  ignore re-enable"
+        return
+      await _rc_create tab_id
+      g.enable[tab_id] = true
+    else
+      # check already disabled
+      if ! g.enable[tab_id]
+        console.log "WARNING: tab [ #{tab_id} ] already disabled !  ignore re-disable"
+        return
+      _rc_remove tab_id
+      g.enable[tab_id] = false
     fetch()  # update data
 
   set_enable_all = (enable) ->
@@ -122,8 +234,8 @@ tab_list = ->
   first_init_enable_all = ->
     if g.enable_all
       for i of g.list
+        await _rc_create tab_id
         g.enable[i] = true
-        # TODO create rc ?
       fetch()  # update data
 
   # export API
