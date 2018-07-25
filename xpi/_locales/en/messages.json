@@ -43,6 +43,56 @@
     "description": "title of tab (PageAbout)"
   },
 
+  "# pot": {
+    "message": "(tab_list of ui options_page)"
+  },
+
+  "pot_switch_tooltip_enable": {
+    "message": "This tab is enabled",
+    "description": "tooltip text when tab is enabled"
+  },
+
+  "pot_switch_tooltip_disable": {
+    "message": "Click to enable this tab (current disabled)",
+    "description": "tooltip text when tab is disabled"
+  },
+
+  "pot_snapshot_tooltip_reset": {
+    "message": "Take a snapshot of this page",
+    "description": "tooltip text when tab after reset"
+  },
+
+  "pot_snapshot_tooltip_no_reset": {
+    "message": "Can not snapshot before page reset",
+    "description": "tooltip text when tab without reset"
+  },
+
+  "pot_title_incognito": {
+    "message": "[incognito] $TITLE$",
+    "description": "tab title when incognito mode",
+    "placeholders": {
+      "title": {
+        "content": "$1",
+        "example": "New Tab"
+      }
+    }
+  },
+
+  "pot_tooltip_tab_id": {
+    "message": "The tab id",
+    "description": "tooltip text of the tab_id"
+  },
+
+  "pot_enable_all": {
+    "message": "Enable for all pages by default",
+    "description": "title of enable for all"
+  },
+
+  "pot_enable_all_desc": {
+    "message": "TODO",
+    "description": "description text of enable for all"
+  },
+
   "# end": {
     "message": "TODO"
   }

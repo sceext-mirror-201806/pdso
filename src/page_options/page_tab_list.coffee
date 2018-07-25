@@ -63,38 +63,34 @@ OneItem = cC {
       false
 
   _get_switch_tooltip: ->
-    # TODO i18n
     if @_get_enable()
-      'This tab is enabled'
+      gM 'pot_switch_tooltip_enable'
     else
-      'Click to enable this tab (current disabled)'
+      gM 'pot_switch_tooltip_disable'
 
   _get_snapshot_tooltip: ->
-    # TODO i18n
     # check reset
     if @_get_reset()
-      'Take a snapshot of this page'
+      gM 'pot_snapshot_tooltip_reset'
     else
-      'Can not snapshot before page reset'
+      gM 'pot_snapshot_tooltip_no_reset'
 
   _gen_title: ->
     one = @_get_one()
-    # TODO i18n
-
     if one.incognito
-      "[incognito] #{one.title}"
+      gM 'pot_title_incognito', [
+        one.title
+      ]
     else
       one.title
 
   _render_second: ->
     one = @_get_one()
-    # TODO i18n
-
     (
       <React.Fragment>
         { one.url }
         <Tooltip
-          title={ 'The tab id' }
+          title={ gM 'pot_tooltip_tab_id' }
           enterDelay={ 1000 }
           disableFocusListener
           placement="right"
@@ -114,8 +110,6 @@ OneItem = cC {
     # check page enabled
     if ! @_get_enable()
       return
-    # TODO i18n
-
     (
       <Tooltip
         title={ @_get_snapshot_tooltip() }
@@ -137,7 +131,11 @@ OneItem = cC {
         <Avatar>
           <IconM.FileOutline />
         </Avatar>
-        <ListItemText primary={ @_gen_title() } secondary={ @_render_second() } />
+        <ListItemText
+          className={ @props.classes.item_text }
+          primary={ @_gen_title() }
+          secondary={ @_render_second() }
+        />
         <ListItemSecondaryAction>
           { @_render_snapshot_button() }
           <Tooltip
@@ -216,17 +214,16 @@ PageTabList = cC {
     )
 
   _render_enable_all: ->
-    # TODO i18n
     (
       <Paper className={ @props.classes.paper }>
         <div className={ @props.classes.enable_all_title }>
           <Typography variant="headline" component="h3">
-            Enable for all pages by default
+            { gM 'pot_enable_all' }
           </Typography>
           <Switch checked={ @props.g.enable_all } onChange={ @_on_toggle_enable_all } color="primary" />
         </div>
         <Typography>
-          TODO
+          { gM 'pot_enable_all_desc' }
         </Typography>
       </Paper>
     )
@@ -274,6 +271,9 @@ styles = (theme) ->
       padding: theme.spacing.unit * 2
       display: 'flex'
       justifyContent: 'center'
+    }
+    item_text: {
+      paddingRight: '72px'
     }
   }
 
