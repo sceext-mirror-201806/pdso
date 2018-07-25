@@ -17,8 +17,10 @@ cC = require 'create-react-class'
   Chip
   Tooltip
   CircularProgress
+  IconButton
 } = require '@material-ui/core'
 Icons = require '@material-ui/icons'
+IconM = require 'mdi-material-ui'
 
 {
   gM
@@ -33,10 +35,14 @@ OneItem = cC {
     tab_id: PropTypes.string.isRequired
 
     on_set_tab_enable: PropTypes.func.isRequired
+    on_snapshot: PropTypes.func.isRequired
   }
 
   _on_toggle: ->
     @props.on_set_tab_enable(@props.tab_id, ! @_get_enable())
+
+  _on_snapshot: ->
+    @props.on_snapshot @props.tab_id
 
   _get_one: ->
     @props.g.list[@props.tab_id]
@@ -47,12 +53,29 @@ OneItem = cC {
     else
       false
 
+  _get_reset: ->
+    one = @_get_one()
+    if ! one.rc?
+      return false  # no rc, no reset
+    if one.rc.after_reset
+      true
+    else
+      false
+
   _get_switch_tooltip: ->
     # TODO i18n
     if @_get_enable()
       'This tab is enabled'
     else
       'Click to enable this tab (current disabled)'
+
+  _get_snapshot_tooltip: ->
+    # TODO i18n
+    # check reset
+    if @_get_reset()
+      'Take a snapshot of this page'
+    else
+      'Can not snapshot before page reset'
 
   _gen_title: ->
     one = @_get_one()
@@ -65,28 +88,58 @@ OneItem = cC {
 
   _render_second: ->
     one = @_get_one()
+    # TODO i18n
 
     (
       <React.Fragment>
         { one.url }
-        <Chip
-          label={ one.id }
-          classes={{
-            root: @props.classes.chip
-            label: @props.classes.chip_label
-          }}
-        />
+        <Tooltip
+          title={ 'The tab id' }
+          enterDelay={ 1000 }
+          disableFocusListener
+          placement="right"
+        >
+          <Chip
+            label={ one.id }
+            classes={{
+              root: @props.classes.chip
+              label: @props.classes.chip_label
+            }}
+          />
+        </Tooltip>
       </React.Fragment>
+    )
+
+  _render_snapshot_button: ->
+    # check page enabled
+    if ! @_get_enable()
+      return
+    # TODO i18n
+
+    (
+      <Tooltip
+        title={ @_get_snapshot_tooltip() }
+        enterDelay={ 1000 }
+        disableFocusListener
+        placement="left"
+      >
+        <span>
+          <IconButton disabled={ ! @_get_reset() } onClick={ @_on_snapshot } >
+            <IconM.Download />
+          </IconButton>
+        </span>
+      </Tooltip>
     )
 
   render: ->
     (
       <ListItem>
         <Avatar>
-          <Icons.Folder />
+          <IconM.FileOutline />
         </Avatar>
         <ListItemText primary={ @_gen_title() } secondary={ @_render_second() } />
         <ListItemSecondaryAction>
+          { @_render_snapshot_button() }
           <Tooltip
             title={ @_get_switch_tooltip() }
             enterDelay={ 1000 }
@@ -110,7 +163,7 @@ PageTabList = cC {
 
     on_set_tab_enable: PropTypes.func.isRequired
     on_set_enable_all: PropTypes.func.isRequired
-    # TODO snapshot of one ?
+    on_snapshot: PropTypes.func.isRequired
   }
 
   _on_toggle_enable_all: ->
@@ -149,6 +202,7 @@ PageTabList = cC {
             g={ @props.g }
             tab_id={ i }
             on_set_tab_enable={ @props.on_set_tab_enable }
+            on_snapshot={ @props.on_snapshot }
           />
         )
       body = (
@@ -241,6 +295,9 @@ mapDispatchToProps = (dispatch, props) ->
     dispatch op.set_tab_enable(tab_id, enable)
   o.on_set_enable_all = (enable) ->
     dispatch op.set_enable_all(enable)
+  o.on_snapshot = (tab_id) ->
+    # TODO
+    console.log "FIXME: page_tab_list.on_snapshot, tab_id = #{tab_id}"
   o
 
 module.exports = compose(

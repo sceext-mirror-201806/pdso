@@ -43,6 +43,7 @@ module.exports = {
       '@material-ui/icons',
       '@material-ui/docs',
       'react-swipeable-views',
+      'mdi-material-ui',
 
       'change-emitter',
       'core-js',
