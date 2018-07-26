@@ -20,9 +20,8 @@ cC = require 'create-react-class'
   withStyles
 } = require '@material-ui/core/styles'
 Icons = require '@material-ui/icons'
+IconM = require 'mdi-material-ui'
 { default: SwipeableViews } = require 'react-swipeable-views'
-{ default: LightbulbOutlineIcon } = require '@material-ui/icons/LightbulbOutline'
-{ default: LightbulbFullIcon } = require '@material-ui/docs/svgIcons/LightbublFull'
 
 {
   UI_THEME_LIGHT
@@ -67,11 +66,11 @@ PageMain = cC {
   _render_bulb: ->
     if @props.theme is UI_THEME_DARK
       (
-        <LightbulbFullIcon />
+        <IconM.Lightbulb />
       )
     else
       (
-        <LightbulbOutlineIcon />
+        <IconM.LightbulbOutline />
       )
 
   _get_toggle_theme_tooltip: ->

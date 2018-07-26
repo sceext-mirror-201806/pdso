@@ -114,7 +114,7 @@ OneItem = cC {
     (
       <Tooltip
         title={ @_get_snapshot_tooltip() }
-        enterDelay={ 1000 }
+        enterDelay={ 300 }
         disableFocusListener
         placement="left"
       >
@@ -127,11 +127,18 @@ OneItem = cC {
     )
 
   _render_avatar: ->
-    (
-      <Avatar>
-        <IconM.FileOutline />
-      </Avatar>
-    )
+    one = @_get_one()
+    # try render favicon
+    if one.favicon_url?
+      (
+        <Avatar src={ one.favicon_url } />
+      )
+    else
+      (
+        <Avatar>
+          <IconM.FileOutline />
+        </Avatar>
+      )
 
   _render_icon: ->
     # check rc.count
@@ -145,10 +152,24 @@ OneItem = cC {
         count = one.rc.count
 
     if count > 0
+      # TODO i18n
       (
-        <Badge badgeContent={ count } color="primary">
-          { @_render_avatar() }
-        </Badge>
+        <Tooltip
+          title={ gM 'pot_tooltip_res_number' }
+          enterDelay={ 1000 }
+          disableFocusListener
+          placement="top"
+        >
+          <Badge
+            badgeContent={ count }
+            color="primary"
+            classes={{
+              badge: @props.classes.badge
+            }}
+          >
+            { @_render_avatar() }
+          </Badge>
+        </Tooltip>
       )
     else
       @_render_avatar()
@@ -239,6 +260,34 @@ PageTabList = cC {
       </Paper>
     )
 
+  _render_text_n: (raw) ->
+    o = []
+    n = raw.split('\n')
+    for i in [0... n.length]
+      o.push(
+        <Typography key={ i } className={ @props.classes.p }>
+          { n[i] }
+        </Typography>
+      )
+    o
+
+  _render_privacy_note: ->
+    (
+      <Paper className={ "#{@props.classes.paper} #{@props.classes.paper_note}" }>
+        <div className={ @props.classes.note }>
+          <div className={ @props.classes.note_left }>
+            <Icons.WarningRounded color="error" fontSize="inherit" />
+          </div>
+          <div className={ @props.classes.note_right }>
+            <Typography variant="headline" component="h3">
+              { gM 'pot_privacy_note' }
+            </Typography>
+            { @_render_text_n gM('pot_privacy_note_text') }
+          </div>
+        </div>
+      </Paper>
+    )
+
   _render_enable_all: ->
     (
       <Paper className={ @props.classes.paper }>
@@ -248,9 +297,7 @@ PageTabList = cC {
           </Typography>
           <Switch checked={ @props.g.enable_all } onChange={ @_on_toggle_enable_all } color="primary" />
         </div>
-        <Typography>
-          { gM 'pot_enable_all_desc' }
-        </Typography>
+        { @_render_text_n gM('pot_enable_all_desc') }
       </Paper>
     )
 
@@ -258,22 +305,28 @@ PageTabList = cC {
     (
       <div className={ @props.classes.root }>
         { @_render_list() }
+        { @_render_privacy_note() }
         { @_render_enable_all() }
       </div>
     )
 }
 
+{ default: yellow } = require '@material-ui/core/colors/orange'
+
 styles = (theme) ->
   {
     paper: {
       padding: theme.spacing.unit * 2
-      paddingRight: '4px'  # FIXME
+      paddingRight: '4px'
       margin: theme.spacing.unit
       marginTop: theme.spacing.unit * 2
     }
     paper_list: {  # no padding
       margin: theme.spacing.unit
       marginTop: theme.spacing.unit * 2
+    }
+    paper_note: {
+      backgroundColor: yellow.A100
     }
     enable_all_title: {
       display: 'flex'
@@ -300,6 +353,27 @@ styles = (theme) ->
     }
     item_text: {
       paddingRight: '72px'
+    }
+    badge: {
+      width: 'auto'
+      minWidth: '22px'
+      borderRadius: '11px'
+      paddingLeft: '6px'
+      paddingRight: '6px'
+    }
+    note: {
+      display: 'flex'
+      alignItems: 'center'
+    }
+    note_left: {
+      paddingRight: theme.spacing.unit * 2
+      fontSize: '48px'
+    }
+    note_right: {
+      flex: 1
+    }
+    p: {
+      marginTop: theme.spacing.unit
     }
   }
 

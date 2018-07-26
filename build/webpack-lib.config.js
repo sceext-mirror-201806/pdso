@@ -63,7 +63,6 @@ const targets = [
         'immutable',
 
         '@material-ui/core',
-        '@material-ui/docs',
         'react-swipeable-views',
 
         'change-emitter',

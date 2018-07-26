@@ -98,6 +98,7 @@ const targets = [
     plugins: _plugin2('content'),
     entry: {
       contents: './src/contents.coffee',
+      content_load_img: './src/content_load_img.coffee',
     },
   },
 ];

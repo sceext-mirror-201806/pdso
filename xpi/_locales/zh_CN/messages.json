@@ -68,7 +68,7 @@
   },
 
   "pot_title_incognito": {
-    "message": "[隐匿] $TITLE$",
+    "message": "[隐私浏览] $TITLE$",
     "description": "tab title when incognito mode",
     "placeholders": {
       "title": {
@@ -81,6 +81,21 @@
   "pot_tooltip_tab_id": {
     "message": "标签页 ID",
     "description": "tooltip text of the tab_id"
+  },
+
+  "pot_tooltip_res_number": {
+    "message": "此页面加载的资源个数",
+    "description": "resources number"
+  },
+
+  "pot_privacy_note": {
+    "message": "隐私保护说明",
+    "description": "title of the privacy note part"
+  },
+
+  "pot_privacy_note_text": {
+    "message": "注意: 使用本程序保存的页面快照文件中可能会包含一些个人隐私数据. 所以, 将保存的页面快照分享给别人之前, 请检查其中包含了哪些数据.\n本程序不会将任何数据通过网络发送, 只会把收集到的所有数据保存在本地的页面快照文件中. 如何处理这些数据, 这取决于你自己.",
+    "description": "the privacy note text"
   },
 
   "pot_enable_all": {
