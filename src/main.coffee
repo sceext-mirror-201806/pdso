@@ -17,7 +17,7 @@ tab_list = require './lib/core/tab_list'
 
 
 # global data
-g = {
+_g = {
   tl: null  # tab_list instance
 }
 
@@ -26,13 +26,13 @@ g = {
 _on_recv = (m, sender, sendResponse) ->
   switch m.type
     when EVENT.FETCH_TAB_LIST
-      await g.tl.fetch()
+      await _g.tl.fetch()
     when EVENT.SET_TAB_ENABLE
       {
         tab_id
         enable
       } = m.payload
-      await g.tl.set_tab_enable tab_id, enable
+      await _g.tl.set_tab_enable tab_id, enable
     when EVENT.SNAPSHOT_ONE_TAB
       # TODO
       console.log "FIXME: snapshot_one_tab not implemented"
@@ -40,28 +40,31 @@ _on_recv = (m, sender, sendResponse) ->
       console.log "DEBUG: (main) recv unknow [ #{m.type} ]  #{JSON.stringify m}"
 
 _init_tab_list = ->
-  g.tl = tab_list()
-  await g.tl.init()
+  _g.tl = tab_list()
+  await _g.tl.init()
 
 _load_config = ->
   o = await browser.storage.local.get LCK_PDSO_TAB_LIST_ENABLE_ALL
   enable_all = o[LCK_PDSO_TAB_LIST_ENABLE_ALL]
   if enable_all is true
-    g.tl.set_enable_all true
+    _g.tl.set_enable_all true
   else
-    g.tl.set_enable_all false
+    _g.tl.set_enable_all false
 
 _init = ->
   # init parts of main background
   await _init_tab_list()
 
   await _load_config()
-  g.tl.first_init_enable_all()
+  await _g.tl.first_init_enable_all()
   # set auto load config
   browser.storage.onChanged.addListener _load_config
 
   # listen to messages
   m_set_on _on_recv
+
+  # export for DEBUG only
+  window._g = _g
 
   console.log "DEBUG: main init done."
 

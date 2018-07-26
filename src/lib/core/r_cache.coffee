@@ -2,7 +2,7 @@
 
 r_cache = (tab_id) ->
   # global data
-  g = {
+  _g = {
     # data report to parent (tab_list)
     rc: {
       tab_id
@@ -24,6 +24,7 @@ r_cache = (tab_id) ->
       #  error_desc: ''  # description of this error
       #  res_start: false  # after onResponseStarted
       #  done: false  # true if response completed
+      #  data_done: false  # stream_filter.onstop()
       #
       #  url: []  # url list (including redirect) of this resource
       #
@@ -43,10 +44,10 @@ r_cache = (tab_id) ->
   }
   # report rc to parent
   _report = ->
-    g.rc_callback?(tab_id, g.rc)
+    _g.rc_callback?(tab_id, _g.rc)
 
   set_rc_callback = (cb) ->
-    g.rc_callback = cb
+    _g.rc_callback = cb
     _report()  # update data
 
   # cache operate
@@ -62,14 +63,15 @@ r_cache = (tab_id) ->
       frameId
     } = details
     # check new request
-    if ! g.cache[r_id]?
+    if ! _g.cache[r_id]?
       # init info cache
-      g.cache[r_id] = {
+      _g.cache[r_id] = {
         r_id
         error: false
         error_desc: null
         res_start: false
         done: false
+        data_done: false
 
         url: [ url ]
 
@@ -78,29 +80,41 @@ r_cache = (tab_id) ->
         frame_id: frameId
       }
       # init data cache
-      g.cache_data[r_id] = []
+      _g.cache_data[r_id] = []
       # update count
-      g.rc.count += 1
+      _g.rc.count += 1
 
   # add url to the request if not exist
   _add_url = (r_id, url) ->
-    # assert: g.cache[r_id] != null
-    if g.cache[r_id].url.indexOf(url) is -1
-      g.cache[r_id].url.push url
+    # assert: _g.cache[r_id] != null
+    if _g.cache[r_id].url.indexOf(url) is -1
+      _g.cache[r_id].url.push url
 
   # save resources response data
   _init_stream_filter = (r_id) ->
     f = browser.webRequest.filterResponseData r_id
 
     f.onstart = (event) ->
-      # FIXME TODO reset cache_data each time when start ?
+      # check cache_data already exist
+      if _g.cache_data[r_id]?
+        if _g.cache_data[r_id].length > 0
+          console.log "WARNING: r_cache: reset cache_data, tab_id = #{tab_id}, r_id = #{r_id}"
+      # rest it
+      _g.cache_data[r_id] = []
 
     f.ondata = (event) ->
-      f.write(event.data)
+      {
+        data
+      } = event
+
+      f.write(data)
+      # save in cache_data
+      _g.cache_data[r_id].push data
 
     f.onstop = (event) ->
       f.disconnect()
-      # TODO mark res data recv done ?
+      # mark res data recv done
+      _g.cache[r_id].data_done = true
 
     f.onerror = (event) ->
       console.log "ERROR: r_cache.filter_stream, tab_id = #{tab_id}, r_id = #{r_id}\n#{f.error}"
@@ -125,9 +139,9 @@ r_cache = (tab_id) ->
     _check_request details
     _add_url r_id, url
     # install stream filter
-    if ! g.sf_installed[r_id]
+    if ! _g.sf_installed[r_id]
       _init_stream_filter r_id
-      g.sf_installed[r_id] = true
+      _g.sf_installed[r_id] = true
 
     _report()  # update data
     # return empty for blocking
@@ -184,8 +198,8 @@ r_cache = (tab_id) ->
       fromCache
       ip
     } = details
-    # assert: g.cache[r_id] != null
-    g.cache[r_id].res_start = true
+    # assert: _g.cache[r_id] != null
+    _g.cache[r_id].res_start = true
 
   _on_completed = (details) ->
     {
@@ -198,8 +212,8 @@ r_cache = (tab_id) ->
       fromCache
       ip
     } = details
-    # assert: g.cache[r_id] != null
-    g.cache[r_id].done = true
+    # assert: _g.cache[r_id] != null
+    _g.cache[r_id].done = true
 
   _on_error = (details) ->
     {
@@ -210,12 +224,12 @@ r_cache = (tab_id) ->
       fromCache
       ip
     } = details
-    # assert: g.cache[r_id] != null
-    g.cache[r_id].error = true
-    g.cache[r_id].error_desc = error
+    # assert: _g.cache[r_id] != null
+    _g.cache[r_id].error = true
+    _g.cache[r_id].error_desc = error
 
   # only listen events for this tab
-  filter = {
+  _filter = {
     urls: [
       '<all_urls>'
     ]
@@ -223,29 +237,29 @@ r_cache = (tab_id) ->
   }
 
   init = ->
-    browser.webRequest.onBeforeRequest.addListener _on_before_request, filter, [
+    browser.webRequest.onBeforeRequest.addListener _on_before_request, _filter, [
       'blocking'  # block request for _init_stream_filter
       'requestBody'
     ]
-    browser.webRequest.onBeforeRedirect.addListener _on_before_redirect, filter, [
+    browser.webRequest.onBeforeRedirect.addListener _on_before_redirect, _filter, [
       'responseHeaders'
     ]
-    browser.webRequest.onBeforeSendHeaders.addListener _on_before_send_headers, filter, [
+    browser.webRequest.onBeforeSendHeaders.addListener _on_before_send_headers, _filter, [
       'requestHeaders'
     ]
-    browser.webRequest.onSendHeaders.addListener _on_send_headers, filter, [
+    browser.webRequest.onSendHeaders.addListener _on_send_headers, _filter, [
       'requestHeaders'
     ]
-    browser.webRequest.onHeadersReceived.addListener _on_headers_received, filter, [
+    browser.webRequest.onHeadersReceived.addListener _on_headers_received, _filter, [
       'responseHeaders'
     ]
-    browser.webRequest.onResponseStarted.addListener _on_response_started, filter, [
+    browser.webRequest.onResponseStarted.addListener _on_response_started, _filter, [
       'responseHeaders'
     ]
-    browser.webRequest.onCompleted.addListener _on_completed, filter, [
+    browser.webRequest.onCompleted.addListener _on_completed, _filter, [
       'responseHeaders'
     ]
-    browser.webRequest.onErrorOccurred.addListener _on_error, filter
+    browser.webRequest.onErrorOccurred.addListener _on_error, _filter
 
   clean_up = ->
     browser.webRequest.onBeforeRequest.removeListener _on_before_request
@@ -259,19 +273,19 @@ r_cache = (tab_id) ->
 
   reset = ->
     # reset cache, and reset flag
-    g.cache = {}
-    g.cache_data = {}
-    g.rc.after_reset = true
+    _g.cache = {}
+    _g.cache_data = {}
+    _g.rc.after_reset = true
     # reset count
-    g.rc.count = 0
+    _g.rc.count = 0
 
     _report()  # update data
 
   get_cache = ->
-    g.cache
+    _g.cache
 
   get_cache_data = ->
-    g.cache_data
+    _g.cache_data
 
   # export API
   {
@@ -284,6 +298,9 @@ r_cache = (tab_id) ->
 
     # clean up before remove
     clean_up
+
+    # export for DEBUG
+    _g
   }
 
 module.exports = r_cache

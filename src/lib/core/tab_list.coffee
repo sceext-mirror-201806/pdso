@@ -13,7 +13,7 @@ r_cache = require './r_cache'
 
 tab_list = ->
   # global data (to send)
-  g = {
+  _g = {
     # enable tab
     enable: {
       #'TAB_ID': false
@@ -48,14 +48,14 @@ tab_list = ->
     enable_all: false
   }
   # r_cache for each enable page
-  rc = {
+  _rc = {
     #'TAB_ID': null  # r_cache instance
   }
   # fetch tab_list data (update)
   fetch = ->
-    m_send m_ac.tab_list(g)
+    m_send m_ac.tab_list(_g)
 
-  # update g.list from browser.tabs.Tab
+  # update _g.list from browser.tabs.Tab
   _update_tab_info = (tab) ->
     # check tab_id first
     tab_id = tab.id
@@ -73,59 +73,59 @@ tab_list = ->
       loading_status: tab.status
     }
     # check tab data exist
-    if ! g.list[tab_id]?
+    if ! _g.list[tab_id]?
       one.rc = null  # no rc now
       one.navigation_status = ''  # no status
-      g.list[tab_id] = one
+      _g.list[tab_id] = one
     else  # already exist, just update info
-      old = g.list[tab_id]
-      g.list[tab_id] = Object.assign {}, old, one
+      old = _g.list[tab_id]
+      _g.list[tab_id] = Object.assign {}, old, one
     # return tab_id
     tab_id
 
   # rc operate
   _on_rc_report = (tab_id, rc) ->
-    g.list[tab_id].rc = rc
+    _g.list[tab_id].rc = rc
     fetch()  # update data
 
   _rc_create = (tab_id) ->
     # check rc already exists (for debug)
-    if rc[tab_id]?
+    if _rc[tab_id]?
       console.log "WARNING: r_cache for tab [ #{tab_id} ] already exist !  ignore rc create"
       return
     # create rc and init
     c = r_cache(tab_id)
-    rc[tab_id] = c
+    _rc[tab_id] = c
     c.set_rc_callback _on_rc_report
     await c.init()
 
   _rc_reset = (tab_id) ->
     # if rc not exist, will just throw
-    rc[tab_id].reset()
+    _rc[tab_id].reset()
 
   _rc_remove = (tab_id) ->
     # clean first
-    rc[tab_id].clean_up()
+    _rc[tab_id].clean_up()
     # remove rc
-    rc[tab_id] = null
+    _rc[tab_id] = null
     # remove rc data
-    g.list[tab_id].rc = null
+    _g.list[tab_id].rc = null
 
   # event listeners
   _on_tab_create = (tab) ->
     tab_id = _update_tab_info tab
     # check enable_all
-    if g.enable_all and tab_id?
+    if _g.enable_all and tab_id?
       await _rc_create tab_id
-      g.enable[tab_id] = true
+      _g.enable[tab_id] = true
     fetch()  # update data
 
   _on_tab_remove = (tab_id) ->
     # remove rc first, if exist
-    if rc[tab_id]?
+    if _rc[tab_id]?
       _rc_remove tab_id
     # delete tab info
-    g.list[tab_id] = null
+    _g.list[tab_id] = null
     fetch()  # update data
 
   _on_tab_update = (tab_id, changeInfo, tab) ->
@@ -152,9 +152,9 @@ tab_list = ->
     if ! tab_id?
       return
     # update navigation_status
-    g.list[tab_id].navigation_status = 'before'
+    _g.list[tab_id].navigation_status = 'before'
     # check tab enabled
-    if g.enable[tab_id]
+    if _g.enable[tab_id]
       # TODO support no reset on a tab ?
       # reset rc here
       _rc_reset tab_id
@@ -167,7 +167,7 @@ tab_list = ->
     if ! tab_id?
       return
     # update navigation_status
-    g.list[tab_id].navigation_status = status
+    _g.list[tab_id].navigation_status = status
     fetch()  # update data
 
   _on_nav_committed = (details) ->
@@ -186,7 +186,7 @@ tab_list = ->
     # log error
     console.log "DEBUG: tab_list._on_nav_error: tab [ #{tab_id} ]"
     # update navigation_status
-    g.list[tab_id].navigation_status = 'error'
+    _g.list[tab_id].navigation_status = 'error'
     fetch()  # update data
 
   _add_listeners = ->
@@ -214,29 +214,29 @@ tab_list = ->
   set_tab_enable = (tab_id, enable) ->
     if enable
       # check already enabled
-      if g.enable[tab_id]
+      if _g.enable[tab_id]
         console.log "WARNING: tab [ #{tab_id} ] already enabled !  ignore re-enable"
         return
       await _rc_create tab_id
-      g.enable[tab_id] = true
+      _g.enable[tab_id] = true
     else
       # check already disabled
-      if ! g.enable[tab_id]
+      if ! _g.enable[tab_id]
         console.log "WARNING: tab [ #{tab_id} ] already disabled !  ignore re-disable"
         return
       _rc_remove tab_id
-      g.enable[tab_id] = false
+      _g.enable[tab_id] = false
     fetch()  # update data
 
   set_enable_all = (enable) ->
-    g.enable_all = enable
+    _g.enable_all = enable
     fetch()  # update data
 
   first_init_enable_all = ->
-    if g.enable_all
-      for i of g.list
+    if _g.enable_all
+      for i of _g.list
         await _rc_create i
-        g.enable[i] = true
+        _g.enable[i] = true
       fetch()  # update data
 
   # export API
@@ -247,6 +247,10 @@ tab_list = ->
     set_enable_all
     first_init_enable_all
     # TODO snapshot_one_tab ?
+
+    # export for DEBUG
+    _g
+    _rc
   }
 
 module.exports = tab_list
