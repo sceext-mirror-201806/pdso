@@ -1,4 +1,4 @@
-# reducer.coffee, pdso/src/page_options/redux/
+# reducer.coffee, pdso/src/lib/page_options/redux/
 
 Immutable = require 'immutable'
 

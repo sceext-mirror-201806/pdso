@@ -155,6 +155,7 @@ tab_list = ->
     g.list[tab_id].navigation_status = 'before'
     # check tab enabled
     if g.enable[tab_id]
+      # TODO support no reset on a tab ?
       # reset rc here
       _rc_reset tab_id
     else

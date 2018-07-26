@@ -18,6 +18,7 @@ cC = require 'create-react-class'
   Tooltip
   CircularProgress
   IconButton
+  Badge
 } = require '@material-ui/core'
 Icons = require '@material-ui/icons'
 IconM = require 'mdi-material-ui'
@@ -125,12 +126,37 @@ OneItem = cC {
       </Tooltip>
     )
 
+  _render_avatar: ->
+    (
+      <Avatar>
+        <IconM.FileOutline />
+      </Avatar>
+    )
+
+  _render_icon: ->
+    # check rc.count
+    if ! @_get_enable()
+      count = 0
+    else
+      one = @_get_one()
+      if ! one.rc?
+        count = 0
+      else
+        count = one.rc.count
+
+    if count > 0
+      (
+        <Badge badgeContent={ count } color="primary">
+          { @_render_avatar() }
+        </Badge>
+      )
+    else
+      @_render_avatar()
+
   render: ->
     (
       <ListItem>
-        <Avatar>
-          <IconM.FileOutline />
-        </Avatar>
+        { @_render_icon() }
         <ListItemText
           className={ @props.classes.item_text }
           primary={ @_gen_title() }

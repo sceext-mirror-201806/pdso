@@ -20,7 +20,7 @@ set_tab_enable = (tab_id, enable) ->
   {
     type: EVENT.SET_TAB_ENABLE
     payload: {
-      tab_id
+      tab_id: Number.parseInt tab_id  # ensure tab_id is int
       enable  # enable (true) / disable (false)
     }
   }
