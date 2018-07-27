@@ -73,13 +73,13 @@ TabAbout = cC {
               </Typography>
 
               <Typography className={ cl.p }>
-                (An extension for <strong>Desktop</strong> and
-                <strong>Android</strong> <code>Firefox</code>)
-              </Typography>
-              <Typography className={ cl.p }>
                 Take a static snapshot of the page DOM,
                 (modify and) save it for offline viewing,
                 including CSS styles and images, no script.
+              </Typography>
+              <Typography className={ [ cl.p, cl.p_last ] }>
+                (An extension for <strong>Desktop</strong> and
+                <strong>Android</strong> <code>Firefox</code>)
               </Typography>
             </div>
             <div className={ cl.right }>
@@ -137,11 +137,11 @@ TabAbout = cC {
 
               <div className={ cl.first }>
                 <Typography className={ cl.p }>
-                  (用于桌面和 Android 版 Firefox 的浏览器扩展. )
-                </Typography>
-                <Typography className={ cl.p }>
                   对页面的 DOM 做一个静态快照, (修改并) 保存起来, 以供离线查看,
                   包含 CSS 样式和图片, 不含脚本程序代码 (JavaScript).
+                </Typography>
+                <Typography className={ [ cl.p, cl.p_last ] }>
+                  (用于桌面和 Android 版 Firefox 的浏览器扩展. )
                 </Typography>
               </div>
             </div>
@@ -214,27 +214,37 @@ styles = (theme) ->
       '& p': {
         letterSpacing: '0.05em'
         wordSpacing: '0.05em'
+        marginTop: theme.spacing.unit * 2
+        marginBottom: 0
+        lineHeight: '1.8em'
+      }
+      '& $p_last': {
+        marginTop: theme.spacing.unit
       }
     }
     feature: {
       '& p': {
-        fontSize: '1.1em'
+        fontSize: '1.05em'
         paddingLeft: '2em'
         textIndent: '-1.2em'
-        marginTop: theme.spacing.unit * 2
+        marginTop: theme.spacing.unit * 1.2
         marginBottom: 0
         letterSpacing: '0.05em'
         wordSpacing: '0.05em'
+        lineHeight: '1.8em'
       }
       '& strong': {
         color: theme.palette.text.secondary
         paddingRight: '0.2em'
+        fontWeight: 'normal'
       }
     }
     p: {
       marginTop: theme.spacing.unit
       marginBottom: theme.spacing.unit
     }
+    p_last: {}
+
     a: {
       '& a': {
         color: theme.palette.text.secondary
