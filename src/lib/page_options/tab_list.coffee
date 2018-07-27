@@ -6,8 +6,8 @@ cC = require 'create-react-class'
 
 { withStyles } = require '@material-ui/core/styles'
 {
-  Typography
   Paper
+  Typography
   Switch
   List
   ListItem
@@ -26,6 +26,7 @@ IconM = require 'mdi-material-ui'
 {
   gM
 } = require '../util'
+PaperM = require '../ui/paper_m'
 
 
 OneItem = cC {
@@ -273,7 +274,7 @@ PageTabList = cC {
 
   _render_privacy_note: ->
     (
-      <Paper className={ [ @props.classes.paper, @props.classes.paper_note ] }>
+      <PaperM class_name={ @props.classes.paper_note }>
         <div className={ @props.classes.note }>
           <div className={ @props.classes.note_left }>
             <Icons.WarningRounded color="error" fontSize="inherit" />
@@ -285,12 +286,12 @@ PageTabList = cC {
             { @_render_text_n gM('pot_privacy_note_text') }
           </div>
         </div>
-      </Paper>
+      </PaperM>
     )
 
   _render_enable_all: ->
     (
-      <Paper className={ @props.classes.paper }>
+      <PaperM>
         <div className={ @props.classes.enable_all_title }>
           <Typography variant="headline" component="h3">
             { gM 'pot_enable_all' }
@@ -298,7 +299,7 @@ PageTabList = cC {
           <Switch checked={ @props.g.enable_all } onChange={ @_on_toggle_enable_all } color="primary" />
         </div>
         { @_render_text_n gM('pot_enable_all_desc') }
-      </Paper>
+      </PaperM>
     )
 
   render: ->
@@ -313,12 +314,6 @@ PageTabList = cC {
 
 styles = (theme) ->
   {
-    paper: {
-      padding: theme.spacing.unit * 2
-      paddingRight: '4px'
-      margin: theme.spacing.unit
-      marginTop: theme.spacing.unit * 2
-    }
     paper_list: {  # no padding
       margin: theme.spacing.unit
       marginTop: theme.spacing.unit * 2
@@ -400,7 +395,7 @@ mapDispatchToProps = (dispatch, props) ->
 
 module.exports = compose(
   withStyles(styles, {
-    name: 'PageTabList'
+    name: 'TabList'
   })
   connect(mapStateToProps, mapDispatchToProps)
 )(PageTabList)

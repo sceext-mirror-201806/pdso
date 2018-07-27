@@ -14,6 +14,7 @@ cC = require 'create-react-class'
 {
   gM
 } = require '../util'
+PaperM = require '../ui/paper_m'
 
 
 TabLog = cC {
@@ -27,9 +28,11 @@ TabLog = cC {
   render: ->
     (
       <div className={ @props.classes.root }>
-        <Typography color="inherit">
-          TODO log
-        </Typography>
+        <PaperM>
+          <Typography>
+            TODO log
+          </Typography>
+        </PaperM>
       </div>
     )
 }

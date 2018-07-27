@@ -14,6 +14,7 @@ cC = require 'create-react-class'
 {
   gM
 } = require '../util'
+PaperM = require '../ui/paper_m'
 
 
 TabAbout = cC {
@@ -27,9 +28,11 @@ TabAbout = cC {
   render: ->
     (
       <div className={ @props.classes.root }>
-        <Typography color="inherit">
-          TODO about
-        </Typography>
+        <PaperM>
+          <Typography>
+            TODO about
+          </Typography>
+        </PaperM>
       </div>
     )
 }
