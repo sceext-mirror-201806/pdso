@@ -35,7 +35,7 @@ set_disable_tab = (tab_id, disable) ->
   {
     type: A_SET_DISABLE_TAB
     payload: {
-      tab_id
+      tab_id: Number.parseInt tab_id  # ensure tab_id is int
       disable
     }
   }
