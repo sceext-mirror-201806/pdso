@@ -11,13 +11,16 @@ init_state = {
     list: {}  # sort list by tab_id
     enable_all: false
   }
+  # disable one tab before snapshot end
+  disable_tab: {
+    #'TAB_ID': false  # true to disable
+  }
 
   # logs to show
   log: [
     #{
     #  time: ''  # ISO time string
     #  text: ''  # log text to show
-    #  #type: TODO
     #}
   ]
 

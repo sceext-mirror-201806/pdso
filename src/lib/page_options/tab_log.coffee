@@ -13,6 +13,7 @@ cC = require 'create-react-class'
 
 {
   gM
+  to_log_time
 } = require '../util'
 PaperM = require '../ui/paper_m'
 
@@ -25,12 +26,13 @@ TabLog = cC {
   }
 
   _render_log_item: (i) ->
-    # TODO format time ?
-    # TODO rich style ?
     one = @props.log[i]
+    time = to_log_time one.time
+    # TODO rich style ?
     (
       <Typography className={ @props.classes.p }>
-        { "#{one.time}  #{one.text}" }
+        <code>{ "[ #{time} ]" }</code>
+        { one.text }
       </Typography>
     )
 
@@ -64,6 +66,10 @@ styles = (theme) ->
     p: {
       marginTop: theme.spacing.unit
       marginBottom: theme.spacing.unit
+      '& code': {
+        marginRight: theme.spacing.unit
+        color: theme.palette.text.secondary
+      }
     }
 
     no_log: {

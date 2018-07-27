@@ -22,6 +22,12 @@ reducer = ($$state, action) ->
     when ac.A_ADD_LOG
       $$o = $$o.update 'log', ($$) ->
         $$.push Immutable.fromJS(action.payload)
+    when ac.A_SET_DISABLE_TAB
+      {
+        tab_id
+        disable
+      } = action.payload
+      $$o = $$o.setIn ['disable_tab', tab_id], disable
 
   $$o
 

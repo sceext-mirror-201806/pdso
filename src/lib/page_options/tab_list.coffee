@@ -35,6 +35,7 @@ OneItem = cC {
     classes: PropTypes.object.isRequired
     g: PropTypes.object.isRequired
     tab_id: PropTypes.string.isRequired
+    disabled: PropTypes.bool
 
     on_set_tab_enable: PropTypes.func.isRequired
     on_snapshot: PropTypes.func.isRequired
@@ -112,6 +113,12 @@ OneItem = cC {
     # check page enabled
     if ! @_get_enable()
       return
+    # check disabled
+    disabled = false
+    if ! @_get_reset()
+      disabled = true
+    if @props.disabled
+      disabled = true
     (
       <Tooltip
         title={ @_get_snapshot_tooltip() }
@@ -120,7 +127,7 @@ OneItem = cC {
         placement="left"
       >
         <span>
-          <IconButton disabled={ ! @_get_reset() } onClick={ @_on_snapshot } >
+          <IconButton disabled={ disabled } onClick={ @_on_snapshot } >
             <IconM.Download />
           </IconButton>
         </span>
@@ -153,7 +160,6 @@ OneItem = cC {
         count = one.rc.count
 
     if count > 0
-      # TODO i18n
       (
         <Tooltip
           title={ gM 'pot_tooltip_res_number' }
@@ -176,6 +182,11 @@ OneItem = cC {
       @_render_avatar()
 
   render: ->
+    # check switch disabled
+    disabled = false
+    if @props.disabled
+      disabled = true
+    # TODO tooltip when switch disabled
     (
       <ListItem>
         { @_render_icon() }
@@ -192,7 +203,12 @@ OneItem = cC {
             disableFocusListener
             placement="left"
           >
-            <Switch checked={ @_get_enable() } onChange={ @_on_toggle } color="primary" />
+            <Switch
+              checked={ @_get_enable() }
+              onChange={ @_on_toggle }
+              color="primary"
+              disabled={ disabled }
+            />
           </Tooltip>
         </ListItemSecondaryAction>
       </ListItem>
@@ -206,6 +222,7 @@ PageTabList = cC {
 
     # tab_list data to render
     g: PropTypes.object.isRequired
+    disable_tab: PropTypes.object.isRequired
 
     on_set_tab_enable: PropTypes.func.isRequired
     on_set_enable_all: PropTypes.func.isRequired
@@ -247,6 +264,7 @@ PageTabList = cC {
             classes={ @props.classes }
             g={ @props.g }
             tab_id={ i }
+            disabled={ @props.disable_tab[i] }
             on_set_tab_enable={ @props.on_set_tab_enable }
             on_snapshot={ @props.on_snapshot }
           />
@@ -382,6 +400,7 @@ op = require './redux/op'
 mapStateToProps = ($$state, props) ->
   {
     g: $$state.get('g').toJS()
+    disable_tab: $$state.get('disable_tab').toJS()
   }
 
 mapDispatchToProps = (dispatch, props) ->
@@ -392,8 +411,7 @@ mapDispatchToProps = (dispatch, props) ->
   o.on_set_enable_all = (enable) ->
     dispatch op.set_enable_all(enable)
   o.on_snapshot = (tab_id) ->
-    # TODO
-    console.log "FIXME: page_tab_list.on_snapshot, tab_id = #{tab_id}"
+    dispatch op.snapshot_one(tab_id)
   o
 
 module.exports = compose(

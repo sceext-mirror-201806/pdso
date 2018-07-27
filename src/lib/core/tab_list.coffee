@@ -239,6 +239,13 @@ tab_list = ->
         _g.enable[i] = true
       fetch()  # update data
 
+  # take one snapshot of the page
+  snapshot_one = (tab_id) ->
+    # FIXME not implemented
+    m_send m_ac.bg_log('FIXME: snapshot not implemented')
+    # enable the tab after end
+    m_send m_ac.snapshot_one_end(tab_id)
+
   # export API
   {
     init  # async
@@ -246,7 +253,8 @@ tab_list = ->
     set_tab_enable
     set_enable_all
     first_init_enable_all
-    # TODO snapshot_one_tab ?
+
+    snapshot_one  # async
 
     # export for DEBUG
     _g

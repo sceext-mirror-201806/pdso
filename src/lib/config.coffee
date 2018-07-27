@@ -31,9 +31,21 @@ EVENT = {
   # take a snapshot of one tab
   SNAPSHOT_ONE_TAB: 'snapshot_one_tab'
 
+  # end of snapshot one tab
+  SNAPSHOT_ONE_END: 'snapshot_one_end'
+
+  # background log
+  BG_LOG: 'bg_log'
+
   # TODO
 }
 
+# content scripts url
+CONTENTS = {
+  lib: '/js/content_lib.js'
+  load: '/js/content_load_img.js'
+  snapshot: '/js/contents.js'
+}
 
 module.exports = {
   P_VERSION
@@ -45,5 +57,6 @@ module.exports = {
   LCK_PDSO_TAB_LIST_ENABLE_ALL
 
   EVENT
+  CONTENTS
 
 }

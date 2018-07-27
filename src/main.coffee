@@ -34,8 +34,8 @@ _on_recv = (m, sender, sendResponse) ->
       } = m.payload
       await _g.tl.set_tab_enable tab_id, enable
     when EVENT.SNAPSHOT_ONE_TAB
-      # TODO
-      console.log "FIXME: snapshot_one_tab not implemented"
+      tab_id = m.payload
+      await _g.tl.snapshot_one tab_id
     else  # unknow event
       console.log "DEBUG: (main) recv unknow [ #{m.type} ]  #{JSON.stringify m}"
 

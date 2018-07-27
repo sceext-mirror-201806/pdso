@@ -56,6 +56,12 @@ on_recv = (m, sender, sendResponse) ->
     switch m.type
       when EVENT.TAB_LIST
         dispatch action.set_tab_list_data(m.payload)
+      when EVENT.BG_LOG
+        dispatch action.add_log(m.payload)
+      when EVENT.SNAPSHOT_ONE_END
+        tab_id = m.payload
+        # enable the tab
+        dispatch action.set_disable_tab(tab_id, false)
       else
         console.log "DEBUG: (options) recv unknow [ #{m.type} ]  #{JSON.stringify m}"
 
@@ -72,7 +78,12 @@ set_enable_all = (enable) ->
     o[LCK_PDSO_TAB_LIST_ENABLE_ALL] = enable
     await browser.storage.local.set o
 
-# TODO snapshot_one_tab
+# snapshot one tab
+snapshot_one = (tab_id) ->
+  (dispatch, getState) ->
+    # disable the tab first
+    dispatch action.set_disable_tab(tab_id, true)
+    await m_send m_ac.snapshot_one_tab(tab_id)
 
 module.exports = {
   load_init  # thunk
@@ -81,4 +92,5 @@ module.exports = {
   on_recv  # thunk
   set_tab_enable  # thunk
   set_enable_all  # thunk
+  snapshot_one  # thunk
 }

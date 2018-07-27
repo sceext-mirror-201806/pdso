@@ -31,10 +31,28 @@ snapshot_one_tab = (payload) ->
     payload  # tab_id
   }
 
+snapshot_one_end = (payload) ->
+  {
+    type: EVENT.SNAPSHOT_ONE_END
+    payload  # tab_id
+  }
+
+bg_log = (text) ->
+  {
+    type: EVENT.BG_LOG
+    payload: {
+      time: new Date().toISOString()  # current time
+      text
+      # TODO add `type` ?
+    }
+  }
+
 
 module.exports = {
   tab_list
   fetch_tab_list
   set_tab_enable
   snapshot_one_tab
+  snapshot_one_end
+  bg_log
 }

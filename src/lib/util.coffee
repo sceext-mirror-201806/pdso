@@ -15,6 +15,14 @@ lang_is_zh = ->
   else
     false
 
+# raw ISO time string to log time string to render
+to_log_time = (raw) ->
+  t = new Date raw
+  p = t.toISOString().split('.')
+  ms = p[p.length - 1].split('Z')[0]
+  before = t.toTimeString().split(' ')[0]
+  "#{before}.#{ms}"
+
 
 # event (message) send/recv
 
@@ -41,6 +49,7 @@ m_remove_listener = (callback) ->
 module.exports = {
   gM
   lang_is_zh
+  to_log_time
 
   m_send  # async
   m_send_content  # async
