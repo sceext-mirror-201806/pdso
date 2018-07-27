@@ -12,6 +12,8 @@ Take a static snapshot of the page DOM,
 
 ## Features
 
++ *(TODO)* Take a static snapshot of the dynamic page.
+
 + *(TODO)* Save the page as HTML, not picture.
 
 + *(TODO)* Keep all the styles and images, what you see is what you get.
