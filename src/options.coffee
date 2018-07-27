@@ -17,7 +17,7 @@ composeEnhancers = composeWithDevTools {
 { Provider } = require 'react-redux'
 
 reducer = require './lib/page_options/redux/reducer'
-PageMain = require './lib/page_options/page_main'
+App = require './lib/page_options/app'
 
 
 # redux store
@@ -26,17 +26,17 @@ store = createStore reducer, composeEnhancers(
 )
 
 
-App = ->
+A = ->
   (
     <Provider store={ store }>
-      <PageMain />
+      <App />
     </Provider>
   )
 
 _mount_root = ->
   console.log "DEBUG: page_options mount root"
 
-  ReactDOM.render (<App />), document.querySelector('#react_root')
+  ReactDOM.render (<A />), document.querySelector('#react_root')
 
 # mount root after page load
 window.addEventListener 'load', _mount_root

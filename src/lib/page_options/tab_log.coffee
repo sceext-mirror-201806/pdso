@@ -1,4 +1,4 @@
-# page_log.coffee, pdso/src/lib/page_options/
+# tab_log.coffee, pdso/src/lib/page_options/
 React = require 'react'
 PropTypes = require 'prop-types'
 cC = require 'create-react-class'
@@ -16,8 +16,8 @@ cC = require 'create-react-class'
 } = require '../util'
 
 
-PageLog = cC {
-  displayName: 'PageLog'
+TabLog = cC {
+  displayName: 'TabLog'
   propTypes: {
     classes: PropTypes.object.isRequired
 
@@ -58,7 +58,7 @@ mapDispatchToProps = (dispatch, props) ->
 
 module.exports = compose(
   withStyles(styles, {
-    name: 'PageLog'
+    name: 'TabLog'
   })
   connect(mapStateToProps, mapDispatchToProps)
-)(PageLog)
+)(TabLog)

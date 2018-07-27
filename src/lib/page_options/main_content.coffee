@@ -1,12 +1,10 @@
-# page_main.coffee, pdso/src/lib/page_options/
+# main_content.coffee, pdso/src/lib/page_options/
 React = require 'react'
 PropTypes = require 'prop-types'
 cC = require 'create-react-class'
 { compose } = require 'recompose'
 
 {
-  CssBaseline
-
   AppBar
   Toolbar
   Typography
@@ -29,19 +27,15 @@ IconM = require 'mdi-material-ui'
 } = require '../config'
 {
   gM
-
-  m_set_on
-  m_remove_listener
 } = require '../util'
 
-Theme = require '../ui/theme'
-PageTabList = require './page_tab_list'
-PageLog = require './page_log'
-PageAbout = require './page_about'
+TabList = require './tab_list'
+TabLog = require './tab_log'
+TabAbout = require './tab_about'
 
 
-PageMain = cC {
-  displayName: 'PageMain'
+MainContent = cC {
+  displayName: 'MainContent'
   propTypes: {
     classes: PropTypes.object.isRequired
     page_value: PropTypes.number.isRequired
@@ -49,19 +43,7 @@ PageMain = cC {
 
     on_toggle_theme: PropTypes.func.isRequired
     on_change_page: PropTypes.func.isRequired
-
-    on_init: PropTypes.func.isRequired  # page load init
-    on_recv: PropTypes.func.isRequired
   }
-
-  componentDidMount: ->
-    # listen messages first
-    m_set_on @props.on_recv
-    # and then emit init
-    await @props.on_init()
-
-  componentWillUnmount: ->
-    m_remove_listener @props.on_recv
 
   _render_bulb: ->
     if @props.theme is UI_THEME_DARK
@@ -118,13 +100,15 @@ PageMain = cC {
         style={ tab_style }
         classes={{
           wrapper: @props.classes.tab_item_wrapper
+          root: @props.classes.tab_item
+          selected: @props.classes.selected
         }}
         label={ label }
         icon={ icon }
       />
     )
 
-  _render_contents: ->
+  _render_tabs: ->
     (
       <React.Fragment>
         <Tabs
@@ -143,22 +127,19 @@ PageMain = cC {
           index={ @props.page_value }
           onChangeIndex={ @_on_page_index_change }
         >
-          <PageTabList />
-          <PageLog />
-          <PageAbout />
+          <TabList />
+          <TabLog />
+          <TabAbout />
         </SwipeableViews>
       </React.Fragment>
     )
 
   render: ->
     (
-      <Theme theme={ @props.theme }>
-        <CssBaseline />
-        <div className={ @props.classes.root }>
-          { @_render_appbar() }
-          { @_render_contents() }
-        </div>
-      </Theme>
+      <div className={ @props.classes.root }>
+        { @_render_appbar() }
+        { @_render_tabs() }
+      </div>
     )
 }
 
@@ -171,6 +152,13 @@ styles = (theme) ->
     tab_item_wrapper: {
       flexDirection: 'row'
     }
+
+    tab_item: {
+      '&$selected': {
+        color: theme.tb.color_tab
+      }
+    }
+    selected: {}
   }
 
 # for redux
@@ -187,11 +175,6 @@ mapStateToProps = ($$state, props) ->
 
 mapDispatchToProps = (dispatch, props) ->
   o = Object.assign {}, props
-  o.on_init = ->
-    dispatch op.load_init()
-  o.on_recv = (m, sender, sendResponse) ->
-    await dispatch op.on_recv(m, sender, sendResponse)
-
   o.on_toggle_theme = ->
     dispatch op.toggle_theme()
   o.on_change_page = (value) ->
@@ -200,7 +183,7 @@ mapDispatchToProps = (dispatch, props) ->
 
 module.exports = compose(
   withStyles(styles, {
-    name: 'PageMain'
+    name: 'MainContent'
   })
   connect(mapStateToProps, mapDispatchToProps)
-)(PageMain)
+)(MainContent)

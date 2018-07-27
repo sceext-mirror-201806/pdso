@@ -1,4 +1,4 @@
-# page_about.coffee, pdso/src/lib/page_options/
+# tab_about.coffee, pdso/src/lib/page_options/
 React = require 'react'
 PropTypes = require 'prop-types'
 cC = require 'create-react-class'
@@ -16,8 +16,8 @@ cC = require 'create-react-class'
 } = require '../util'
 
 
-PageAbout = cC {
-  displayName: 'PageAbout'
+TabAbout = cC {
+  displayName: 'TabAbout'
   propTypes: {
     classes: PropTypes.object.isRequired
 
@@ -58,7 +58,7 @@ mapDispatchToProps = (dispatch, props) ->
 
 module.exports = compose(
   withStyles(styles, {
-    name: 'PageAbout'
+    name: 'TabAbout'
   })
   connect(mapStateToProps, mapDispatchToProps)
-)(PageAbout)
+)(TabAbout)

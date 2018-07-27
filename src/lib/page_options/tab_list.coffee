@@ -273,7 +273,7 @@ PageTabList = cC {
 
   _render_privacy_note: ->
     (
-      <Paper className={ "#{@props.classes.paper} #{@props.classes.paper_note}" }>
+      <Paper className={ [ @props.classes.paper, @props.classes.paper_note ] }>
         <div className={ @props.classes.note }>
           <div className={ @props.classes.note_left }>
             <Icons.WarningRounded color="error" fontSize="inherit" />
@@ -311,8 +311,6 @@ PageTabList = cC {
     )
 }
 
-{ default: yellow } = require '@material-ui/core/colors/orange'
-
 styles = (theme) ->
   {
     paper: {
@@ -326,7 +324,7 @@ styles = (theme) ->
       marginTop: theme.spacing.unit * 2
     }
     paper_note: {
-      backgroundColor: yellow.A100
+      backgroundColor: theme.tb.color_note
     }
     enable_all_title: {
       display: 'flex'
