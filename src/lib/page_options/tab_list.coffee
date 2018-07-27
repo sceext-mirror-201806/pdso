@@ -25,6 +25,7 @@ IconM = require 'mdi-material-ui'
 
 {
   gM
+  is_url_disabled
 } = require '../util'
 PaperM = require '../ui/paper_m'
 
@@ -65,15 +66,25 @@ OneItem = cC {
     else
       false
 
+  _is_url_disabled: ->
+    one = @_get_one()
+    is_url_disabled one.url
+
   _get_switch_tooltip: ->
-    if @_get_enable()
+    if @props.disabled
+      gM 'pot_disable_tooltip_snapshot_doing'
+    else if @_get_enable()
       gM 'pot_switch_tooltip_enable'
+    else if @_is_url_disabled()
+      gM 'pot_switch_tooltip_url_disabled'
     else
       gM 'pot_switch_tooltip_disable'
 
   _get_snapshot_tooltip: ->
     # check reset
-    if @_get_reset()
+    if @props.disabled
+      gM 'pot_disable_tooltip_snapshot_doing'
+    else if @_get_reset()
       gM 'pot_snapshot_tooltip_reset'
     else
       gM 'pot_snapshot_tooltip_no_reset'
@@ -186,7 +197,8 @@ OneItem = cC {
     disabled = false
     if @props.disabled
       disabled = true
-    # TODO tooltip when switch disabled
+    if @_is_url_disabled()
+      disabled = true
     (
       <ListItem>
         { @_render_icon() }
@@ -203,12 +215,14 @@ OneItem = cC {
             disableFocusListener
             placement="left"
           >
-            <Switch
-              checked={ @_get_enable() }
-              onChange={ @_on_toggle }
-              color="primary"
-              disabled={ disabled }
-            />
+            <span>
+              <Switch
+                checked={ @_get_enable() }
+                onChange={ @_on_toggle }
+                color="primary"
+                disabled={ disabled }
+              />
+            </span>
           </Tooltip>
         </ListItemSecondaryAction>
       </ListItem>

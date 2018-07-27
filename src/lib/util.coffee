@@ -50,6 +50,17 @@ m_remove_listener = (callback) ->
   browser.runtime.onMessage.removeListener callback
 
 
+# check page url for disabled
+is_url_disabled = (raw) ->
+  u = raw.trim()
+  if u.startsWith 'about:'
+    true
+  else if u.startsWith 'moz-extension:'
+    true
+  else
+    false
+
+
 module.exports = {
   gM
   lang_is_zh
@@ -61,5 +72,7 @@ module.exports = {
 
   send_to  # async
   send_to_content  # async
+
+  is_url_disabled
 
 }

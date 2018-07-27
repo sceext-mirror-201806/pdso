@@ -57,6 +57,16 @@
     "description": "tooltip text when tab is disabled"
   },
 
+  "pot_switch_tooltip_url_disabled": {
+    "message": "不支持此类页面",
+    "description": "tooltip text when tab is disabled based on its url"
+  },
+
+  "pot_disable_tooltip_snapshot_doing": {
+    "message": "正在进行快照",
+    "description": "tooltip text when disabled for snapshot doing"
+  },
+
   "pot_snapshot_tooltip_reset": {
     "message": "快照此页",
     "description": "tooltip text when tab after reset"

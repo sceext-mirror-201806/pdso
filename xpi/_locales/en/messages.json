@@ -57,6 +57,16 @@
     "description": "tooltip text when tab is disabled"
   },
 
+  "pot_switch_tooltip_url_disabled": {
+    "message": "Not support this kind of pages",
+    "description": "tooltip text when tab is disabled based on its url"
+  },
+
+  "pot_disable_tooltip_snapshot_doing": {
+    "message": "One snpashot is doing",
+    "description": "tooltip text when disabled for snapshot doing"
+  },
+
   "pot_snapshot_tooltip_reset": {
     "message": "Take a snapshot of this page",
     "description": "tooltip text when tab after reset"

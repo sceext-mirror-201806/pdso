@@ -114,8 +114,6 @@ TabAbout = cC {
               </Typography>
 
               <Typography className={ [ cl.p, cl.version ] }>
-                (pdso: Page DOM Snapshot for Offline)
-                <br />
                 <code>{ P_VERSION }</code>
               </Typography>
 
