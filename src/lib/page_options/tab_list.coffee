@@ -291,7 +291,7 @@ PageTabList = cC {
 
   _render_enable_all: ->
     (
-      <PaperM>
+      <PaperM class_name={ @props.classes.paper_enable_all }>
         <div className={ @props.classes.enable_all_title }>
           <Typography variant="headline" component="h3">
             { gM 'pot_enable_all' }
@@ -320,6 +320,9 @@ styles = (theme) ->
     }
     paper_note: {
       backgroundColor: theme.tb.color_note
+    }
+    paper_enable_all: {
+      paddingRight: '4px'
     }
     enable_all_title: {
       display: 'flex'

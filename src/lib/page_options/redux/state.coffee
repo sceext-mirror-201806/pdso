@@ -12,6 +12,15 @@ init_state = {
     enable_all: false
   }
 
+  # logs to show
+  log: [
+    #{
+    #  time: ''  # ISO time string
+    #  text: ''  # log text to show
+    #  #type: TODO
+    #}
+  ]
+
 }
 
 module.exports = init_state

@@ -1,5 +1,6 @@
 # config.coffee, pdso/src/lib/
 
+P_VERSION = 'pdso version 0.1.0-a1 test20180727 1724'
 
 # const
 UI_THEME_LIGHT = 'light'
@@ -35,6 +36,8 @@ EVENT = {
 
 
 module.exports = {
+  P_VERSION
+
   UI_THEME_LIGHT
   UI_THEME_DARK
 

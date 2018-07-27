@@ -31,7 +31,6 @@ styles = (theme) ->
   {
     paper: {
       padding: theme.spacing.unit * 2
-      paddingRight: '4px'
       margin: theme.spacing.unit
       marginTop: theme.spacing.unit * 2
     }

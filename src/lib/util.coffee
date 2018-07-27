@@ -5,6 +5,16 @@
 gM = (messageName, substitutions) ->
   browser.i18n.getMessage messageName, substitutions
 
+# check current UI language is zh_CN
+lang_is_zh = ->
+  lang = browser.i18n.getUILanguage()
+  if (lang is 'zh-CN') or (lang is 'zh_CN')
+    true
+  else if lang.startsWith('zh-') or lang.startsWith('zh_')
+    true
+  else
+    false
+
 
 # event (message) send/recv
 
@@ -30,6 +40,7 @@ m_remove_listener = (callback) ->
 
 module.exports = {
   gM
+  lang_is_zh
 
   m_send  # async
   m_send_content  # async

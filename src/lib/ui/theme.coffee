@@ -9,6 +9,7 @@ cC = require 'create-react-class'
 
 { default: blue } = require '@material-ui/core/colors/blue'
 { default: yellow } = require '@material-ui/core/colors/yellow'
+{ default: grey } = require '@material-ui/core/colors/grey'
 
 {
   UI_THEME_LIGHT
@@ -19,11 +20,17 @@ cC = require 'create-react-class'
 _light = createMuiTheme {
   palette: {
     type: 'light'
+
+    background: {
+      default: grey[200]
+    }
   }
   # tab_list
   tb: {
     color_tab: blue[700]  # active tab text color
     color_note: yellow.A100  # privacy note background color
+    color_sec: grey[800]  # second text (grey) color
+    color_bg_sec: grey[300]  # second background (grey) color
   }
 }
 
@@ -35,6 +42,8 @@ _dark = createMuiTheme {
   tb: {
     color_tab: blue[200]
     color_note: blue[800]
+    color_sec: grey[300]
+    color_bg_sec: grey[900]
   }
 }
 

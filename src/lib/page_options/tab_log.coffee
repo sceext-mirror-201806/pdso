@@ -21,17 +21,39 @@ TabLog = cC {
   displayName: 'TabLog'
   propTypes: {
     classes: PropTypes.object.isRequired
-
-    # TODO
+    log: PropTypes.array.isRequired
   }
+
+  _render_log_item: (i) ->
+    # TODO format time ?
+    # TODO rich style ?
+    one = @props.log[i]
+    (
+      <Typography className={ @props.classes.p }>
+        { "#{one.time}  #{one.text}" }
+      </Typography>
+    )
+
+  _render_log: ->
+    if @props.log.length < 1
+      # no log
+      (
+        <Typography className={ @props.classes.no_log }>
+          { gM 'po_no_log' }
+        </Typography>
+      )
+    else
+      # log list
+      o = []
+      for i in [0... @props.log.length]
+        o.push @_render_log_item(i)
+      o
 
   render: ->
     (
       <div className={ @props.classes.root }>
         <PaperM>
-          <Typography>
-            TODO log
-          </Typography>
+          { @_render_log() }
         </PaperM>
       </div>
     )
@@ -39,7 +61,14 @@ TabLog = cC {
 
 styles = (theme) ->
   {
-    # TODO
+    p: {
+      marginTop: theme.spacing.unit
+      marginBottom: theme.spacing.unit
+    }
+
+    no_log: {
+      color: theme.palette.text.secondary
+    }
   }
 
 # for redux
@@ -50,13 +79,11 @@ op = require './redux/op'
 
 mapStateToProps = ($$state, props) ->
   {
-    # TODO
+    log: $$state.get('log').toJS()
   }
 
 mapDispatchToProps = (dispatch, props) ->
   o = Object.assign {}, props
-
-  # TODO
   o
 
 module.exports = compose(

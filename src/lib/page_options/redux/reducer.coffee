@@ -19,6 +19,9 @@ reducer = ($$state, action) ->
       $$o = $$o.set 'page_value', action.payload
     when ac.A_SET_TAB_LIST_DATA
       $$o = $$o.set 'g', Immutable.fromJS(action.payload)
+    when ac.A_ADD_LOG
+      $$o = $$o.update 'log', ($$) ->
+        $$.push Immutable.fromJS(action.payload)
 
   $$o
 
