@@ -2,6 +2,7 @@
 
 {
   EVENT
+  CONTENT_EVENT
 } = require './config'
 
 
@@ -47,6 +48,12 @@ bg_log = (text) ->
     }
   }
 
+# send by content scripts
+content = (payload) ->
+  {
+    type: EVENT.CONTENT
+    payload
+  }
 
 module.exports = {
   tab_list
@@ -55,4 +62,6 @@ module.exports = {
   snapshot_one_tab
   snapshot_one_end
   bg_log
+
+  content
 }

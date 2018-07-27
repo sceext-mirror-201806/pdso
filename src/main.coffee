@@ -36,6 +36,9 @@ _on_recv = (m, sender, sendResponse) ->
     when EVENT.SNAPSHOT_ONE_TAB
       tab_id = m.payload
       await _g.tl.snapshot_one tab_id
+    when EVENT.CONTENT
+      tab_id = sender.tab.id
+      await _g.tl.on_content_event tab_id, m.payload
     else  # unknow event
       console.log "DEBUG: (main) recv unknow [ #{m.type} ]  #{JSON.stringify m}"
 

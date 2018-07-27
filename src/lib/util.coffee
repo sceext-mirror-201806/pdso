@@ -33,9 +33,13 @@ m_send = (data) ->
   catch e
     console.log "ERROR: util.m_send  #{e}  #{e.stack}\n#{JSON.stringify data}"
 
-# send message to content_script
-m_send_content = (tab_id, data, options) ->
-  browser.tabs.sendMessage tab_id, data, options
+# send message, throw if error
+send_to = (data) ->
+  await browser.runtime.sendMessage data
+
+# send message to content script
+send_to_content = (tab_id, data, options) ->
+  await browser.tabs.sendMessage tab_id, data, options
 
 # send onMessage event listener
 # callback(message, sender, sendResponse)
@@ -52,8 +56,10 @@ module.exports = {
   to_log_time
 
   m_send  # async
-  m_send_content  # async
   m_set_on
   m_remove_listener
+
+  send_to  # async
+  send_to_content  # async
 
 }

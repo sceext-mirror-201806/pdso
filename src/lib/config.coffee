@@ -37,14 +37,29 @@ EVENT = {
   # background log
   BG_LOG: 'bg_log'
 
-  # TODO
+  # event send from content script
+  CONTENT: 'content'
+
+  # events send to content script
+  C_SNAPSHOT: 'c_snapshot'  # start of one snapshot
+  C_FETCH_IMGS: 'c_fetch_imgs'  # request to fetch image binary data from cache
+}
+
+CONTENT_EVENT = {
+  # end of the DOM snapshot
+  SNAPSHOT_DONE: 'snapshot_done'
+
+  # got one image binary data
+  GOT_IMG: 'got_img'
+
+  # end of fetch images
+  FETCH_IMG_DONE: 'fetch_img_done'
 }
 
 # content scripts url
 CONTENTS = {
   lib: '/js/content_lib.js'
-  load: '/js/content_load_img.js'
-  snapshot: '/js/contents.js'
+  main: '/js/contents.js'
 }
 
 module.exports = {
@@ -57,6 +72,7 @@ module.exports = {
   LCK_PDSO_TAB_LIST_ENABLE_ALL
 
   EVENT
+  CONTENT_EVENT
   CONTENTS
 
 }

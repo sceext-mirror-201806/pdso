@@ -151,6 +151,8 @@ tab_list = ->
     tab_id = _on_nav_common details
     if ! tab_id?
       return
+    # force enable the page after reset
+    m_send m_ac.snapshot_one_end tab_id
     # update navigation_status
     _g.list[tab_id].navigation_status = 'before'
     # check tab enabled
@@ -241,10 +243,15 @@ tab_list = ->
 
   # take one snapshot of the page
   snapshot_one = (tab_id) ->
-    # FIXME not implemented
-    m_send m_ac.bg_log('FIXME: snapshot not implemented')
-    # enable the tab after end
-    m_send m_ac.snapshot_one_end(tab_id)
+    # assert: _rc[tab_id] != null
+    await _rc[tab_id].snapshot_one _g
+
+  on_content_event = (tab_id, payload) ->
+    # check rc exist
+    if ! _rc[tab_id]?
+      console.log "ERROR: tab_list.on_content_event: _rc not exist, tab_id = #{tab_id}, payload = #{JSON.stringify payload}"
+      return
+    await _rc[tab_id].on_content_event payload
 
   # export API
   {
@@ -255,6 +262,7 @@ tab_list = ->
     first_init_enable_all
 
     snapshot_one  # async
+    on_content_event  # async
 
     # export for DEBUG
     _g

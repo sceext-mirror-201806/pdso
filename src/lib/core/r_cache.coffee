@@ -1,5 +1,8 @@
 # r_cache.coffee, pdso/src/lib/core/
 
+snapshot_core = require './snapshot_core'
+
+
 r_cache = (tab_id) ->
   # global data
   _g = {
@@ -41,6 +44,8 @@ r_cache = (tab_id) ->
     sf_installed: {
       #'R_ID': false
     }
+    # instance of snapshot_core
+    s_core: null
   }
   # report rc to parent
   _report = ->
@@ -270,6 +275,9 @@ r_cache = (tab_id) ->
     browser.webRequest.onResponseStarted.removeListener _on_response_started
     browser.webRequest.onCompleted.removeListener _on_completed
     browser.webRequest.onErrorOccurred.removeListener _on_error
+    # check and clean core
+    if _g.s_core?
+      _g.s_core.clean_up()
 
   reset = ->
     # reset cache, and reset flag
@@ -278,6 +286,10 @@ r_cache = (tab_id) ->
     _g.rc.after_reset = true
     # reset count
     _g.rc.count = 0
+    # reset s_core
+    if _g.s_core?
+      _g.s_core.clean_up()
+      _g.s_core = null
 
     _report()  # update data
 
@@ -286,6 +298,15 @@ r_cache = (tab_id) ->
 
   get_cache_data = ->
     _g.cache_data
+
+  snapshot_one = (tab_g) ->
+    # check and create core
+    if ! _g.s_core?
+      _g.s_core = snapshot_core tab_id, tab_g, _g
+    await _g.s_core.start()
+
+  on_content_event = (m) ->
+    await _g.s_core.on_content_event m
 
   # export API
   {
@@ -298,6 +319,10 @@ r_cache = (tab_id) ->
 
     # clean up before remove
     clean_up
+
+    # for snapshot_core
+    snapshot_one  # async
+    on_content_event  # async
 
     # export for DEBUG
     _g

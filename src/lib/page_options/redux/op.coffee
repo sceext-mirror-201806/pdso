@@ -83,6 +83,9 @@ snapshot_one = (tab_id) ->
   (dispatch, getState) ->
     # disable the tab first
     dispatch action.set_disable_tab(tab_id, true)
+    # goto log tab
+    dispatch action.set_page(1)
+    # start one snapshot
     await m_send m_ac.snapshot_one_tab(tab_id)
 
 module.exports = {

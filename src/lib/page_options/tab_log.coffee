@@ -31,7 +31,7 @@ TabLog = cC {
     # TODO rich style ?
     (
       <Typography className={ @props.classes.p }>
-        <code>{ "[ #{time} ]" }</code>
+        <code>{ time }</code>
         { one.text }
       </Typography>
     )
