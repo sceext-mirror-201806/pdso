@@ -54,6 +54,9 @@ CONTENT_EVENT = {
 
   # end of fetch images
   FETCH_IMG_DONE: 'fetch_img_done'
+
+  # error of content script
+  ERROR: 'error'
 }
 
 # content scripts url
@@ -74,5 +77,4 @@ module.exports = {
   EVENT
   CONTENT_EVENT
   CONTENTS
-
 }

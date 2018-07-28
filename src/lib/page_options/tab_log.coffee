@@ -30,7 +30,7 @@ TabLog = cC {
     time = to_log_time one.time
     # TODO rich style ?
     (
-      <Typography className={ @props.classes.p }>
+      <Typography className={ @props.classes.p } key={ i }>
         <code>{ time }</code>
         { one.text }
       </Typography>

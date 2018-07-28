@@ -38,7 +38,7 @@ send_to = (data) ->
   await browser.runtime.sendMessage data
 
 # send message to content script
-send_to_content = (tab_id, data, options) ->
+send_to_content = (tab_id, data, options = {}) ->
   await browser.tabs.sendMessage tab_id, data, options
 
 # send onMessage event listener

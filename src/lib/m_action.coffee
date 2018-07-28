@@ -55,6 +55,59 @@ content = (payload) ->
     payload
   }
 
+# send to content script
+c_snapshot = ->
+  {
+    type: EVENT.C_SNAPSHOT
+  }
+
+c_fetch_imgs = (payload) ->
+  {
+    type: EVENT.C_FETCH_IMGS
+    payload
+    # payload: [
+    #   {
+    #     r_id: ''
+    #     url: ''  # the url to fetch
+    #   }
+    # ]
+  }
+
+# send from content script
+ce_snapshot_done = (payload) ->
+  {
+    type: CONTENT_EVENT.SNAPSHOT_DONE
+    payload
+    # payload: {
+    #   html: ''  # html string of the document
+    #   c_meta: {}  # meta data by content script
+    # }
+  }
+
+ce_got_img = (payload) ->
+  {
+    type: CONTENT_EVENT.GOT_IMG
+    payload
+    # payload: {
+    #   r_id: ''
+    #   base64: ''  # binary image data in base64 encoding
+    # }
+  }
+
+ce_fetch_img_done = ->
+  {
+    type: CONTENT_EVENT.FETCH_IMG_DONE
+  }
+
+ce_error = (e) ->
+  {
+    type: CONTENT_EVENT.ERROR
+    payload: {
+      err: "#{e}"
+      stack: "#{e.stack}"
+    }
+  }
+
 module.exports = {
   tab_list
   fetch_tab_list
@@ -64,4 +117,10 @@ module.exports = {
   bg_log
 
   content
+  c_snapshot
+  c_fetch_imgs
+  ce_snapshot_done
+  ce_got_img
+  ce_fetch_img_done
+  ce_error
 }
