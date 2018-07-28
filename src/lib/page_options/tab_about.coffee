@@ -94,7 +94,8 @@ TabAbout = cC {
           </Typography>
           <div className={ cl.feature }>
             <Typography className={ cl.p }>
-              <strong>+</strong> Take a static snapshot of the dynamic page.
+              <strong>+</strong> Take a static snapshot of the dynamic page,
+                and save it as HTML, not picture.
             </Typography>
             <Typography className={ cl.p }>
               <strong>+</strong> Save the page as HTML, not picture.
@@ -157,10 +158,7 @@ TabAbout = cC {
           </Typography>
           <div className={ cl.feature }>
             <Typography className={ cl.p }>
-              <strong>+</strong> 获取动态页面的静态快照.
-            </Typography>
-            <Typography className={ cl.p }>
-              <strong>+</strong> 将页面保存为 HTML, 而不是图片.
+              <strong>+</strong> 获取动态页面的静态快照, 并将其保存为 HTML, 而不是图片.
             </Typography>
             <Typography className={ cl.p }>
               <strong>+</strong> 保留所有页面样式和图片, 保存的页面就和你当时看到的一样.
