@@ -1,6 +1,6 @@
 # config.coffee, pdso/src/lib/
 
-P_VERSION = 'pdso version 0.1.0-a2 test20180730 0101'
+P_VERSION = 'pdso version 0.1.0-a3 test20180730 0225'
 
 # max length limit of pack zip filename
 FILENAME_MAX_LENGTH = 127

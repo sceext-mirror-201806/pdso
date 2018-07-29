@@ -57,8 +57,37 @@ _snapshot_first = (_g) ->
   await send_to_content _g.tab_id, m_ac.c_snapshot()
 
 _get_missing_imgs = (_g, c_meta) ->
-  o = []
-  # TODO
+  {
+    cache
+    cache_data
+  } = _g.rc_g
+
+  o = [
+    #{
+    #  r_id: ''
+    #  url: ''
+    #}
+  ]
+  # build full_url to r_id index
+  index = {
+    #'full_url': 'r_id'
+  }
+  for r_id of cache
+    for i in cache[r_id].url
+      # NOTE not check r_id conflict here
+      index[i] = r_id
+  # check each image
+  for i in c_meta.res.img
+    r_id = index[i.full_url]
+    if ! r_id?
+      continue  # just ignore missing images
+    # check empty
+    if cache_data[r_id].length < 1
+      # add to list
+      o.push {
+        r_id
+        url: i.full_url  # need full_url here
+      }
   o
 
 # second step of one snappshot: check r_cache for missing images
@@ -78,7 +107,7 @@ _snapshot_second = (_g, payload) ->
 _on_got_img = (_g, payload) ->
   {
     r_id
-    base64: b64
+    base64
   } = payload
   data = base64_decode(base64)
   # check r_id already exist
@@ -152,8 +181,11 @@ snapshot_core = (tab_id, tab_g, rc_g) ->
         catch e
           _on_error tab_id, e
       when CONTENT_EVENT.GOT_IMG
-        # TODO error process
-        await _on_got_img _g, m.payload
+        try
+          await _on_got_img _g, m.payload
+        catch e
+          # ignore error
+          console.log "ERROR: snapshot_core._on_got_img: #{e}  #{e.stack}"
       when CONTENT_EVENT.FETCH_IMG_DONE
         try
           await _snapshot_last _g
@@ -174,7 +206,7 @@ snapshot_core = (tab_id, tab_g, rc_g) ->
         console.log "WARNING: unknow event from content script\n#{JSON.stringify m}"
 
   clean_up = ->
-    # TODO
+    # nothing todo
 
   # export API
   {

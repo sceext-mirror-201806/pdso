@@ -25,7 +25,7 @@ _gen_meta = (raw) ->
     missing  # missing resources
     checksum  # checksum of packed files
     zip_filename  # the final pack zip filename
-    pack_r_id_list  # r_id list of packed resources
+    pack_rl  # r_id list of packed resources
   } = raw
   # pdso_meta.json
   o = {
@@ -160,7 +160,7 @@ _gen_meta = (raw) ->
   # remove `meta.tab.rc.tab_id`
   Reflect.deleteProperty o.meta.tab.rc, 'tab_id'
 
-  for r_id in pack_r_id_list
+  for r_id in pack_rl
     o.meta.cache[r_id] = cache[r_id]
 
     one = o.meta.cache[r_id]
@@ -275,23 +275,23 @@ pack_zip = (raw_data) ->
     css: []
   }
   checksum = {}
-  pack_r_id_list = []
+  pack_rl = []
 
   # cache index: full_url to r_id
-  full_url_i = {
+  ui = {
     #'full_url': r_id
   }
   for r_id of cache
     for i in cache[r_id].url
       # check r_id conflict
-      old = full_url_i[i]
+      old = ui[i]
       if old?
         console.log "WARNING: pack_zip: r_id conflict [ #{r_id}, #{old} ]\n#{i}"
         # use bigger r_id
         if r_id > old
-          full_url_i[i] = r_id
+          ui[i] = r_id
       else
-        full_url_i[i] = r_id
+        ui[i] = r_id
 
   # JSZip init
   zip = new JSZip()
@@ -309,7 +309,7 @@ pack_zip = (raw_data) ->
 
   for i in c_meta.res.css
     # get r_id from full_url
-    r_id = full_url_i[i.full_url]
+    r_id = ui[i.full_url]
     # check missing
     if ! r_id?
       missing.css.push i
@@ -318,13 +318,13 @@ pack_zip = (raw_data) ->
     data = _concat_data cache_data[r_id]
     c = _pack_and_hash d, i.name, data
     checksum[i.name] = c
-    pack_r_id_list.push r_id
+    pack_rl.push r_id
 
   # pack image
   log.d_pack_img tab_id
 
   for i in c_meta.res.img
-    r_id = full_url_i[i.full_url]
+    r_id = ui[i.full_url]
     # check missing
     if ! r_id?
       missing.img.push i
@@ -337,13 +337,13 @@ pack_zip = (raw_data) ->
       if ! data?
         missing.img_empty.push i
         # add cache meta for this image
-        pack_r_id_list.push r_id
+        pack_rl.push r_id
         continue
     else
       data = _concat_data raw_data
     c = _pack_and_hash d, i.name, data
     checksum[i.name] = c
-    pack_r_id_list.push r_id
+    pack_rl.push r_id
 
   # warn missing
   log.warn_missing_res tab_id, missing
@@ -359,7 +359,7 @@ pack_zip = (raw_data) ->
     missing
     checksum
     zip_filename
-    pack_r_id_list
+    pack_rl
   }
   # pdso_meta.json
   meta_text = JSON.stringify meta
