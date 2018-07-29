@@ -20,8 +20,10 @@ cC = require 'create-react-class'
   IconButton
   Badge
 } = require '@material-ui/core'
-Icons = require '@material-ui/icons'
-IconM = require 'mdi-material-ui'
+# icons
+{ default: Icons_WarningRounded } = require '@material-ui/icons/WarningRounded'
+{ default: IconM_Download } = require 'mdi-material-ui/Download'
+{ default: IconM_FileOutline } = require 'mdi-material-ui/FileOutline'
 
 {
   gM
@@ -139,7 +141,7 @@ OneItem = cC {
       >
         <span>
           <IconButton disabled={ disabled } onClick={ @_on_snapshot } >
-            <IconM.Download />
+            <IconM_Download />
           </IconButton>
         </span>
       </Tooltip>
@@ -155,7 +157,7 @@ OneItem = cC {
     else
       (
         <Avatar>
-          <IconM.FileOutline />
+          <IconM_FileOutline />
         </Avatar>
       )
 
@@ -309,7 +311,7 @@ PageTabList = cC {
       <PaperM class_name={ @props.classes.paper_note }>
         <div className={ @props.classes.note }>
           <div className={ @props.classes.note_left }>
-            <Icons.WarningRounded color="error" fontSize="inherit" />
+            <Icons_WarningRounded color="error" fontSize="inherit" />
           </div>
           <div className={ @props.classes.note_right }>
             <Typography variant="headline" component="h3">

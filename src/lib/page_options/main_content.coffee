@@ -17,9 +17,13 @@ cC = require 'create-react-class'
 {
   withStyles
 } = require '@material-ui/core/styles'
-Icons = require '@material-ui/icons'
-IconM = require 'mdi-material-ui'
 { default: SwipeableViews } = require 'react-swipeable-views'
+# icons
+{ default: Icons_List } = require '@material-ui/icons/List'
+{ default: Icons_Assessment } = require '@material-ui/icons/Assessment'
+{ default: Icons_Info } = require '@material-ui/icons/Info'
+{ default: IconM_Lightbulb } = require 'mdi-material-ui/Lightbulb'
+{ default: IconM_LightbulbOutline } = require 'mdi-material-ui/LightbulbOutline'
 
 {
   UI_THEME_LIGHT
@@ -48,11 +52,11 @@ MainContent = cC {
   _render_bulb: ->
     if @props.theme is UI_THEME_DARK
       (
-        <IconM.Lightbulb />
+        <IconM_Lightbulb />
       )
     else
       (
-        <IconM.LightbulbOutline />
+        <IconM_LightbulbOutline />
       )
 
   _get_toggle_theme_tooltip: ->
@@ -118,9 +122,9 @@ MainContent = cC {
           textColor="primary"
           centered
         >
-          { @_render_one_tab gM('po_tab_list'), (<Icons.List />) }
-          { @_render_one_tab gM('po_tab_log'), (<Icons.Assessment />) }
-          { @_render_one_tab gM('po_tab_about'), (<Icons.Info />) }
+          { @_render_one_tab gM('po_tab_list'), (<Icons_List />) }
+          { @_render_one_tab gM('po_tab_log'), (<Icons_Assessment />) }
+          { @_render_one_tab gM('po_tab_about'), (<Icons_Info />) }
         </Tabs>
         <SwipeableViews
           axis="x"

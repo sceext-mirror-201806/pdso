@@ -99,10 +99,18 @@ const targets = [
     ],
     entry: {
       ui_icon_lib: [
-        '@material-ui/icons',
-        'mdi-material-ui',
+        //'@material-ui/icons',
+        '@material-ui/icons/Assessment',
+        '@material-ui/icons/Info',
+        '@material-ui/icons/List',
+        '@material-ui/icons/WarningRounded',
+        //'mdi-material-ui',
+        'mdi-material-ui/Download',
+        'mdi-material-ui/FileOutline',
+        'mdi-material-ui/Lightbulb',
+        'mdi-material-ui/LightbulbOutline',
 
-        //'typeface-roboto',  // FIXME
+        //'typeface-roboto',
       ],
     },
   },
