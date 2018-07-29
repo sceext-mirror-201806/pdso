@@ -130,7 +130,7 @@ snapshot_core = (tab_id, tab_g, rc_g) ->
         {
           err
           stack
-        }
+        } = m.payload
         e = {  # mock error object
           toString: ->
             "content script  #{err}"

@@ -16,11 +16,11 @@ _send = (m) ->
   await send_to m_ac.content(m)
 
 _snapshot = ->
-  # TODO
-  o = {  # TODO
-    html: 'TODO'
-    c_meta: {}
-  }
+  # snapshot the DOM
+  root = document.cloneNode(true)
+  # clean it
+  o = clean_dom root
+
   await _send m_ac.ce_snapshot_done(o)
 
 _fetch_one_img = () ->

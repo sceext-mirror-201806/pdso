@@ -21,7 +21,7 @@ err_no_rc = (tab_id) ->
   # TODO
 
 err_snapshot_end = (tab_id, e) ->
-  _log "( #{tab_id} ) ERROR: #{e}  #{e.stack}"
+  _log "( #{tab_id} ) ERROR: #{e}\n#{e.stack}"
 
 info_snapshot_start = (tab_id) ->
   _log "( #{tab_id} ) INFO: snapshot start"
