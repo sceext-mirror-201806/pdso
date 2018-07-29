@@ -61,6 +61,14 @@ is_url_disabled = (raw) ->
   else
     false
 
+# white list for enable tab switch
+is_newtab = (raw) ->
+  u = raw.trim()
+  if (u is 'about:newtab') or (u is 'about:blank')
+    true
+  else
+    false
+
 # check for `data:` URLs
 is_data_url = (raw) ->
   raw.trim().startsWith('data:')
@@ -123,6 +131,7 @@ module.exports = {
   send_to_content  # async
 
   is_url_disabled
+  is_newtab
   is_data_url
   base64_encode
   base64_decode

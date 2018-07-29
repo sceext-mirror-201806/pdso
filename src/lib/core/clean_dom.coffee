@@ -20,12 +20,15 @@ _visit_node = (root, f) ->
 _get_img_ext = (img) ->
   # TODO improve this method
   p = img.src.split('?')[0].split('/')
-  p = p[p.length - 1].split('.')
-  ext = p[p.length - 1].trim()
-  if ext.length > 0
-    ".#{ext}"
+  filename = p[p.length - 1]
+  # check ext
+  if filename.indexOf('.') != -1
+    p = filename.split('.')
+    ext = p[p.length - 1].trmi()
+    o = ".#{ext}"
   else
-    '.unknow.png'
+    o = '.unknow.png'
+  o
 
 clean_dom = (root) ->
   o = {
@@ -151,6 +154,11 @@ clean_dom = (root) ->
         o.c_meta.res.css.push one
       # <img src=""  />
       when 'img'
+        # check and ignore empty `src`
+        attr_src = node.getAttribute('src')
+        if (! attr_src?) or (attr_src.trim() is '')
+          return
+
         raw_url = $(node).attr('src')
         full_url = $(node).prop('src')
         # ignore `data:` url

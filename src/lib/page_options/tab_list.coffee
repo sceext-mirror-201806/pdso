@@ -28,6 +28,7 @@ cC = require 'create-react-class'
 {
   gM
   is_url_disabled
+  is_newtab
 } = require '../util'
 PaperM = require '../ui/paper_m'
 
@@ -72,12 +73,16 @@ OneItem = cC {
     one = @_get_one()
     is_url_disabled one.url
 
+  _is_newtab: ->
+    one = @_get_one()
+    is_newtab one.url
+
   _get_switch_tooltip: ->
     if @props.disabled
       gM 'pot_disable_tooltip_snapshot_doing'
     else if @_get_enable()
       gM 'pot_switch_tooltip_enable'
-    else if @_is_url_disabled()
+    else if @_is_url_disabled() and (! @_is_newtab())
       gM 'pot_switch_tooltip_url_disabled'
     else
       gM 'pot_switch_tooltip_disable'
@@ -86,6 +91,8 @@ OneItem = cC {
     # check reset
     if @props.disabled
       gM 'pot_disable_tooltip_snapshot_doing'
+    else if @_is_url_disabled()
+      gM 'pot_switch_tooltip_url_disabled'
     else if @_get_reset()
       gM 'pot_snapshot_tooltip_reset'
     else
@@ -131,6 +138,8 @@ OneItem = cC {
     if ! @_get_reset()
       disabled = true
     if @props.disabled
+      disabled = true
+    if @_is_url_disabled()
       disabled = true
     (
       <Tooltip
@@ -199,7 +208,7 @@ OneItem = cC {
     disabled = false
     if @props.disabled
       disabled = true
-    if @_is_url_disabled()
+    if @_is_url_disabled() and (! @_is_newtab())
       disabled = true
     (
       <ListItem>
