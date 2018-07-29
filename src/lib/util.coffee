@@ -75,6 +75,9 @@ base64_decode = (str) ->
 last_update = ->
   new Date().toISOString()
 
+json_clone = (raw) ->
+  JSON.parse JSON.stringify(raw)
+
 # html5 saveAs API
 saveAs = (blob, filename) ->
   obj_url = URL.createObjectURL blob
@@ -89,7 +92,10 @@ saveAs = (blob, filename) ->
     } = d
     if id != download_id
       return
-    if (state is 'interrupted') or (state is 'complete')
+    if ! state?
+      return
+    s = state.current
+    if (s is 'interrupted') or (s is 'complete')
       URL.revokeObjectURL obj_url
       browser.downloads.onChanged.removeListener _on_changed
       console.log "DEBUG: revoke object URL  #{obj_url}"
@@ -121,6 +127,7 @@ module.exports = {
   base64_encode
   base64_decode
   last_update
+  json_clone
 
   saveAs  # async
 }

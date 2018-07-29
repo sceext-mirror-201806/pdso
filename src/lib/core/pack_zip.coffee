@@ -5,10 +5,12 @@ sha256 = require 'fast-sha256'
 JSZip = require 'jszip'
 
 {
+  P_VERSION
   FILENAME_MAX_LENGTH
   PACK
 } = require '../config'
 {
+  json_clone
   last_update
 } = require '../util'
 log = require './pack_log'
@@ -27,6 +29,8 @@ _gen_meta = (raw) ->
   } = raw
   # pdso_meta.json
   o = {
+    # program version
+    pdso_version: P_VERSION
     # all meta data
     meta: {
       # meta data from tab_list
@@ -52,10 +56,14 @@ _gen_meta = (raw) ->
       cache: {
         #'r_id': {  # the request id
         #  # NOTE: clean `r_id` here
+        # NOTE clean `error: false` and `error_desc: null`
         #  error: false  # true if load error
         #  error_desc: ''  # error description
+        # NOTE clean `res_start: true`
         #  res_start: false  # after onResponseStarted
+        # NOTE clean `done: true`
         #  done: false  # true if response completed
+        # NOTE clean `data_done: true`
         #  data_done: false  # stream_filter.onstop()
         #  url: []  # url list of this resource
         #  method: ''
@@ -154,8 +162,21 @@ _gen_meta = (raw) ->
 
   for r_id in pack_r_id_list
     o.meta.cache[r_id] = cache[r_id]
+
+    one = o.meta.cache[r_id]
     # remove `cache[].r_id`
-    Reflect.deleteProperty o.meta.cache[r_id], 'r_id'
+    Reflect.deleteProperty one, 'r_id'
+    # clean some default values
+    if ! one.error
+      Reflect.deleteProperty one, 'error'
+    if ! one.error_desc?
+      Reflect.deleteProperty one, 'error_desc'
+    if one.res_start
+      Reflect.deleteProperty one, 'res_start'
+    if one.done
+      Reflect.deleteProperty one, 'done'
+    if one.data_done
+      Reflect.deleteProperty one, 'data_done'
 
   o.meta.c_meta = c_meta
   # clean: `meta.c_meta.clean_count.rm_on`, `[]` -> `.length`
@@ -164,7 +185,7 @@ _gen_meta = (raw) ->
   # clean: `meta.c_meta.clean_count.javascript_url`, `[]` -> `.length`
   o.meta.c_meta.clean_count.javascript_url = o.meta.c_meta.clean_count.javascript_url.length
 
-  o.missing = missing
+  o.meta.missing = missing
   o.checksum = checksum
   o.pack.zip = zip_filename
 
@@ -176,7 +197,7 @@ _gen_meta = (raw) ->
 _concat_data = (raw) ->
   o = []
   for i in raw
-    o.push Buffer.from raw
+    o.push Buffer.from(i)
   Buffer.concat o
 
 # pack one file in the zip, and hash it
@@ -184,7 +205,10 @@ _pack_and_hash = (d, filename, data) ->
   # data is a Buffer, d is zip.folder
   d.file filename, data
   b = Buffer.from sha256(data)
-  b.toString('hex')
+  {
+    size: data.length
+    sha256: b.toString 'hex'
+  }
 
 _zip_compress = (zip, comment) ->  # async
   await zip.generateAsync {
@@ -195,8 +219,8 @@ _zip_compress = (zip, comment) ->  # async
 
 # clean title for filename (replace bad chars)
 _clean_filename = (raw) ->
-  bad_chars = '/\\|><:?*" _'
-  to = '-'
+  bad_chars = '/\\|><:?*" -'
+  to = '_'
   o = ''
   for c in raw
     if bad_chars.indexOf(c) != -1
@@ -207,9 +231,6 @@ _clean_filename = (raw) ->
   if o.length > FILENAME_MAX_LENGTH
     console.log "WARNING: title ( #{o.length} ) too long !\n#{o}"
   o
-
-_gen_zip_dir = (raw) ->
-  "#{PACK.ZIP[0]}#{raw}"
 
 # eg: `20180729_204002`
 _gen_time_str = ->
@@ -224,8 +245,12 @@ _gen_time_str = ->
   time = d.toTimeString().split(' ')[0].split(':').join('')
   "#{year}#{month}#{day}_#{time}"
 
-_gen_zip_filename = (raw) ->
-  "#{PACK.ZIP[0]}#{raw}#{PACK.ZIP[1]}#{_gen_time_str()}#{PACK.ZIP[2]}"
+_gen_zip_dir = (raw) ->
+  "#{PACK.ZIP[0]}#{raw}#{PACK.ZIP[1]}#{_gen_time_str()}"
+
+_gen_zip_filename = (zip_dir) ->
+  # just add `.zip` suffix
+  "#{zip_dir}#{PACK.ZIP[2]}"
 
 pack_zip = (raw_data) ->
   {
@@ -241,7 +266,8 @@ pack_zip = (raw_data) ->
 
   # gen filename
   clean_title = _clean_filename tab_list.title
-  zip_filename = _gen_zip_filename clean_title
+  zip_dir = _gen_zip_dir clean_title
+  zip_filename = _gen_zip_filename zip_dir
 
   missing = {
     img: []
@@ -269,7 +295,7 @@ pack_zip = (raw_data) ->
 
   # JSZip init
   zip = new JSZip()
-  d = zip.folder _gen_zip_dir(clean_title)
+  d = zip.folder zip_dir
 
   # pack index.html
   log.d_pack_index tab_id
@@ -305,11 +331,13 @@ pack_zip = (raw_data) ->
       continue
     # check empty data
     raw_data = cache_data[r_id]
-    if raw_data.length < 0
+    if raw_data.length < 1
       # check ic
       data = ic[r_id]
       if ! data?
         missing.img_empty.push i
+        # add cache meta for this image
+        pack_r_id_list.push r_id
         continue
     else
       data = _concat_data raw_data
@@ -323,10 +351,11 @@ pack_zip = (raw_data) ->
   # pack meta
   log.d_pack_meta tab_id
 
-  meta = _gen_meta {
-    tab: tab_list
-    cache
-    c_meta
+  meta = _gen_meta {  # clone to protect meta data
+    tab: json_clone tab_list
+    cache: json_clone cache
+    c_meta: json_clone c_meta
+
     missing
     checksum
     zip_filename
@@ -337,9 +366,9 @@ pack_zip = (raw_data) ->
   meta_data = Buffer.from meta_text, 'utf-8'
   meta_hash = _pack_and_hash d, PACK.META, meta_data
 
-  console.log "DEBUG: sha256(meta) = #{meta_hash}"
+  console.log "DEBUG: sha256(meta) = #{meta_hash.sha256}"
   # pdso_meta.json.sha256.txt
-  _pack_and_hash d, PACK.META_HASH, Buffer.from(meta_hash)
+  _pack_and_hash d, PACK.META_HASH, Buffer.from(meta_hash.sha256 + '\n')
 
   # compress zip
   log.d_pack_compress tab_id
