@@ -39,8 +39,24 @@ d_fetch_imgs = (tab_id, n) ->
 info_pack_start = (tab_id) ->
   _log "( #{tab_id} ) INFO: start pack"
 
-warn_missing_res = (tab_id, list) ->
-  # TODO
+d_pack_index = (tab_id) ->
+  _log "( #{tab_id} ) DEBUG: pack index.html"
+
+d_pack_css = (tab_id) ->
+  _log "( #{tab_id} ) DEBUG: pack .css files"
+
+d_pack_img = (tab_id) ->
+  _log "( #{tab_id} ) DEBUG: pack images"
+
+d_pack_meta = (tab_id) ->
+  _log "( #{tab_id} ) DEBUG: pack pdso_meta.json"
+
+d_pack_compress = (tab_id) ->
+  _log "( #{tab_id} ) DEBUG: compress the zip file"
+
+warn_missing_res = (tab_id, missing) ->
+  # FIXME
+  _log "( #{tab_id} ) WARNING: missing resources\n#{JSON.stringify missing}"
 
 ok_snapshot_end = (tab_id, filename) ->
   _log "( #{tab_id} ) OK: save snapshot as #{filename}"
@@ -58,6 +74,11 @@ module.exports = {
   d_fetch_imgs
 
   info_pack_start
+  d_pack_index
+  d_pack_css
+  d_pack_img
+  d_pack_meta
+  d_pack_compress
   warn_missing_res
 
   ok_snapshot_end

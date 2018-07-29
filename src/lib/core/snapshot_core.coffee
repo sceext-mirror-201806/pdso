@@ -28,11 +28,13 @@
   send_to
   send_to_content
   m_send
+  base64_decode
+
+  saveAs
 } = require '../util'
 m_ac = require '../m_action'
 
 log = require './pack_log'
-rename_res = require './rename_res'
 pack_zip = require './pack_zip'
 
 
@@ -54,16 +56,22 @@ _snapshot_first = (_g) ->
   log.info_snapshot_dom_and_clean(_g.tab_id)
   await send_to_content _g.tab_id, m_ac.c_snapshot()
 
+_get_missing_imgs = (_g, c_meta) ->
+  o = []
+  # TODO
+  o
+
 # second step of one snappshot: check r_cache for missing images
 _snapshot_second = (_g, payload) ->
   {
     html
     c_meta
   } = payload
-  # TODO
-  to = []
-
-  # TODO
+  # save data
+  _g.html = html
+  _g.c_meta = c_meta
+  # fetch missing images
+  to = _get_missing_imgs _g, c_meta
   log.d_fetch_imgs(_g.tab_id, to.length)
   await send_to_content _g.tab_id, m_ac.c_fetch_imgs(to)
 
@@ -72,14 +80,30 @@ _on_got_img = (_g, payload) ->
     r_id
     base64: b64
   } = payload
-  # TODO
+  data = base64_decode(base64)
+  # check r_id already exist
+  if _g.ic[r_id]?
+    console.log "WARNING: snapshot_core._on_got_img: r_id [ #{r_id} ] already exist"
+  _g.ic[r_id] = data
 
 # the last step of one snapshot: start pack
 _snapshot_last = (_g) ->
   log.info_pack_start(_g.tab_id)
 
-  # TODO
-  log.ok_snapshot_end(_g.tab_id, 'TODO.zip')  # FIXME
+  o = await pack_zip {
+    tab_id: _g.tab_id
+    tab_list: _g.tab_g.list[_g.tab_id]
+    cache: _g.rc_g.cache
+    c_meta: _g.c_meta
+
+    html: _g.html
+    cache_data: _g.rc_g.cache_data
+    ic: _g.ic
+  }
+  log.ok_snapshot_end(_g.tab_id, o.filename)
+  # download the zip file
+  await saveAs o.blob, o.filename
+
   # enable the page
   m_send m_ac.snapshot_one_end(_g.tab_id)
 
@@ -97,6 +121,15 @@ snapshot_core = (tab_id, tab_g, rc_g) ->
     rc_g
 
     injected: false  # true if content script injected
+
+    # image cache, for GOT_IMG
+    ic: {
+      #'r_id': data  # Buffer
+    }
+
+    # data used to pack
+    html: null
+    c_meta: null
   }
 
   start = ->

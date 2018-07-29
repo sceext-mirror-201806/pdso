@@ -1,4 +1,5 @@
 # util.coffee, pdso/src/lib/
+{ Buffer } = require 'buffer'
 
 
 # i18n.getMessage
@@ -60,6 +61,48 @@ is_url_disabled = (raw) ->
   else
     false
 
+# check for `data:` URLs
+is_data_url = (raw) ->
+  raw.trim().startsWith('data:')
+
+base64_encode = (blob) ->
+  b = Buffer.from blob
+  b.toString 'base64'
+
+base64_decode = (str) ->
+  Buffer.from str, 'base64'
+
+last_update = ->
+  new Date().toISOString()
+
+# html5 saveAs API
+saveAs = (blob, filename) ->
+  obj_url = URL.createObjectURL blob
+  console.log "DEBUG: create object URL for [ #{filename} ]\n#{obj_url}"
+
+  download_id = null
+
+  _on_changed = (d) ->
+    {
+      id
+      state
+    } = d
+    if id != download_id
+      return
+    if (state is 'interrupted') or (state is 'complete')
+      URL.revokeObjectURL obj_url
+      browser.downloads.onChanged.removeListener _on_changed
+      console.log "DEBUG: revoke object URL  #{obj_url}"
+  browser.downloads.onChanged.addListener _on_changed
+  # start download
+  try
+    download_id = await browser.downloads.download {
+      url: obj_url
+      filename
+    }
+  catch e
+    browser.downloads.onChanged.removeListener _on_changed
+    throw e
 
 module.exports = {
   gM
@@ -74,5 +117,10 @@ module.exports = {
   send_to_content  # async
 
   is_url_disabled
+  is_data_url
+  base64_encode
+  base64_decode
+  last_update
 
+  saveAs  # async
 }

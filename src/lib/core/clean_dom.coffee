@@ -2,6 +2,10 @@
 
 jquery = require 'jquery'
 
+{
+  is_data_url
+} = require '../util'
+
 # TODO rename resources ?
 
 # TODO support <link > web fonts ?
@@ -125,14 +129,21 @@ clean_dom = (root) ->
       when 'link'
         if node.getAttribute('rel') != 'stylesheet'
           return
+
+        raw_url = $(node).attr('href')
+        full_url = $(node).prop('href')
+        # ignore `data:` url
+        if is_data_url full_url
+          return
+
         # TODO check css duplicated ?
         # update count
         o.c_meta.clean_count.res_css += 1
 
         one = {
           name: "s#{o.c_meta.clean_count.res_css}.css"
-          raw_url: $(node).attr('href')
-          full_url: $(node).prop('href')
+          raw_url
+          full_url
         }
         # modify href
         node.href = one.name
@@ -142,6 +153,9 @@ clean_dom = (root) ->
       when 'img'
         raw_url = $(node).attr('src')
         full_url = $(node).prop('src')
+        # ignore `data:` url
+        if is_data_url full_url
+          return
         # update count
         o.c_meta.clean_count.res_img += 1
         # check img duplicated

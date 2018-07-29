@@ -78,6 +78,7 @@ const targets = [
       ],
 
       content_lib: [
+        'buffer',
         'jquery',
       ],
     },

@@ -2,6 +2,9 @@
 
 P_VERSION = 'pdso version 0.1.0-a1 test20180727 1724'
 
+# max length limit of pack zip filename
+FILENAME_MAX_LENGTH = 127
+
 # const
 UI_THEME_LIGHT = 'light'
 UI_THEME_DARK = 'dark'
@@ -65,8 +68,27 @@ CONTENTS = {
   main: '/js/contents.js'
 }
 
+# filename for pack_zip
+PACK = {
+  META: 'pdso_meta.json'
+  # sha256 hash checksum for meta json
+  META_HASH: 'pdso_meta.json.sha256.txt'
+  # main html file (the document)
+  INDEX: 'index.html'
+  # the final pack zip filename
+  ZIP: [
+    'pdso-'
+    # clean title
+    '-'
+    # time to seconds, eg: `20180729_204002`
+    '.zip'
+  ]
+}
+
 module.exports = {
   P_VERSION
+
+  FILENAME_MAX_LENGTH
 
   UI_THEME_LIGHT
   UI_THEME_DARK
@@ -77,4 +99,6 @@ module.exports = {
   EVENT
   CONTENT_EVENT
   CONTENTS
+
+  PACK
 }
