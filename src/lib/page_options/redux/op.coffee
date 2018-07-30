@@ -69,6 +69,10 @@ set_tab_enable = (tab_id, enable) ->
   (dispatch, getState) ->
     await m_send m_ac.set_tab_enable(tab_id, enable)
 
+add_favicon_blacklist = (tab_id, u) ->
+  (dispatch, getState) ->
+    await m_send m_ac.add_favicon_blacklist(tab_id, u)
+
 set_enable_all = (enable) ->
   (dispatch, getState) ->
     {
@@ -94,6 +98,7 @@ module.exports = {
 
   on_recv  # thunk
   set_tab_enable  # thunk
+  add_favicon_blacklist  # thunk
   set_enable_all  # thunk
   snapshot_one  # thunk
 }

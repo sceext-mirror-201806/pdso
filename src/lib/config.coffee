@@ -1,6 +1,6 @@
 # config.coffee, pdso/src/lib/
 
-P_VERSION = 'pdso version 0.1.0-a3 test20180730 0225'
+P_VERSION = 'pdso version 0.1.0-a4 test20180730 1604'
 
 # max length limit of pack zip filename
 FILENAME_MAX_LENGTH = 127
@@ -30,6 +30,9 @@ EVENT = {
 
   # enable/disable one tab in background main
   SET_TAB_ENABLE: 'set_tab_enable'
+
+  # for tab favicon load fail
+  ADD_FAVICON_BLACKLIST: 'add_favicon_blacklist'
 
   # take a snapshot of one tab
   SNAPSHOT_ONE_TAB: 'snapshot_one_tab'

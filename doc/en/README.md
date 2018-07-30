@@ -12,15 +12,13 @@ Take a static snapshot of the page DOM,
 
 ## Features
 
-+ *(TODO)* Take a static snapshot of the dynamic page, and save it as HTML,
-  not picture.
++ Take a static snapshot of the dynamic page, and save it as HTML, not picture.
 
-+ *(TODO)* Keep all the styles and images, what you see is what you get.
++ Keep all the styles and images, what you see is what you get.
 
-+ *(TODO)* Remove all the scripts in saved HTML.
++ Remove all the scripts in saved HTML.
 
-+ *(TODO)* Pack all the files (the HTML file, images, CSS files)
-  in a zip archive.
++ Pack all the files (the HTML file, images, CSS files) in a zip archive.
 
 
 ## Installation and usage
@@ -28,17 +26,28 @@ Take a static snapshot of the page DOM,
 TODO
 
 
+**Suggestions**: Please use the latest Firefox to view the saved snapshot to
+ get the best display effect.
+
+
 ## How it works
 
 TODO
 
 
-## Roadmap
+## Known issues
 
-+ *(TODO)* Add support for `<frame>` and `<iframe>`.
++ Currently this program can not pack all the resources of a page,
+   and can not deal with all the circumstances.
+  So the snapshot may look some what different from the original page.
+
+
+## Roadmap
 
 + *(TODO)* Add support for resources loaded by CSS, such as background image,
   web font, etc.  (parse CSS)
+
++ *(TODO)* Add support for `<frame>` and `<iframe>`.
 
 + *(TODO)* Capture `<canvas>` and save it as picture.
 

@@ -27,6 +27,8 @@ cC = require 'create-react-class'
 
 {
   gM
+  lang_is_zh
+
   is_url_disabled
   is_newtab
 } = require '../util'
@@ -43,10 +45,15 @@ OneItem = cC {
 
     on_set_tab_enable: PropTypes.func.isRequired
     on_snapshot: PropTypes.func.isRequired
+    on_favicon_load_err: PropTypes.func.isRequired
   }
 
   _on_toggle: ->
     @props.on_set_tab_enable(@props.tab_id, ! @_get_enable())
+
+  _on_favicon_load_err: ->
+    one = @_get_one()
+    @props.on_favicon_load_err @props.tab_id, one.favicon_url
 
   _on_snapshot: ->
     @props.on_snapshot @props.tab_id
@@ -163,10 +170,14 @@ OneItem = cC {
 
   _render_avatar: ->
     one = @_get_one()
-    # try render favicon
-    if one.favicon_url?
+    # check blacklist
+    u = one.favicon_url
+    if u?
+      if one.favicon_url_blacklist.indexOf(u) != -1
+        u = null
+    if u?
       (
-        <Avatar src={ one.favicon_url } />
+        <Avatar src={ u } onError={ @_on_favicon_load_err } />
       )
     else
       (
@@ -257,6 +268,7 @@ PageTabList = cC {
     on_set_tab_enable: PropTypes.func.isRequired
     on_set_enable_all: PropTypes.func.isRequired
     on_snapshot: PropTypes.func.isRequired
+    on_favicon_load_err: PropTypes.func.isRequired
   }
 
   _on_toggle_enable_all: ->
@@ -297,6 +309,7 @@ PageTabList = cC {
             disabled={ @props.disable_tab[i] }
             on_set_tab_enable={ @props.on_set_tab_enable }
             on_snapshot={ @props.on_snapshot }
+            on_favicon_load_err={ @props.on_favicon_load_err }
           />
         )
       body = (
@@ -309,16 +322,56 @@ PageTabList = cC {
       </Paper>
     )
 
-  _render_text_n: (raw) ->
-    o = []
-    n = raw.split('\n')
-    for i in [0... n.length]
-      o.push(
-        <Typography key={ i } className={ @props.classes.p }>
-          { n[i] }
+  _render_privacy_note_content_en: ->
+    cl = @props.classes
+    (
+      <React.Fragment>
+        <Typography className={ cl.p }>
+          The page snapshot file saved by this program may contain some personal data.
+          So please check what data is included before share the snapshot with others.
         </Typography>
-      )
-    o
+        <Typography className={ cl.p }>
+          This program will not send any data to network,
+           it will only store all the collected data in the local page snapshot file.
+          So how to handle the data, it&apos;s up to you.
+        </Typography>
+        <Typography className={ cl.p }>
+          <strong>Suggestions:</strong>
+          Use the <code>Private Browsing</code> (incognito) function of Firefox
+            and do not login any online account will help to reduce the risk.
+          But there is still some risk.
+        </Typography>
+      </React.Fragment>
+    )
+
+  _render_privacy_note_content_zh_CN: ->
+    cl = @props.classes
+    (
+      <React.Fragment>
+        <Typography className={ cl.p }>
+          <strong>注意:</strong>
+          使用本程序保存的页面快照文件中可能会包含一些个人隐私数据.
+          所以, 将保存的页面快照分享给别人之前, 请检查其中包含了哪些数据.
+        </Typography>
+        <Typography className={ cl.p }>
+          本程序不会将任何数据通过网络发送,
+           只会把收集到的所有数据保存在本地的页面快照文件中.
+          如何处理这些数据, 这取决于你自己.
+        </Typography>
+        <Typography className={ cl.p }>
+          <strong>建议:</strong>
+          使用 Firefox 的 <code>隐私浏览模式</code> 功能, 并且不登录任何在线账户,
+           有助于减小这种风险.
+          但是风险仍然存在.
+        </Typography>
+      </React.Fragment>
+    )
+
+  _render_privacy_note_content: ->
+    if lang_is_zh()
+      @_render_privacy_note_content_zh_CN()
+    else
+      @_render_privacy_note_content_en()
 
   _render_privacy_note: ->
     (
@@ -331,11 +384,82 @@ PageTabList = cC {
             <Typography variant="headline" component="h3">
               { gM 'pot_privacy_note' }
             </Typography>
-            { @_render_text_n gM('pot_privacy_note_text') }
+            { @_render_privacy_note_content() }
           </div>
         </div>
       </PaperM>
     )
+
+  _render_enable_all_desc_en: ->
+    cl = @props.classes
+    (
+      <div className={ cl.enable_all_desc }>
+        <Typography>
+          To keep the appearance of the page,
+           we should not only save the HTML of the page DOM,
+           but also different referenced resources in the document,
+           such as images, CSS files, etc.
+          To able to save these resources,
+           this program records all the resources loaded by a page in the background.
+          After <code>enable the tab</code>, this program will record those pages.
+          (No record when disabled. )
+        </Typography>
+        <Typography>
+          Recording all the resources loaded by pages may consume a great deal of memory,
+           and slow down the whole browser.
+          So this program disables each tab by default.
+          You must enable the tab by hand before a snapshot.
+        </Typography>
+        <Typography>
+          To avoid leaving out some resources,
+           the recording must start before the page starts load.
+          So after enable a tab but before the page reset (such as refresh),
+           a snapshot can not be performed.
+          You usually need to refresh by hand before a snapshot.
+        </Typography>
+        <Typography>
+          But if the tab is enabaled by default,
+           you can snapshot any time without refresh first,
+           because this program is always recording all the resources.
+          So this option is actually a choose between convenience (enabled by default)
+            or speed and efficiency (disabled by default).
+        </Typography>
+      </div>
+    )
+
+  _render_enable_all_desc_zh_CN: ->
+    cl = @props.classes
+    (
+      <div className={ cl.enable_all_desc }>
+        <Typography>
+          为了使保存的页面和当时看到的一样, 除了保存页面 DOM 对应的 HTML 之外,
+           还要把其中引用的各种相关资源一并保存起来, 比如图片, CSS 样式文件, 等.
+          为了能够保存这些资源, 本程序需要在后台默默记录一个页面加载的所有资源. {' '}
+          <code>启用标签页</code> 后, 本程序就会对相应页面进行记录.
+          (禁用时不会记录. )
+        </Typography>
+        <Typography>
+          记录页面加载的所有资源可能会消耗大量内存, 并拖慢浏览器的整体运行速度,
+           所以本程序默认禁用每个标签页, 快照之前需要手动启用相应标签页.
+        </Typography>
+        <Typography>
+          为了避免漏掉资源, 必须从页面一开始加载时, 就进行相应记录.
+          也就是说, 启用页面后但页面重置 (比如刷新) 之前, 不能进行快照.
+          所以, 启用页面之后, 通常需要手动刷新页面, 才能快照.
+        </Typography>
+        <Typography className={ cl.last }>
+          而如果默认启用了标签页, 由于本程序始终在记录加载的资源, 也就无需手动刷新,
+           随时进行快照.
+          所以, 本功能其实是在使用方便 (默认启用) 和速度效率 (默认禁用) 之间做出选择.
+        </Typography>
+      </div>
+    )
+
+  _render_enable_all_desc: ->
+    if lang_is_zh()
+      @_render_enable_all_desc_zh_CN()
+    else
+      @_render_enable_all_desc_en()
 
   _render_enable_all: ->
     (
@@ -346,7 +470,7 @@ PageTabList = cC {
           </Typography>
           <Switch checked={ @props.g.enable_all } onChange={ @_on_toggle_enable_all } color="primary" />
         </div>
-        { @_render_text_n gM('pot_enable_all_desc') }
+        { @_render_enable_all_desc() }
       </PaperM>
     )
 
@@ -418,11 +542,32 @@ styles = (theme) ->
     }
     p: {
       marginTop: theme.spacing.unit
+      '& strong': {
+        paddingRight: theme.spacing.unit
+      }
+      '& code': {
+        backgroundColor: theme.palette.background.default
+      }
     }
     incognito: {
       color: theme.palette.text.secondary
       paddingRight: theme.spacing.unit
     }
+    enable_all_desc: {
+      paddingRight: theme.spacing.unit
+      '& p': {
+        marginTop: theme.spacing.unit
+        marginBottom: theme.spacing.unit * 1.5
+        lineHeight: '1.7em'
+        '& code': {
+          backgroundColor: theme.palette.background.default
+        }
+        '&$last': {
+          marginBottom: 0
+        }
+      }
+    }
+    last: {}
   }
 
 # for redux
@@ -446,6 +591,8 @@ mapDispatchToProps = (dispatch, props) ->
     dispatch op.set_enable_all(enable)
   o.on_snapshot = (tab_id) ->
     dispatch op.snapshot_one(tab_id)
+  o.on_favicon_load_err = (tab_id, u) ->
+    dispatch op.add_favicon_blacklist(tab_id, u)
   o
 
 module.exports = compose(

@@ -78,8 +78,8 @@ TabAbout = cC {
                 including CSS styles and images, no script.
               </Typography>
               <Typography className={ [ cl.p, cl.p_last ] }>
-                (An extension for <strong>Desktop</strong> and
-                <strong>Android</strong> <code>Firefox</code>)
+                (An extension for <strong>Desktop</strong> and {' '}
+                 <strong>Android</strong> <code>Firefox</code>)
               </Typography>
             </div>
             <div className={ cl.right }>
@@ -98,9 +98,6 @@ TabAbout = cC {
                 and save it as HTML, not picture.
             </Typography>
             <Typography className={ cl.p }>
-              <strong>+</strong> Save the page as HTML, not picture.
-            </Typography>
-            <Typography className={ cl.p }>
               <strong>+</strong> Keep all the styles and images, what you see is what you get.
             </Typography>
             <Typography className={ cl.p }>
@@ -111,9 +108,23 @@ TabAbout = cC {
                 in a zip archive.
             </Typography>
           </div>
-          {
-            # TODO add more ?
-          }
+
+          <Typography variant="headline" component="h4" className={ cl.h2 }>
+            Suggestions
+          </Typography>
+          <Typography className={ cl.p2 }>
+            Please use the latest Firefox to view the saved snapshot to get the
+              best display effect.
+          </Typography>
+
+          <Typography variant="headline" component="h4" className={ cl.h2 }>
+            Known issues
+          </Typography>
+          <Typography className={ cl.p2 }>
+            Currently this program can not pack all the resources of a page,
+             and can not deal with all the circumstances.
+            So the snapshot may look some what different from the original page.
+          </Typography>
         </PaperM>
       </React.Fragment>
     )
@@ -170,9 +181,21 @@ TabAbout = cC {
               <strong>+</strong> 将所有文件 (HTML 文件, 图片, CSS 文件) 打包保存在一个 zip 压缩包中.
             </Typography>
           </div>
-          {
-            # TODO add more ?
-          }
+
+          <Typography variant="headline" component="h4" className={ cl.h2 }>
+            建议
+          </Typography>
+          <Typography className={ cl.p2 }>
+            请使用最新版 Firefox 浏览器查看保存的快照, 以便获得最佳显示效果.
+          </Typography>
+
+          <Typography variant="headline" component="h4" className={ cl.h2 }>
+            已知问题
+          </Typography>
+          <Typography className={ cl.p2 }>
+            目前本程序无法打包页面的所有资源, 并不能处理所有情况.
+            所以快照可能看起来与原始页面有一些区别.
+          </Typography>
         </PaperM>
       </React.Fragment>
     )
@@ -267,6 +290,16 @@ styles = (theme) ->
       '& img': {
         width: '12em'
       }
+    }
+
+    p2: {
+      marginTop: theme.spacing.unit * 1.5
+      marginBottom: 0
+    }
+    h2: {
+      fontSize: '1.3rem'
+      marginTop: theme.spacing.unit * 2
+      marginBottom: 0
     }
   }
 

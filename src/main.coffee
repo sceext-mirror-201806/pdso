@@ -33,6 +33,12 @@ _on_recv = (m, sender, sendResponse) ->
         enable
       } = m.payload
       await _g.tl.set_tab_enable tab_id, enable
+    when EVENT.ADD_FAVICON_BLACKLIST
+      {
+        tab_id
+        u
+      } = m.payload
+      await _g.tl.add_to_favicon_blacklist tab_id, u
     when EVENT.SNAPSHOT_ONE_TAB
       tab_id = m.payload
       await _g.tl.snapshot_one tab_id

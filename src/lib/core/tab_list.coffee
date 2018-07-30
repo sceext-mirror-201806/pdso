@@ -28,6 +28,9 @@ tab_list = ->
       #  url: ''  # page url
       #
       #  favicon_url: ''  # WARNING not support on Firefox Android
+      #  favicon_url_blacklist: []  # for page icon load fail
+      #
+      #
       #  loading_status: ''  # [ 'loading', 'complete' ]
       #
       #  # loading status from browser.webNavigation API, possible values:
@@ -62,7 +65,7 @@ tab_list = ->
     if (! tab_id?) or (tab_id is browser.tabs.TAB_ID_NONE)
       return  # ignore this tab
     # get tab info
-    one = {
+    one = {  # obj for create tab data
       id: tab.id
       incognito: tab.incognito
 
@@ -70,14 +73,21 @@ tab_list = ->
       url: tab.url
 
       favicon_url: tab.favIconUrl
+      favicon_url_blacklist: []  # empty list
+
       loading_status: tab.status
+      navigation_status: ''  # no status
+
+      rc: null  # no rc now
     }
     # check tab data exist
     if ! _g.list[tab_id]?
-      one.rc = null  # no rc now
-      one.navigation_status = ''  # no status
       _g.list[tab_id] = one
     else  # already exist, just update info
+      # remove property
+      Reflect.deleteProperty one, 'favicon_url_blacklist'
+      Reflect.deleteProperty one, 'navigation_status'
+
       old = _g.list[tab_id]
       _g.list[tab_id] = Object.assign {}, old, one
     # return tab_id
@@ -155,6 +165,8 @@ tab_list = ->
     m_send m_ac.snapshot_one_end tab_id
     # update navigation_status
     _g.list[tab_id].navigation_status = 'before'
+    # reset favicon blacklist
+    _g.list[tab_id].favicon_url_blacklist = []
     # check tab enabled
     if _g.enable[tab_id]
       # TODO support no reset on a tab ?
@@ -230,6 +242,11 @@ tab_list = ->
       _g.enable[tab_id] = false
     fetch()  # update data
 
+  add_to_favicon_blacklist = (tab_id, u) ->
+    if _g.list[tab_id].favicon_url_blacklist.indexOf(u) is -1
+      _g.list[tab_id].favicon_url_blacklist.push u
+      fetch()  # update data
+
   set_enable_all = (enable) ->
     _g.enable_all = enable
     fetch()  # update data
@@ -258,6 +275,7 @@ tab_list = ->
     init  # async
     fetch
     set_tab_enable
+    add_to_favicon_blacklist
     set_enable_all
     first_init_enable_all
 

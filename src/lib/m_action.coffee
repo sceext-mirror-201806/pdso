@@ -26,6 +26,15 @@ set_tab_enable = (tab_id, enable) ->
     }
   }
 
+add_favicon_blacklist = (tab_id, u) ->
+  {
+    type: EVENT.ADD_FAVICON_BLACKLIST
+    payload: {
+      tab_id: Number.parseInt tab_id
+      u
+    }
+  }
+
 snapshot_one_tab = (payload) ->
   {
     type: EVENT.SNAPSHOT_ONE_TAB
@@ -112,6 +121,7 @@ module.exports = {
   tab_list
   fetch_tab_list
   set_tab_enable
+  add_favicon_blacklist
   snapshot_one_tab
   snapshot_one_end
   bg_log

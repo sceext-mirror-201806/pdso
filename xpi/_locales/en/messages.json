@@ -97,19 +97,9 @@
     "description": "title of the privacy note part"
   },
 
-  "pot_privacy_note_text": {
-    "message": "The page snapshot file saved by this program may contain some personal data. So please check what data is included before share the snapshot with others.\nThis program will not send any data to network, it will only store all the collected data in the local page snapshot file. So how to handle the data, it's up to you.",
-    "description": "the privacy note text"
-  },
-
   "pot_enable_all": {
     "message": "Enable for all pages by default",
     "description": "title of enable for all"
-  },
-
-  "pot_enable_all_desc": {
-    "message": "TODO",
-    "description": "description text of enable for all"
   },
 
   "po_no_log": {
