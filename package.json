@@ -1,6 +1,6 @@
 {
   "name": "pdso",
-  "version": "0.1.0-a1",
+  "version": "0.1.0-a5",
   "description": "Page DOM Snapshot for Offline  (an extension for Desktop and Android Firefox)",
   "license": "GPL-3.0+",
   "homepage": "https://bitbucket.org/eisf/pdso/",
@@ -17,7 +17,7 @@
     "analyze-bundle-ui": "webpack-bundle-analyzer -p 8908 xpi/js/profile_ui.json",
     "analyze-bundle-main": "webpack-bundle-analyzer -p 8918 xpi/js/profile_main.json",
     "analyze-bundle-content": "webpack-bundle-analyzer -p 8928 xpi/js/profile_content.json",
-    "build-release": "webpack --config build/webpack-lib.config.js --config-name lib --mode production &&  webpack --config build/webpack-lib.config.js --config-name ui_icon_lib --mode production &&  webpack --config webpack.config.js --mode production"
+    "build-release": "webpack --config build/webpack-lib.config.js --config-name lib &&  webpack --config build/webpack-lib.config.js --config-name ui_icon_lib &&  webpack --config webpack.config.js --mode production"
   },
   "dependencies": {
     "@material-ui/core": "^1.4.1",

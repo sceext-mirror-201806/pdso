@@ -87,6 +87,7 @@ tab_list = ->
       # remove property
       Reflect.deleteProperty one, 'favicon_url_blacklist'
       Reflect.deleteProperty one, 'navigation_status'
+      Reflect.deleteProperty one, 'rc'  # fix bug here
 
       old = _g.list[tab_id]
       _g.list[tab_id] = Object.assign {}, old, one

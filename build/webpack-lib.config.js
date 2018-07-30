@@ -23,7 +23,8 @@ function _common() {
       library: '[name]_[hash]',
     },
 
-    mode: 'development',
+    //mode: 'development',
+    mode: 'production',
   };
 }
 
