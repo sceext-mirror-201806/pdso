@@ -96,7 +96,7 @@ MainContent = cC {
   _render_one_tab: (label, icon) ->
     tab_style = {
       minHeight: '54px'
-      minWidth: '144px'
+      minWidth: '108px'
     }
 
     (

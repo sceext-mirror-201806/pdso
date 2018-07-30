@@ -16,6 +16,12 @@ lang_is_zh = ->
   else
     false
 
+is_android = ->
+  if window.navigator.userAgent.indexOf('Android') != -1
+    true
+  else
+    false
+
 # raw ISO time string to log time string to render
 to_log_time = (raw) ->
   t = new Date raw
@@ -122,6 +128,7 @@ saveAs = (blob, filename) ->
 module.exports = {
   gM
   lang_is_zh
+  is_android
   to_log_time
 
   m_send  # async

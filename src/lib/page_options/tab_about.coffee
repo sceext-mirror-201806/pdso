@@ -17,6 +17,7 @@ cC = require 'create-react-class'
 {
   gM
   lang_is_zh
+  is_android
 } = require '../util'
 PaperM = require '../ui/paper_m'
 
@@ -54,40 +55,95 @@ TabAbout = cC {
       <img src={ LOGO_IMG } alt="pdso logo" />
     )
 
+  _render_top_first: ->
+    cl = @props.classes
+    (
+      <React.Fragment>
+        <Typography variant="headline" component="h3">
+          { gM 'po_about_title' }
+        </Typography>
+        <Typography className={ [ cl.p, cl.a ] }>
+          <a href={ HOMEPAGE_URL }>{ HOMEPAGE_URL }</a>
+        </Typography>
+
+        <Typography className={ [ cl.p, cl.version ] }>
+          <code>{ P_VERSION }</code>
+        </Typography>
+      </React.Fragment>
+    )
+
+  _render_top_second_en: ->
+    cl = @props.classes
+    (
+      <React.Fragment>
+        <Typography className={ cl.p }>
+          Take a static snapshot of the page DOM,
+          (modify and) save it for offline viewing,
+          including CSS styles and images, no script.
+        </Typography>
+        <Typography className={ [ cl.p, cl.p_last ] }>
+          (An extension for <strong>Desktop</strong> and {' '}
+           <strong>Android</strong> <code>Firefox</code>)
+        </Typography>
+      </React.Fragment>
+    )
+
+  _render_top_second_zh_CN: ->
+    cl = @props.classes
+    (
+      <div className={ cl.first }>
+        <Typography className={ cl.p }>
+          对页面的 DOM 做一个静态快照, (修改并) 保存起来, 以供离线查看,
+          包含 CSS 样式和图片, 不含脚本程序代码 (JavaScript).
+        </Typography>
+        <Typography className={ [ cl.p, cl.p_last ] }>
+          (用于桌面和 Android 版 Firefox 的浏览器扩展. )
+        </Typography>
+      </div>
+    )
+
+  _render_top_second: ->
+    if lang_is_zh()
+      @_render_top_second_zh_CN()
+    else
+      @_render_top_second_en()
+
+  _render_top_desktop: ->
+    cl = @props.classes
+    (
+      <div className={ cl.top }>
+        <div className={ cl.left }>
+          { @_render_top_first() }
+          { @_render_top_second() }
+        </div>
+        <div className={ cl.right }>
+          { @_render_logo() }
+        </div>
+      </div>
+    )
+
+  _render_top_android: ->
+    cl = @props.classes
+    (
+      <div className={ cl.top_android }>
+        { @_render_top_first() }
+        <div className={ cl.logo_android }>
+          { @_render_logo() }
+        </div>
+        { @_render_top_second() }
+      </div>
+    )
+
+  _render_top: ->
+    if is_android()
+      @_render_top_android()
+    else
+      @_render_top_desktop()
+
   _render_en: ->
     cl = @props.classes
     (
       <React.Fragment>
-        <PaperM>
-          <div className={ cl.top }>
-            <div className={ cl.left }>
-              <Typography variant="headline" component="h3">
-                pdso: Page DOM Snapshot for Offline
-              </Typography>
-              <Typography className={ [ cl.p, cl.a ] }>
-                <a href={ HOMEPAGE_URL }>{ HOMEPAGE_URL }</a>
-              </Typography>
-
-              <Typography className={ [ cl.p, cl.version ] }>
-                <code>{ P_VERSION }</code>
-              </Typography>
-
-              <Typography className={ cl.p }>
-                Take a static snapshot of the page DOM,
-                (modify and) save it for offline viewing,
-                including CSS styles and images, no script.
-              </Typography>
-              <Typography className={ [ cl.p, cl.p_last ] }>
-                (An extension for <strong>Desktop</strong> and {' '}
-                 <strong>Android</strong> <code>Firefox</code>)
-              </Typography>
-            </div>
-            <div className={ cl.right }>
-              { @_render_logo() }
-            </div>
-          </div>
-        </PaperM>
-
         <PaperM>
           <Typography variant="headline" component="h3">
             Features
@@ -134,36 +190,6 @@ TabAbout = cC {
     (
       <React.Fragment>
         <PaperM>
-          <div className={ cl.top }>
-            <div className={ cl.left }>
-              <Typography variant="headline" component="h3">
-                pdso 页面离线快照
-              </Typography>
-              <Typography className={ [ cl.p, cl.a ] }>
-                <a href={ HOMEPAGE_URL }>{ HOMEPAGE_URL }</a>
-              </Typography>
-
-              <Typography className={ [ cl.p, cl.version ] }>
-                <code>{ P_VERSION }</code>
-              </Typography>
-
-              <div className={ cl.first }>
-                <Typography className={ cl.p }>
-                  对页面的 DOM 做一个静态快照, (修改并) 保存起来, 以供离线查看,
-                  包含 CSS 样式和图片, 不含脚本程序代码 (JavaScript).
-                </Typography>
-                <Typography className={ [ cl.p, cl.p_last ] }>
-                  (用于桌面和 Android 版 Firefox 的浏览器扩展. )
-                </Typography>
-              </div>
-            </div>
-            <div className={ cl.right }>
-              { @_render_logo() }
-            </div>
-          </div>
-        </PaperM>
-
-        <PaperM>
           <Typography variant="headline" component="h3">
             特色
           </Typography>
@@ -207,14 +233,22 @@ TabAbout = cC {
       @_render_en()
 
   _render_license: ->
+    cl = @props.classes
+    c = cl.license
+    if is_android()
+      c = "#{cl.license} #{cl.android}"
+
     <PaperM>
       <Typography variant="headline" component="h3">LICENSE</Typography>
-      <pre className={ @props.classes.license }>{ LICENSE_TEXT }</pre>
+      <pre className={ c }>{ LICENSE_TEXT }</pre>
     </PaperM>
 
   render: ->
     (
       <div className={ @props.classes.root }>
+        <PaperM>
+          { @_render_top() }
+        </PaperM>
         { @_render_content() }
         { @_render_license() }
       </div>
@@ -230,7 +264,13 @@ styles = (theme) ->
       overflow: 'auto'
       color: theme.tb.color_sec
       backgroundColor: theme.tb.color_bg_sec
+
+      '&$android': {
+        fontSize: '0.8em'
+      }
     }
+    android: {}
+
     first: {
       '& p': {
         letterSpacing: '0.05em'
@@ -289,6 +329,15 @@ styles = (theme) ->
       marginLeft: theme.spacing.unit
       '& img': {
         width: '12em'
+      }
+    }
+
+    top_android: {}
+    logo_android: {
+      display: 'flex'
+      justifyContent: 'center'
+      '& img': {
+        width: '16em'
       }
     }
 

@@ -18,6 +18,11 @@
     "description": "title of options page"
   },
 
+  "po_about_title": {
+    "message": "pdso 页面离线快照",
+    "description": "title of first part of tab_about"
+  },
+
   "po_theme_is_dark": {
     "message": "当前是深色主题",
     "description": "for PageMain.AppBar, when theme is dark"
