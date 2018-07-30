@@ -64,7 +64,7 @@ is_url_disabled = (raw) ->
 # white list for enable tab switch
 is_newtab = (raw) ->
   u = raw.trim()
-  if (u is 'about:newtab') or (u is 'about:blank')
+  if (u is 'about:newtab') or (u is 'about:blank') or (u is 'about:home')
     true
   else
     false

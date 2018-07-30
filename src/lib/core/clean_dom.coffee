@@ -24,10 +24,11 @@ _get_img_ext = (img) ->
   # check ext
   if filename.indexOf('.') != -1
     p = filename.split('.')
-    ext = p[p.length - 1].trmi()
+    ext = p[p.length - 1].trim()
     o = ".#{ext}"
   else
     o = '.unknow.png'
+    #o = ''
   o
 
 clean_dom = (root) ->
@@ -122,7 +123,7 @@ clean_dom = (root) ->
     root.head.insertBefore(meta, root.head.children[0])
 
   # index to avoid duplicated imgs
-  _img_full_url_i = {
+  _img_ui = {
     #'FULL_URL': 1  # index
   }
   # check all css and img
@@ -167,7 +168,7 @@ clean_dom = (root) ->
         # update count
         o.c_meta.clean_count.res_img += 1
         # check img duplicated
-        i = _img_full_url_i[full_url]
+        i = _img_ui[full_url]
         if i?
           one = o.c_meta.res.img[i]
           # check raw_url match
@@ -175,13 +176,14 @@ clean_dom = (root) ->
             console.log "WARNING: img.raw_url [ #{raw_url} ] != [ #{one.raw_url} ], full_url = #{full_url}"
           name = one.name  # re-use this image
         else
+          name = "p#{o.c_meta.clean_count.res_img}#{_get_img_ext node}"
           one = {
-            name: "p#{o.c_meta.clean_count.res_img}#{_get_img_ext node}"
+            name
             raw_url
             full_url
           }
           # set index
-          _img_full_url_i[full_url] = o.c_meta.res.img.length
+          _img_ui[full_url] = o.c_meta.res.img.length
 
           o.c_meta.res.img.push one
         # modify src
