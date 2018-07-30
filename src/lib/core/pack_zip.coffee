@@ -305,7 +305,7 @@ pack_zip = (raw_data) ->
   checksum[PACK.INDEX] = c
 
   # pack css
-  log.d_pack_css tab_id
+  log.d_pack_css tab_id, c_meta.res.css.length
 
   for i in c_meta.res.css
     # get r_id from full_url
@@ -321,7 +321,7 @@ pack_zip = (raw_data) ->
     pack_rl.push r_id
 
   # pack image
-  log.d_pack_img tab_id
+  log.d_pack_img tab_id, c_meta.res.img.length
 
   for i in c_meta.res.img
     r_id = ui[i.full_url]
@@ -361,6 +361,8 @@ pack_zip = (raw_data) ->
     zip_filename
     pack_rl
   }
+  # TODO debug print clean_count ?
+
   # pdso_meta.json
   meta_text = JSON.stringify meta
   meta_data = Buffer.from meta_text, 'utf-8'
@@ -373,6 +375,7 @@ pack_zip = (raw_data) ->
   # compress zip
   log.d_pack_compress tab_id
 
+  # TODO support compress level
   blob = await _zip_compress zip, zip_filename
   # return
   {

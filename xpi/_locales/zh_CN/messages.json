@@ -117,6 +117,105 @@
     "description": "no log placeholder for tab log"
   },
 
+  "# pl": {
+    "message": "(pack_log)"
+  },
+
+  "pl_err_snapshot_end": {
+    "message": "错误:",
+    "description": "pack_log.err_snapshot_end"
+  },
+
+  "pl_info_snapshot_start": {
+    "message": "i : 快照开始",
+    "description": "pack_log.info_snapshot_start"
+  },
+
+  "pl_d_inject_contents": {
+    "message": "DEBUG: 注入 content script .. .",
+    "description": "pack_log.d_inject_contents"
+  },
+
+  "pl_info_snapshot_dom_and_clean": {
+    "message": "i : 快照 DOM 并清理 .. .",
+    "description": "pack_log.info_snapshot_dom_and_clean"
+  },
+
+  "pl_d_fetch_imgs": {
+    "message": "DEBUG: 从缓存获取 $N$ 张图片 .. .",
+    "description": "pack_log.d_fetch_imgs",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+
+  "pl_info_pack_start": {
+    "message": "i : 开始打包",
+    "description": "pack_log.info_pack_start"
+  },
+
+  "pl_d_pack_index": {
+    "message": "DEBUG: 打包 index.html .. .",
+    "description": "pack_log.d_pack_index"
+  },
+
+  "pl_d_pack_css": {
+    "message": "DEBUG: 打包 $N$ 个 .css 文件 .. .",
+    "description": "pack_log.d_pack_css",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+
+  "pl_d_pack_img": {
+    "message": "DEBUG: 打包 $N$ 张图片 .. .",
+    "description": "pack_log.d_pack_img",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+
+  "pl_d_pack_meta": {
+    "message": "DEBUG: 打包 pdso_meta.json .. .",
+    "description": "pack_log.d_pack_meta"
+  },
+
+  "pl_d_pack_compress": {
+    "message": "DEBUG: 压缩 zip 文件 .. .",
+    "description": "pack_log.d_pack_compress"
+  },
+
+  "pl_warn_missing_res": {
+    "message": "警告: 缺少 $COUNT$ 个资源 !",
+    "description": "pack_log.warn_missing_res",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+
+  "pl_ok_snapshot_end": {
+    "message": "成功: 快照保存为 $FILENAME$",
+    "description": "pack_log.ok_snapshot_end",
+    "placeholders": {
+      "filename": {
+        "content": "$1",
+        "example": "XXX.zip"
+      }
+    }
+  },
+
   "# end": {
     "message": "TODO"
   }

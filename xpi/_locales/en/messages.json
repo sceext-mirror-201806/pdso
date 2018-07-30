@@ -117,6 +117,105 @@
     "description": "no log placeholder for tab log"
   },
 
+  "# pl": {
+    "message": "(pack_log)"
+  },
+
+  "pl_err_snapshot_end": {
+    "message": "ERROR:",
+    "description": "pack_log.err_snapshot_end"
+  },
+
+  "pl_info_snapshot_start": {
+    "message": "INFO: snapshot start",
+    "description": "pack_log.info_snapshot_start"
+  },
+
+  "pl_d_inject_contents": {
+    "message": "DEBUG: inject content script .. .",
+    "description": "pack_log.d_inject_contents"
+  },
+
+  "pl_info_snapshot_dom_and_clean": {
+    "message": "INFO: take a snapshot of the DOM and clean it .. .",
+    "description": "pack_log.info_snapshot_dom_and_clean"
+  },
+
+  "pl_d_fetch_imgs": {
+    "message": "DEBUG: fetch $N$ images from cache .. .",
+    "description": "pack_log.d_fetch_imgs",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+
+  "pl_info_pack_start": {
+    "message": "INFO: start pack",
+    "description": "pack_log.info_pack_start"
+  },
+
+  "pl_d_pack_index": {
+    "message": "DEBUG: pack index.html .. .",
+    "description": "pack_log.d_pack_index"
+  },
+
+  "pl_d_pack_css": {
+    "message": "DEBUG: pack $N$ .css files .. .",
+    "description": "pack_log.d_pack_css",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+
+  "pl_d_pack_img": {
+    "message": "DEBUG: pack $N$ images .. .",
+    "description": "pack_log.d_pack_img",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+
+  "pl_d_pack_meta": {
+    "message": "DEBUG: pack pdso_meta.json .. .",
+    "description": "pack_log.d_pack_meta"
+  },
+
+  "pl_d_pack_compress": {
+    "message": "DEBUG: compress the zip file .. .",
+    "description": "pack_log.d_pack_compress"
+  },
+
+  "pl_warn_missing_res": {
+    "message": "WARNING: missing $COUNT$ resources !",
+    "description": "pack_log.warn_missing_res",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+
+  "pl_ok_snapshot_end": {
+    "message": "OK: save snapshot as $FILENAME$",
+    "description": "pack_log.ok_snapshot_end",
+    "placeholders": {
+      "filename": {
+        "content": "$1",
+        "example": "XXX.zip"
+      }
+    }
+  },
+
   "# end": {
     "message": "TODO"
   }
