@@ -78,14 +78,8 @@
   },
 
   "pot_title_incognito": {
-    "message": "[incognito] $TITLE$",
-    "description": "tab title when incognito mode",
-    "placeholders": {
-      "title": {
-        "content": "$1",
-        "example": "New Tab"
-      }
-    }
+    "message": "[incognito]",
+    "description": "tab title left wark when incognito mode"
   },
 
   "pot_tooltip_tab_id": {

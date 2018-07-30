@@ -98,12 +98,17 @@ OneItem = cC {
     else
       gM 'pot_snapshot_tooltip_no_reset'
 
-  _gen_title: ->
+  _render_title: ->
     one = @_get_one()
     if one.incognito
-      gM 'pot_title_incognito', [
-        one.title
-      ]
+      (
+        <React.Fragment>
+          <span className={ @props.classes.incognito }>
+            { gM 'pot_title_incognito' }
+          </span>
+          { one.title }
+        </React.Fragment>
+      )
     else
       one.title
 
@@ -215,7 +220,7 @@ OneItem = cC {
         { @_render_icon() }
         <ListItemText
           className={ @props.classes.item_text }
-          primary={ @_gen_title() }
+          primary={ @_render_title() }
           secondary={ @_render_second() }
         />
         <ListItemSecondaryAction>
@@ -413,6 +418,10 @@ styles = (theme) ->
     }
     p: {
       marginTop: theme.spacing.unit
+    }
+    incognito: {
+      color: theme.palette.text.secondary
+      paddingRight: theme.spacing.unit
     }
   }
 
