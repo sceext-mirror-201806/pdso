@@ -1,6 +1,6 @@
 {
   "name": "pdso",
-  "version": "0.1.0-a6",
+  "version": "0.1.0-b0",
   "description": "Page DOM Snapshot for Offline  (an extension for Desktop and Android Firefox)",
   "license": "GPL-3.0+",
   "homepage": "https://bitbucket.org/eisf/pdso/",
