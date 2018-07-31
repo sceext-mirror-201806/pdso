@@ -39,7 +39,7 @@ function _common() {
 
     // add this to avoid `eval()`
     devtool: 'source_map',
-    mode: 'development',
+    mode: 'production',
   };
 }
 

@@ -282,10 +282,6 @@ tab_list = ->
 
     snapshot_one  # async
     on_content_event  # async
-
-    # export for DEBUG
-    _g
-    _rc
   }
 
 module.exports = tab_list

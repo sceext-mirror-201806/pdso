@@ -7,12 +7,6 @@ ReactDOM = require 'react-dom'
   applyMiddleware
 } = require 'redux'
 { default: thunk } = require 'redux-thunk'
-# FIXME devtools for redux
-#{ composeWithDevTools } = require 'remote-redux-devtools'
-#composeEnhancers = composeWithDevTools {
-#  realtime: true
-#  port: 8000
-#}
 
 { Provider } = require 'react-redux'
 
@@ -22,10 +16,6 @@ App = require './lib/page_options/app'
 
 # redux store
 store = createStore reducer, applyMiddleware(thunk)
-#store = createStore reducer, composeEnhancers(
-#  applyMiddleware(thunk)
-#)
-
 
 A = ->
   (

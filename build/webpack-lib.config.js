@@ -23,7 +23,6 @@ function _common() {
       library: '[name]_[hash]',
     },
 
-    //mode: 'development',
     mode: 'production',
   };
 }
@@ -68,9 +67,6 @@ const targets = [
 
         'change-emitter',
         'core-js',
-
-        // for DEBUG
-        'remote-redux-devtools',
       ],
 
       main_lib: [

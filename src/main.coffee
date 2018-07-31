@@ -72,9 +72,6 @@ _init = ->
   # listen to messages
   m_set_on _on_recv
 
-  # export for DEBUG only
-  window._g = _g
-
   console.log "DEBUG: main init done."
 
 _init()

@@ -323,9 +323,6 @@ r_cache = (tab_id) ->
     # for snapshot_core
     snapshot_one  # async
     on_content_event  # async
-
-    # export for DEBUG
-    _g
   }
 
 module.exports = r_cache

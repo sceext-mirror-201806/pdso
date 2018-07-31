@@ -1,7 +1,7 @@
 # popup.coffee, pdso/src/
 
 
-# FIXME
+# TODO
 window.onload = ->
   document.getElementById('open_main_page').onclick = ->
     browser.tabs.create {
@@ -9,6 +9,4 @@ window.onload = ->
     }
     window.close()
 
-
-# TODO
-console.log "FIXME: end of popup. "
+console.log "DEBUG: end of popup.js"
