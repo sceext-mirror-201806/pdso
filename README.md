@@ -25,15 +25,48 @@
 
 ## 安装和使用
 
-TODO
+作为 Firefox 浏览器扩展安装: <https://addons.mozilla.org/zh-CN/addon/pdso/>
 
+![tab_list](doc/p/zh_CN-android-tab_list.png)
+
+1. 点击右侧的开关来启用想要快照的页面.
+
+2. 可能需要刷新以重置相应页面.
+
+3. 点击下载按钮开始快照 !
+
+![tab_list](doc/p/zh_CN-android-tab_log.png)
 
 **建议**: 请使用最新版 Firefox 浏览器查看保存的快照, 以便获得最佳显示效果.
 
 
 ## 工作原理
 
-TODO
+本扩展会在后台监视浏览器的标签页, 使用 Firefox 扩展的
+ [tabs](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs)
+ 和
+ [webNavigation](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webNavigation)
+ API.
+
+当某个标签页启用后, 本程序会记录其页面加载的所有资源数据, 使用
+ [webRequest](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest)
+ 和
+ [StreamFilter](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/StreamFilter)
+ API.
+
+快照时, 向页面注入
+ [content script](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/contentScripts),
+ 并对 DOM 进行快照
+ ([`document.cloneNode(true)`](https://developer.mozilla.org/en-US/docs/Web/API/Node/cloneNode)).
+然后进行清理和修改, 比如移除 `<script>`,
+ 修改 `<link rel="stylesheet" href="" />` 和 `<img src="" />`.
+
+最后,
+ [将 DOM 转为 HTML](https://developer.mozilla.org/en-US/docs/Web/API/XMLSerializer)
+ 并打包 `.css` 文件, 图片, 等.
+使用 [JSZip](https://stuk.github.io/jszip/) 压缩并
+ [保存](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/downloads)
+ 为 zip 文件.
 
 
 ## 已知问题
