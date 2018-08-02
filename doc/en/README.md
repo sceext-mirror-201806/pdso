@@ -23,8 +23,17 @@ Take a static snapshot of the page DOM,
 
 ## Installation and usage
 
-TODO
+Install `pdso` on AMO: <https://addons.mozilla.org/en-US/addon/pdso/>
 
+![tab_list](../p/en-tab_list.png)
+
+1. Click the switch on the right to enable the tab which you want to snapshot.
+
+2. You may need to refresh the page to reset.
+
+3. Click the download button to start snapshot !
+
+![tab_list](../p/en-tab_log.png)
 
 **Suggestions**: Please use the latest Firefox to view the saved snapshot to
  get the best display effect.
@@ -32,7 +41,32 @@ TODO
 
 ## How it works
 
-TODO
+While this extension is running, it will monitor browser tabs with
+ [tabs](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs)
+ and
+ [webNavigation](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webNavigation)
+ API of the Firefox extension in the background.
+
+When a tab enabled,
+ it will record the data of all the resources loaded by the page with
+ [webRequest](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest)
+ and
+ [StreamFilter](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/StreamFilter)
+ API.
+
+When snapshot, it will inject
+ [content script](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/contentScripts)
+ in the page, and snapshot the DOM
+ ([`document.cloneNode(true)`](https://developer.mozilla.org/en-US/docs/Web/API/Node/cloneNode)).
+Then clean and modify the document, such as remove `<script>`,
+ modify `<link rel="stylesheet" href="" />` and `<img src="" />`.
+
+Finally,
+ [make the document HTML](https://developer.mozilla.org/en-US/docs/Web/API/XMLSerializer)
+ and pack `.css` files, images, etc.
+Compress them with [JSZip](https://stuk.github.io/jszip/), and
+ [save](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/downloads)
+ it.
 
 
 ## Known issues
