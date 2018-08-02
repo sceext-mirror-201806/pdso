@@ -25,7 +25,7 @@ Take a static snapshot of the page DOM,
 
 Install `pdso` on AMO: <https://addons.mozilla.org/en-US/addon/pdso/>
 
-![tab_list](doc/p/en-tab_list.png)
+![tab_list](../p/en-tab_list.png)
 
 1. Click the switch on the right to enable the tab which you want to snapshot.
 
@@ -33,7 +33,7 @@ Install `pdso` on AMO: <https://addons.mozilla.org/en-US/addon/pdso/>
 
 3. Click the download button to start snapshot !
 
-![tab_list](doc/p/en-tab_log.png)
+![tab_list](../p/en-tab_log.png)
 
 **Suggestions**: Please use the latest Firefox to view the saved snapshot to
  get the best display effect.
