@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "__MSG_extensionName__",
   "short_name": "pdso",
-  "version": "0.1.0a6",
+  "version": "0.1.0b1",
 
   "description": "__MSG_extensionDescription__",
   "homepage_url": "https://bitbucket.org/eisf/pdso/",
