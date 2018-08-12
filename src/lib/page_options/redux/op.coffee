@@ -78,6 +78,8 @@ on_recv = (m, sender, sendResponse) ->
         tab_id = m.payload
         # enable the tab
         dispatch action.set_disable_tab(tab_id, false)
+      when EVENT.JSZIP_UPDATE
+        dispatch action.set_jszip_update(m.payload)
       else
         console.log "DEBUG: (options) recv unknow [ #{m.type} ]  #{JSON.stringify m}"
 

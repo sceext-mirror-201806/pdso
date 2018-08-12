@@ -45,6 +45,9 @@ EVENT = {
   # background log
   BG_LOG: 'bg_log'
 
+  # JSZip compression progress
+  JSZIP_UPDATE: 'jszip_update'
+
   # event send from content script
   CONTENT: 'content'
 
@@ -93,8 +96,8 @@ PACK = {
 JSZIP_LEVEL_NO = 0  # no compress
 JSZIP_LEVEL_MIN = 1  # best speed
 JSZIP_LEVEL_MAX = 9  # best compression
-JSZIP_LEVEL_DEFAULT_DESKTOP = 6
-JSZIP_LEVEL_DEFAULT_ANDROID = 1  # TODO
+JSZIP_LEVEL_DEFAULT_DESKTOP = 9
+JSZIP_LEVEL_DEFAULT_ANDROID = 1
 
 module.exports = {
   P_VERSION

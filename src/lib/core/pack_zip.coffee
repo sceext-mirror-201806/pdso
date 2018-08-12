@@ -11,10 +11,12 @@ JSZip = require 'jszip'
   JSZIP_LEVEL_MIN
   JSZIP_LEVEL_MAX
 } = require '../config'
+m_action = require '../m_action'
 {
   json_clone
   last_update
   check_jszip_level
+  m_send
 } = require '../util'
 log = require './pack_log'
 
@@ -225,12 +227,21 @@ _zip_compress = (zip, comment, level) ->  # async
     }
   console.log "DEBUG: pack_zip._zip_compress: compression = #{compression}, level = #{level}"
 
-  await zip.generateAsync {
+  _on_update = (metadata) ->
+    {
+      percent  # 0 to 100
+    } = metadata
+    m_send m_action.jszip_update(percent, false)
+
+  o = await zip.generateAsync {
     type: 'blob'
     compression
     compressionOptions
     comment
-  }
+  }, _on_update
+  # finish progress
+  m_send m_action.jszip_update(100, true)
+  o
 
 # check null title
 _gen_clean_title = (raw_title, raw_url) ->

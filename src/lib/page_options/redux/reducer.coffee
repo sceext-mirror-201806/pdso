@@ -31,6 +31,8 @@ reducer = ($$state, action) ->
     when ac.A_SET_CONFIG
       $$o = $$o.update 'config', ($$) ->
         $$.merge Immutable.fromJS(action.payload)
+    when ac.A_SET_JSZIP_UPDATE
+      $$o = $$o.set 'jszip_update', Immutable.fromJS(action.payload)
 
   $$o
 
