@@ -70,6 +70,8 @@ styles = (theme) ->
         marginRight: theme.spacing.unit
         color: theme.palette.text.secondary
       }
+      wordWrap: 'break-word'
+      wordBreak: 'break-all'
     }
 
     no_log: {

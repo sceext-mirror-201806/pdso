@@ -261,9 +261,9 @@ styles = (theme) ->
       marginTop: theme.spacing.unit
       padding: theme.spacing.unit
       marginBottom: 0
-      overflow: 'auto'
       color: theme.tb.color_sec
       backgroundColor: theme.tb.color_bg_sec
+      whiteSpace: 'pre-wrap'
 
       '&$android': {
         fontSize: '0.8em'
