@@ -217,6 +217,17 @@ _zip_compress = (zip, comment) ->  # async
     comment
   }
 
+# check null title
+_gen_clean_title = (raw_title, raw_url) ->
+  if raw_title?
+    if raw_title.trim().length > 0
+      return _clean_filename raw_title
+  # empty title, use url
+  if raw_url.indexOf('://') != -1
+    raw_url = raw_url.split('://')[1]
+  raw_url = raw_url.split('/')[0]
+  _clean_filename raw_url
+
 # clean title for filename (replace bad chars)
 _clean_filename = (raw) ->
   bad_chars = '/\\|><:?*" -'
@@ -265,7 +276,7 @@ pack_zip = (raw_data) ->
   } = raw_data
 
   # gen filename
-  clean_title = _clean_filename tab_list.title
+  clean_title = _gen_clean_title tab_list.title, tab_list.url
   zip_dir = _gen_zip_dir clean_title
   zip_filename = _gen_zip_filename zip_dir
 
