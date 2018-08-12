@@ -52,8 +52,8 @@ d_pack_img = (tab_id, n) ->
 d_pack_meta = (tab_id) ->
   _log "( #{tab_id} ) #{gM 'pl_d_pack_meta'}"
 
-d_pack_compress = (tab_id) ->
-  _log "( #{tab_id} ) #{gM 'pl_d_pack_compress'}"
+d_pack_compress = (tab_id, compress_level) ->
+  _log "( #{tab_id} ) #{gM 'pl_d_pack_compress', compress_level}"
 
 warn_missing_res = (tab_id, missing) ->
   count = 0

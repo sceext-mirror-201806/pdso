@@ -1,6 +1,6 @@
 # config.coffee, pdso/src/lib/
 
-P_VERSION = 'pdso version 0.1.0-b0 test20180731 0804'
+P_VERSION = 'pdso version 0.1.0-b1 test20180812 2026'
 
 # max length limit of pack zip filename
 FILENAME_MAX_LENGTH = 127
@@ -13,6 +13,8 @@ UI_THEME_DARK = 'dark'
 LCK_UI_THEME = 'ui.theme'
 # core config: enable for all tabs
 LCK_PDSO_TAB_LIST_ENABLE_ALL = 'pdso.tab_list.enable_all'
+# core config: jszip compression level
+LCK_PDSO_JSZIP_LEVEL = 'pdso.jszip_level'
 
 # events send/recv
 # {
@@ -42,6 +44,9 @@ EVENT = {
 
   # background log
   BG_LOG: 'bg_log'
+
+  # JSZip compression progress
+  JSZIP_UPDATE: 'jszip_update'
 
   # event send from content script
   CONTENT: 'content'
@@ -88,6 +93,12 @@ PACK = {
   ]
 }
 
+JSZIP_LEVEL_NO = 0  # no compress
+JSZIP_LEVEL_MIN = 1  # best speed
+JSZIP_LEVEL_MAX = 9  # best compression
+JSZIP_LEVEL_DEFAULT_DESKTOP = 9
+JSZIP_LEVEL_DEFAULT_ANDROID = 1
+
 module.exports = {
   P_VERSION
 
@@ -98,10 +109,17 @@ module.exports = {
 
   LCK_UI_THEME
   LCK_PDSO_TAB_LIST_ENABLE_ALL
+  LCK_PDSO_JSZIP_LEVEL
 
   EVENT
   CONTENT_EVENT
   CONTENTS
 
   PACK
+
+  JSZIP_LEVEL_NO
+  JSZIP_LEVEL_MIN
+  JSZIP_LEVEL_MAX
+  JSZIP_LEVEL_DEFAULT_DESKTOP
+  JSZIP_LEVEL_DEFAULT_ANDROID
 }

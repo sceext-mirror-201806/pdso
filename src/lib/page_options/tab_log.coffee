@@ -6,6 +6,7 @@ cC = require 'create-react-class'
 
 {
   Typography
+  LinearProgress
 } = require '@material-ui/core'
 {
   withStyles
@@ -23,6 +24,7 @@ TabLog = cC {
   propTypes: {
     classes: PropTypes.object.isRequired
     log: PropTypes.array.isRequired
+    jszip_update: PropTypes.object.isRequired
   }
 
   _render_log_item: (i) ->
@@ -51,12 +53,30 @@ TabLog = cC {
         o.push @_render_log_item(i)
       o
 
+  _render_jszip_update: ->
+    {
+      percent  # 0 to 100
+      done
+    } = @props.jszip_update
+    if done
+      return  # nothing to render
+
+    (
+      <div className={ @props.classes.progress }>
+        <LinearProgress
+          variant="determinate"
+          value={ percent }
+        />
+      </div>
+    )
+
   render: ->
     (
       <div className={ @props.classes.root }>
         <PaperM>
           { @_render_log() }
         </PaperM>
+        { @_render_jszip_update() }
       </div>
     )
 }
@@ -70,10 +90,18 @@ styles = (theme) ->
         marginRight: theme.spacing.unit
         color: theme.palette.text.secondary
       }
+      wordWrap: 'break-word'
+      wordBreak: 'break-all'
     }
 
     no_log: {
       color: theme.palette.text.secondary
+    }
+
+    progress: {
+      padding: theme.spacing.unit * 2
+      paddingLeft: theme.spacing.unit
+      paddingRight: theme.spacing.unit
     }
   }
 
@@ -86,6 +114,7 @@ op = require './redux/op'
 mapStateToProps = ($$state, props) ->
   {
     log: $$state.get('log').toJS()
+    jszip_update: $$state.get('jszip_update').toJS()
   }
 
 mapDispatchToProps = (dispatch, props) ->

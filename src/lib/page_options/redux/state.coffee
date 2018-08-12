@@ -24,6 +24,16 @@ init_state = {
     #}
   ]
 
+  # core config: pdso.jszip_level
+  config: {
+    pdso_jszip_level: 0
+  }
+
+  # JSZip compression progress
+  jszip_update: {
+    percent: 0
+    done: true  # not show progress bar by default
+  }
 }
 
 module.exports = init_state

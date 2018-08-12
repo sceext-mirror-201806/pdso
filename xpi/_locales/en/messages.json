@@ -107,6 +107,21 @@
     "description": "title of enable for all"
   },
 
+  "pot_config": {
+    "message": "Config",
+    "description": "title of config part"
+  },
+
+  "pot_config_jszip_level": {
+    "message": "JSZip compression level",
+    "description": "pdso.jszip_level"
+  },
+
+  "pot_config_jszip_level_desc": {
+    "message": "1 for best speed, 9 for best compression, 0 means no compression",
+    "description": "description text for jszip_level"
+  },
+
   "po_no_log": {
     "message": "(no log)",
     "description": "no log placeholder for tab log"
@@ -185,8 +200,14 @@
   },
 
   "pl_d_pack_compress": {
-    "message": "DEBUG: compress the zip file .. .",
-    "description": "pack_log.d_pack_compress"
+    "message": "DEBUG: compress the zip file (compression level = $LEVEL$) .. .",
+    "description": "pack_log.d_pack_compress",
+    "placeholders": {
+      "level": {
+        "content": "$1",
+        "example": "6"
+      }
+    }
   },
 
   "pl_warn_missing_res": {

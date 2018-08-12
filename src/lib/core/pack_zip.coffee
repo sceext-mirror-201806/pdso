@@ -8,10 +8,15 @@ JSZip = require 'jszip'
   P_VERSION
   FILENAME_MAX_LENGTH
   PACK
+  JSZIP_LEVEL_MIN
+  JSZIP_LEVEL_MAX
 } = require '../config'
+m_action = require '../m_action'
 {
   json_clone
   last_update
+  check_jszip_level
+  m_send
 } = require '../util'
 log = require './pack_log'
 
@@ -210,12 +215,44 @@ _pack_and_hash = (d, filename, data) ->
     sha256: b.toString 'hex'
   }
 
-_zip_compress = (zip, comment) ->  # async
-  await zip.generateAsync {
+_zip_compress = (zip, comment, level) ->  # async
+  compression = 'STORE'  # no compression by default
+  compressionOptions = null
+  # check compress level
+  level = Number.parseInt level
+  if (level >= JSZIP_LEVEL_MIN) and (level <= JSZIP_LEVEL_MAX)
+    compression = 'DEFLATE'
+    compressionOptions = {
+      level
+    }
+  console.log "DEBUG: pack_zip._zip_compress: compression = #{compression}, level = #{level}"
+
+  _on_update = (metadata) ->
+    {
+      percent  # 0 to 100
+    } = metadata
+    m_send m_action.jszip_update(percent, false)
+
+  o = await zip.generateAsync {
     type: 'blob'
-    compression: 'DEFLATE'
+    compression
+    compressionOptions
     comment
-  }
+  }, _on_update
+  # finish progress
+  m_send m_action.jszip_update(100, true)
+  o
+
+# check null title
+_gen_clean_title = (raw_title, raw_url) ->
+  if raw_title?
+    if raw_title.trim().length > 0
+      return _clean_filename raw_title
+  # empty title, use url
+  if raw_url.indexOf('://') != -1
+    raw_url = raw_url.split('://')[1]
+  raw_url = raw_url.split('/')[0]
+  _clean_filename raw_url
 
 # clean title for filename (replace bad chars)
 _clean_filename = (raw) ->
@@ -265,7 +302,7 @@ pack_zip = (raw_data) ->
   } = raw_data
 
   # gen filename
-  clean_title = _clean_filename tab_list.title
+  clean_title = _gen_clean_title tab_list.title, tab_list.url
   zip_dir = _gen_zip_dir clean_title
   zip_filename = _gen_zip_filename zip_dir
 
@@ -373,10 +410,10 @@ pack_zip = (raw_data) ->
   _pack_and_hash d, PACK.META_HASH, Buffer.from(meta_hash.sha256 + '\n')
 
   # compress zip
-  log.d_pack_compress tab_id
+  compress_level = await check_jszip_level()
+  log.d_pack_compress tab_id, compress_level
 
-  # TODO support compress level
-  blob = await _zip_compress zip, zip_filename
+  blob = await _zip_compress zip, zip_filename, compress_level
   # return
   {
     filename: zip_filename

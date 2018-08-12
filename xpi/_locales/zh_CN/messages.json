@@ -107,6 +107,21 @@
     "description": "title of enable for all"
   },
 
+  "pot_config": {
+    "message": "设置",
+    "description": "title of config part"
+  },
+
+  "pot_config_jszip_level": {
+    "message": "JSZip 压缩级别",
+    "description": "pdso.jszip_level"
+  },
+
+  "pot_config_jszip_level_desc": {
+    "message": "1 最快速度, 9 最佳压缩, 0 表示不压缩",
+    "description": "description text for jszip_level"
+  },
+
   "po_no_log": {
     "message": "(没有日志)",
     "description": "no log placeholder for tab log"
@@ -185,8 +200,14 @@
   },
 
   "pl_d_pack_compress": {
-    "message": "DEBUG: 压缩 zip 文件 .. .",
-    "description": "pack_log.d_pack_compress"
+    "message": "DEBUG: 压缩 zip 文件 (压缩级别 = $LEVEL$) .. .",
+    "description": "pack_log.d_pack_compress",
+    "placeholders": {
+      "level": {
+        "content": "$1",
+        "example": "6"
+      }
+    }
   },
 
   "pl_warn_missing_res": {

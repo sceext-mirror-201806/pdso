@@ -57,6 +57,15 @@ bg_log = (text) ->
     }
   }
 
+jszip_update = (percent, done) ->
+  {
+    type: EVENT.JSZIP_UPDATE
+    payload: {
+      percent
+      done
+    }
+  }
+
 # send by content scripts
 content = (payload) ->
   {
@@ -125,6 +134,7 @@ module.exports = {
   snapshot_one_tab
   snapshot_one_end
   bg_log
+  jszip_update
 
   content
   c_snapshot

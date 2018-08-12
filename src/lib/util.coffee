@@ -1,6 +1,15 @@
 # util.coffee, pdso/src/lib/
 { Buffer } = require 'buffer'
 
+{
+  LCK_PDSO_JSZIP_LEVEL
+  JSZIP_LEVEL_NO
+  JSZIP_LEVEL_MIN
+  JSZIP_LEVEL_MAX
+  JSZIP_LEVEL_DEFAULT_DESKTOP
+  JSZIP_LEVEL_DEFAULT_ANDROID
+} = require './config'
+
 
 # i18n.getMessage
 gM = (messageName, substitutions) ->
@@ -125,6 +134,17 @@ saveAs = (blob, filename) ->
     browser.downloads.onChanged.removeListener _on_changed
     throw e
 
+check_jszip_level = ->
+  o = await browser.storage.local.get LCK_PDSO_JSZIP_LEVEL
+  level = Number.parseInt o[LCK_PDSO_JSZIP_LEVEL]
+  if (! ((level >= JSZIP_LEVEL_MIN) and (level <= JSZIP_LEVEL_MAX))) and (level != JSZIP_LEVEL_NO)
+    # use default level
+    if is_android()
+      level = JSZIP_LEVEL_DEFAULT_ANDROID
+    else
+      level = JSZIP_LEVEL_DEFAULT_DESKTOP
+  level
+
 module.exports = {
   gM
   lang_is_zh
@@ -147,4 +167,6 @@ module.exports = {
   json_clone
 
   saveAs  # async
+
+  check_jszip_level  # async
 }
