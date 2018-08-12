@@ -28,6 +28,9 @@ reducer = ($$state, action) ->
         disable
       } = action.payload
       $$o = $$o.setIn ['disable_tab', tab_id], disable
+    when ac.A_SET_CONFIG
+      $$o = $$o.update 'config', ($$) ->
+        $$.merge Immutable.fromJS(action.payload)
 
   $$o
 

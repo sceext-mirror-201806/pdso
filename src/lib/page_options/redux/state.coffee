@@ -24,6 +24,10 @@ init_state = {
     #}
   ]
 
+  # core config: pdso.jszip_level
+  config: {
+    pdso_jszip_level: 0
+  }
 }
 
 module.exports = init_state

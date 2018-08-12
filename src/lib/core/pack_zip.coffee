@@ -8,10 +8,13 @@ JSZip = require 'jszip'
   P_VERSION
   FILENAME_MAX_LENGTH
   PACK
+  JSZIP_LEVEL_MIN
+  JSZIP_LEVEL_MAX
 } = require '../config'
 {
   json_clone
   last_update
+  check_jszip_level
 } = require '../util'
 log = require './pack_log'
 
@@ -210,10 +213,22 @@ _pack_and_hash = (d, filename, data) ->
     sha256: b.toString 'hex'
   }
 
-_zip_compress = (zip, comment) ->  # async
+_zip_compress = (zip, comment, level) ->  # async
+  compression = 'STORE'  # no compression by default
+  compressionOptions = null
+  # check compress level
+  level = Number.parseInt level
+  if (level >= JSZIP_LEVEL_MIN) and (level <= JSZIP_LEVEL_MAX)
+    compression = 'DEFLATE'
+    compressionOptions = {
+      level
+    }
+  console.log "DEBUG: pack_zip._zip_compress: compression = #{compression}, level = #{level}"
+
   await zip.generateAsync {
     type: 'blob'
-    compression: 'DEFLATE'
+    compression
+    compressionOptions
     comment
   }
 
@@ -384,10 +399,10 @@ pack_zip = (raw_data) ->
   _pack_and_hash d, PACK.META_HASH, Buffer.from(meta_hash.sha256 + '\n')
 
   # compress zip
-  log.d_pack_compress tab_id
+  compress_level = await check_jszip_level()
+  log.d_pack_compress tab_id, compress_level
 
-  # TODO support compress level
-  blob = await _zip_compress zip, zip_filename
+  blob = await _zip_compress zip, zip_filename, compress_level
   # return
   {
     filename: zip_filename

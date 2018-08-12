@@ -4,6 +4,7 @@ config = require '../../config'
 {
   gM
   m_send
+  check_jszip_level
 } = require '../../util'
 m_ac = require '../../m_action'
 
@@ -26,6 +27,11 @@ load_init = ->
     else
       theme = UI_THEME_LIGHT
     dispatch action.set_theme(theme)
+    # pdso.jszip_level
+    pdso_jszip_level = await check_jszip_level()
+    dispatch action.set_config({
+      pdso_jszip_level
+    })
     # fetch tab_list
     await m_send m_ac.fetch_tab_list()
 
@@ -45,6 +51,16 @@ toggle_theme = ->
 
     # set new theme
     dispatch action.set_theme(new_theme)
+
+set_jszip_level = (level) ->
+  (dispatch, getState) ->
+    o = {}
+    o[config.LCK_PDSO_JSZIP_LEVEL] = level
+    await browser.storage.local.set o
+
+    dispatch action.set_config({
+      pdso_jszip_level: level
+    })
 
 
 # on recv messages (options page)
@@ -95,6 +111,7 @@ snapshot_one = (tab_id) ->
 module.exports = {
   load_init  # thunk
   toggle_theme  # thunk
+  set_jszip_level  # thunk
 
   on_recv  # thunk
   set_tab_enable  # thunk

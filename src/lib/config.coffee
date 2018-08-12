@@ -13,6 +13,8 @@ UI_THEME_DARK = 'dark'
 LCK_UI_THEME = 'ui.theme'
 # core config: enable for all tabs
 LCK_PDSO_TAB_LIST_ENABLE_ALL = 'pdso.tab_list.enable_all'
+# core config: jszip compression level
+LCK_PDSO_JSZIP_LEVEL = 'pdso.jszip_level'
 
 # events send/recv
 # {
@@ -88,6 +90,12 @@ PACK = {
   ]
 }
 
+JSZIP_LEVEL_NO = 0  # no compress
+JSZIP_LEVEL_MIN = 1  # best speed
+JSZIP_LEVEL_MAX = 9  # best compression
+JSZIP_LEVEL_DEFAULT_DESKTOP = 6
+JSZIP_LEVEL_DEFAULT_ANDROID = 1  # TODO
+
 module.exports = {
   P_VERSION
 
@@ -98,10 +106,17 @@ module.exports = {
 
   LCK_UI_THEME
   LCK_PDSO_TAB_LIST_ENABLE_ALL
+  LCK_PDSO_JSZIP_LEVEL
 
   EVENT
   CONTENT_EVENT
   CONTENTS
 
   PACK
+
+  JSZIP_LEVEL_NO
+  JSZIP_LEVEL_MIN
+  JSZIP_LEVEL_MAX
+  JSZIP_LEVEL_DEFAULT_DESKTOP
+  JSZIP_LEVEL_DEFAULT_ANDROID
 }
